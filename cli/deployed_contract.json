@@ -1,0 +1,85 @@
+{
+  "DaoHubVerify": {
+    "abi": [
+      {
+        "constant": false,
+        "inputs": [
+          {
+            "name": "imageHash",
+            "type": "bytes32"
+          },
+          {
+            "name": "author",
+            "type": "address"
+          },
+          {
+            "name": "repoTag",
+            "type": "bytes32"
+          },
+          {
+            "name": "imageId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "registerImage",
+        "outputs": [],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "constant": true,
+        "inputs": [
+          {
+            "name": "imageHash",
+            "type": "bytes32"
+          }
+        ],
+        "name": "getImageFromHash",
+        "outputs": [
+          {
+            "name": "author",
+            "type": "address"
+          },
+          {
+            "name": "repoTag",
+            "type": "bytes32"
+          },
+          {
+            "name": "imageId",
+            "type": "bytes32"
+          }
+        ],
+        "payable": false,
+        "type": "function"
+      },
+      {
+        "anonymous": false,
+        "inputs": [
+          {
+            "indexed": false,
+            "name": "imageHash",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "author",
+            "type": "address"
+          },
+          {
+            "indexed": false,
+            "name": "repoTag",
+            "type": "bytes32"
+          },
+          {
+            "indexed": false,
+            "name": "imageId",
+            "type": "bytes32"
+          }
+        ],
+        "name": "newImage",
+        "type": "event"
+      }
+    ],
+    "address": "0xd470aa533117025bc420fdbd42af07c2a5d861c8"
+  }
+}

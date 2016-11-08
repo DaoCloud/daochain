@@ -32,6 +32,12 @@ class TopLevelCommand(DocoptCommand):
       -h, --help     Show this help information and exit.
 
     Commands:
+      status         Show the status of dao service.
+      login          Login to daohub.
+      images         Show all images.
+      sign           sign a image.
+      publish        Publish a image to daochain.
+      validate       Validate a image.
 
     """
     base_dir = '.'
@@ -45,18 +51,6 @@ class TopLevelCommand(DocoptCommand):
         options['version'] = 'v0.1'
         return options
 
-    def login(self, options):
-        """
-
-        """
-        pass
-
-    def list(self, options):
-        """
-
-        """
-        pass
-
     def version(self, options):
         """
         Show the version information
@@ -64,6 +58,19 @@ class TopLevelCommand(DocoptCommand):
         Usage: version
         """
         print('v0.1')
+
+    def login(self, options):
+        """
+        Login to daolcoud daohub
+        """
+        pass
+
+    def list(self, options):
+        """
+        List local images and their verify stats.
+
+        """
+        pass
 
     def install(self, options):
         """

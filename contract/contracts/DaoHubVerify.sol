@@ -1,30 +1,39 @@
 pragma solidity ^0.4.2;
 
+/*import {DaoHubAccount} from 'DaoHubAccount.sol';*/
+
 contract DaoHubVerify {
-  struct Image {
-    address author;
-    bytes32 repoTag;
-    bytes32 imageId;
-  }
+    address daocloud;
+    function DaoHubVerify(){
+        daocloud = msg.sender;
+    }
 
-  mapping(bytes32 => Image) imageMap;
+    struct Image {
+        bytes32 imageHash;
+        address owner;
+        bytes repoTag;
+        bytes32 imageId;
+        // bool exist;
+    }
 
-  event newImage(bytes32 imageHash,
-                 address author,
-                 bytes32 repoTag,
-                 bytes32 imageId);
+    mapping(address => mapping(bytes => Image)) ownerIdImageMap;
 
-  function registerImage(bytes32 imageHash,
-                         address author,
-                         bytes32 repoTag,
-                         bytes32 imageId){
-    imageMap[imageHash] = Image(author, repoTag, imageId);
-    newImage(imageHash, author, repoTag, imageId);
-  }
+    event regImage(bytes32 imageHash,
+                   address owner,
+                   bytes repoTag,
+                   bytes32 imageId);
 
-  function getImageFromHash(bytes32 imageHash)
-    constant returns(address author, bytes32 repoTag, bytes32 imageId){
-      Image i = imageMap[imageHash];
-      return (i.author, i.repoTag, i.imageId);
-  }
+
+    function registerImage(bytes32 imageHash,
+                           bytes repoTag,
+                           bytes32 imageId){
+        ownerIdImageMap[msg.sender][repoTag] = Image(imageHash, msg.sender, repoTag, imageId);
+        regImage(imageHash, msg.sender, repoTag, imageId);
+    }
+
+    function queryImage(address owner, bytes repoTag)
+        constant returns(bytes32, address, bytes, bytes32){
+        Image memory i = ownerIdImageMap[owner][repoTag];
+        return (i.imageHash, i.owner, i.repoTag, i.imageId);
+    }
 }
