@@ -1,1 +1,1 @@
-cd website && gulp serve
+gulp serve
