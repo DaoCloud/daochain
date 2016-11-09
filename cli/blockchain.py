@@ -1,3 +1,6 @@
+# import web3patch
+#
+# web3patch.patch_all()
 from web3 import RPCProvider, Web3
 
 from utils import load_json_from
@@ -50,7 +53,7 @@ class DaoHubVerify(object):
 
 if __name__ == '__main__':
     d = DaoHubVerify()
-    print(d.registerImage('0x921fdcfd91e4237afaaf63bc3010e0993e012f816a409ee705f3db3b65fa274d',
+    print(d.registerImage(0x921fdcfd91e4237afaaf63bc3010e0993e012f816a409ee705f3db3b65fa274d,
                           'daocloud.io/daocloud/dao-2048',
-                          '067c8da9d5abd40c3f2aaf58bef8412cd42b535b847483837152fb877f1f15de'))
+                          0x067c8da9d5abd40c3f2aaf58bef8412cd42b535b847483837152fb877f1f15de))
     print(d.queryImage(web3_client().eth.coinbase, 'daocloud.io/daocloud/dao-2048'))

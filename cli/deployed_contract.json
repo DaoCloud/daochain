@@ -1,6 +1,6 @@
 {
   "DaoHubVerify": {
-    "abi": [{"constant":false,"inputs":[{"name":"imageHash","type":"bytes32"},{"name":"repoTag","type":"bytes"},{"name":"imageId","type":"bytes32"}],"name":"registerImage","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"repoTag","type":"bytes"}],"name":"queryImage","outputs":[{"name":"","type":"bytes32"},{"name":"","type":"address"},{"name":"","type":"bytes"},{"name":"","type":"bytes32"}],"payable":false,"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"imageHash","type":"bytes32"},{"indexed":false,"name":"owner","type":"address"},{"indexed":false,"name":"repoTag","type":"bytes"},{"indexed":false,"name":"imageId","type":"bytes32"}],"name":"regImage","type":"event"}],
-    "address": "0x8a1e16278f7695823962ada686ca13a202ee97d1"
+    "abi": [{"constant":false,"inputs":[{"name":"imageHash","type":"uint256"},{"name":"repoTag","type":"bytes"},{"name":"imageId","type":"uint256"}],"name":"registerImage","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"repoTag","type":"bytes"}],"name":"queryImage","outputs":[{"name":"","type":"uint256"},{"name":"","type":"address"},{"name":"","type":"bytes"},{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"imageHash","type":"uint256"},{"indexed":false,"name":"owner","type":"address"},{"indexed":false,"name":"repoTag","type":"bytes"},{"indexed":false,"name":"imageId","type":"uint256"}],"name":"regImage","type":"event"}],
+    "address": "0xaa95e191d3b08a07bd44dc576686f37791046e3b"
   }
 }
