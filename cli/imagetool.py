@@ -10,3 +10,7 @@ class Client(_C):
             for block in iter(lambda: f.read(blocksize), b""):
                 hash.update(block)
         return hash.hexdigest()
+
+    def get_image_hash_uint(self, resource_id, hasher=sha256, blocksize=4096):
+        hash = self.get_image_hash(resource_id, hasher, blocksize)
+        return int(hash, 16)

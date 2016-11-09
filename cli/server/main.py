@@ -23,7 +23,7 @@ def setup_routes(app):
 
 def create_app(name=None):
     app = Flask(name or 'app')
-    app.config.from_pyfile('settings.py')
+    app.config.from_pyfile('server/settings.py')
     load_api(app)
     setup_routes(app)
     return app

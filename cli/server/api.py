@@ -1,6 +1,6 @@
 from flask_restful import Api, Resource
 
-from server.docker_utils import docker_client
+from server.imageutils import get_repos
 
 
 def load_api(app):
@@ -16,11 +16,12 @@ class API(Resource):
     def get(self):
         return 'Hello API'
 
+
 class ImagesAPI(Resource):
     def get(self):
-        return docker_client().images()
+        return get_repos()
+
 
 class ImageVerifyAPI(Resource):
     def get(self, image_id):
         return
-
