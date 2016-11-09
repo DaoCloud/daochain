@@ -19,8 +19,8 @@ contract DaoHubVerify {
     mapping(address => mapping(bytes => Image)) ownerIdImageMap;
 
     event regImage(bytes32 imageHash,
-                   address owner,
-                   bytes repoTag,
+                   address indexed owner,
+                   bytes indexed repoTag,
                    bytes32 imageId);
 
 
