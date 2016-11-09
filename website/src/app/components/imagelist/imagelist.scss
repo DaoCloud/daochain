@@ -37,6 +37,15 @@
       th, td {
         display: table-cell;
         white-space: normal;
+
+        span {
+          display: block;
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          -o-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+        }
       }
     }
 
