@@ -6,6 +6,7 @@ import Hero from './hero/hero';
 import Local from './local/local';
 import Login from './login/login';
 import Remote from './remote/remote';
+import Person from './person/person';
 import Market from './market/market';
 import Imagelist from './imagelist/imagelist';
 import User from './user/user';
@@ -19,6 +20,7 @@ let componentModule = angular.module('app.components', [
   Login,
   Remote,
   Market,
+  Person,
   Imagelist,
   User
 ])
