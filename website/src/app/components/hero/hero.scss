@@ -1,0 +1,12 @@
+@import '../../common/common.scss';
+
+.hero {
+	background-color: $darkBgColor;
+	height: 5rem;
+	padding: 3rem;
+
+	* {
+		color: $lightTextColor;
+	}
+
+}

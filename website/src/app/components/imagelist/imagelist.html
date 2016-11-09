@@ -1,0 +1,82 @@
+<section class="imagelist">
+  <div class="dao-table-container top-banner">
+    <div class="add-image"><button class="dao-btn blue">添加镜像</button></div><!--
+    --><div class="show-sets"><!--
+      --><button type="button" class="dao-btn ghost has-icon" name="button"><!--
+          --><svg class="icon"><use xlink:href="#icon-eye"></use></svg><!--
+          --><span class="text">显示设置</span><!--
+          --></button><!--
+      --></div><!--
+    --><div class="search-image"><input class="dao-control search" type="text" placeholder="搜索镜像"/></div><!--
+  --></div>
+
+  <div class="dao-table-main images">
+    <table class="dao-table slat">
+      <thead>
+        <tr>
+          <th style="width: 15%">
+            <input type="checkbox">
+            <span class="thead-title"><svg class="icon"><use xlink:href="#icon_stack-alt"></use></svg>镜像</span>
+          </th>
+          <th style="width: 35%">
+            <span class="thead-title"><svg class="icon"><use xlink:href="#icon_stack-alt"></use></svg>镜像</span>
+          </th>
+          <th style="width: 13%">
+            <span class="thead-title"><svg class="icon"><use xlink:href="#icon_id"></use></svg>签名日期</span>
+          </th>
+          <th style="width: 13%">
+            <span class="thead-title"><svg class="icon"><use xlink:href="#icon_calendar"></use></svg>创建日期</span>
+          </th>
+          <th style="width: 10%">
+            <span class="thead-title"><svg class="icon"><use xlink:href="#icon_status"></use></svg>认证</span>
+          </th>
+          <th style="width: 14%">
+            <span></span>
+          </th>
+        </tr>
+      </thead>
+      <tr ng-repeat="x in $ctrl.data">
+        <td style="width: 15%">
+          <div class="image-info">
+            <span class="title">{{x.repo_title}}</span>
+          </div>
+        </td>
+        <td style="width: 35%">
+          <div class="image-name">
+            <span class="title">{{x.image_url}}</span>
+          </div>
+        </td>
+        <td style="width: 15%">
+          <div class="image-info">
+            <span class="update">{{x.updated_at}}</span>
+          </div>
+        </td>
+        <td style="width: 15%">{{x.created_at}}</td>
+        <td style="width: 5%">{{x.blockchain_verified}}</td>
+        <td style="width: 15%">
+          <div class="dao-btn-group">
+              <div class="dao-btn ghost">
+                了解详情
+              </div>
+              <div dao-dropdown="" dropdown-placement="auto bottom" class="dao-btn-group dao-dropdown">
+                <div dao-dropdown-toggle="" class="dao-btn dao-icon ghost dao-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                  <svg class="icon">
+                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_down-arrow"></use>
+                  </svg>
+                </div>
+                <div dao-dropdown-menu="" role="menu" class="dropdown-menu-right dao-dropdown-menu top" aria-labelledby="single-button" style="top: -113px;"><div class="arrow" style="left: auto; right: 6px;"></div>
+                  <ul>
+                    <li role="menuitem">了解详情</li>
+                    <li role="menuitem">校验并签名</li>
+                    <li role="menuitem">校验</li>
+                    <li role="menuitem">认证</li>
+                    <li role="menuitem">拉取</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</section>
