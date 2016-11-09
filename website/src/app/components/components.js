@@ -9,6 +9,7 @@ import Remote from './remote/remote';
 import Person from './person/person';
 import Market from './market/market';
 import Imagelist from './imagelist/imagelist';
+import Points from './points/points';
 import User from './user/user';
 
 let componentModule = angular.module('app.components', [
@@ -21,6 +22,7 @@ let componentModule = angular.module('app.components', [
   Remote,
   Market,
   Person,
+  Points,
   Imagelist,
   User
 ])
