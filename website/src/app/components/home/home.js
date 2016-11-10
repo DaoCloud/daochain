@@ -17,11 +17,14 @@ let homeModule = angular.module('home', [
   $stateProvider
     .state('home', {
       url: '/',
+      data: {
+        requireAuth: true
+      },
       component: 'home',
       onEnter: ($state) => {
         "ngInject";
         if ($.cookie('token')) {
-          
+
         } else {
           $state.go('login');
         }

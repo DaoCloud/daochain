@@ -5,12 +5,17 @@ import Components from './components/components';
 import AppComponent from './app.component';
 import daoStyle from 'dao-style';
 import 'normalize.css';
+import { authHookRunBlock } from './routerhooks/require-auth.js';
+import AuthService from './common/services/auth.service.js';
+import AuthStoreService from './common/services/auth-store.service.js';
+import AppConfig from './app.config.js'
 
 angular.module('app', [
     uiRouter,
     daoStyle,
     Common,
-    Components
+    Components,
+    AppConfig
   ])
   .config(($locationProvider) => {
     "ngInject";
@@ -19,4 +24,7 @@ angular.module('app', [
     $locationProvider.html5Mode(true).hashPrefix('!');
   })
 
-  .component('app', AppComponent);
+  .component('app', AppComponent)
+  .run(authHookRunBlock)
+  .service('AuthService', AuthService)
+  .service('AuthStoreService', AuthStoreService);

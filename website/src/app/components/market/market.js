@@ -10,6 +10,9 @@ let marketModule = angular.module('market', [
 	$stateProvider
 		.state('market', {
 			url: '/market',
+      data: {
+        requireAuth: true
+      },
 			component: 'market'
 		});
 })

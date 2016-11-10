@@ -10,6 +10,9 @@ let remoteModule = angular.module('remote', [
 	$stateProvider
 		.state('remote', {
 			url: '/remote',
+      data: {
+        requireAuth: true
+      },
 			component: 'remote'
 		});
 })

@@ -24,7 +24,7 @@ let componentModule = angular.module('app.components', [
   Person,
   Points,
   Imagelist,
-  User
+  User,
 ])
 .name;
 

@@ -28,7 +28,7 @@ class controller {
 
     $.ajax({
       type: "GET",
-      url: "http://localhost:3004/",
+      url: "http://api.daocloud.co/hub/v2/hub/daohub/repos?page=1&page_size=10&q=",
       success: res => {
         let results = res.results;
         results.map(result => {
