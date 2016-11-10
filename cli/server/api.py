@@ -37,7 +37,7 @@ class ImageVerifyAPI(Resource):
         from imagetool import Client
         c = Client()
         args = self.reqparse.parse_args()
-        verify = c.verify_image_hash(args['repo_tag'], auth_token=request.headers.get('Authorization'), usernamespace=request.headers.get('UserNameSpace'))
+        verify = c.verify_image_hash(args['repo_tag'])
         return dict(verify=verify)
 
 class ImagePullAPI(Resource):

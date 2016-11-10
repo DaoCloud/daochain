@@ -26,9 +26,10 @@ class Client(_C):
             auth_config = dict(username=username,password=password)
         self.pull(repository,tag,insecure_registry=True,auth_config=auth_config)
 
-    def verify_image_hash(self, repoTag, auth_token=None, usernamespace=None):
-        resp = requests.get('{}/hub/v2/blockchain/addresses'.format(hub_endpoint),
-                            headers={'Authorization': auth_token, 'UserNameSpace': usernamespace})
+    def verify_image_hash(self, repoTag):
+        from server import imageutils
+        registry, namespace, repo, tag = imageutils.parse_image_name(repoTag)
+        resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(hub_endpoint, namespace))
         resp.raise_for_status()
         addresses = resp.json()["results"]
         image_hash = addresses and self.get_image_hash(repoTag)

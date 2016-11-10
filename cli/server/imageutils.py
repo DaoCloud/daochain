@@ -85,3 +85,109 @@ def get_repos():
                 'blockchain_stat': blockchain_stat(_t)
             }
     return repo_tags
+
+import re
+
+DEFAULT_REGISTRY_NAMESPACE = 'library'
+DEFAULT_IMAGE_TAG = 'latest'
+DEFAULT_REGISTRY_URL = 'registry-1.docker.io'
+IS_REGISTRY = re.compile('')
+IS_NONE_PRIVATE_REGISTRY = re.compile('')
+
+def parse_image_name(raw_name):
+    def _name_tag(n):
+        s = n.split('@')
+        if len(s) != 1:
+            return s[0], s[1]
+
+        s = n.split(':')
+        if len(s) == 1:
+            return n, DEFAULT_IMAGE_TAG
+        # elif len(s) == 2:
+        else:
+            return s[0], s[1]
+
+    is_registry = lambda x: bool(IS_REGISTRY.search(x))
+    is_none_private_registry = lambda x: bool(IS_NONE_PRIVATE_REGISTRY.search(x))
+    raw_name = raw_name.strip()
+    splited_name = raw_name.split('/')
+    # deal with default registry
+    name, tag = _name_tag(splited_name[-1])
+    if len(splited_name) == 1:
+        registry = DEFAULT_REGISTRY_URL
+        namespace = DEFAULT_REGISTRY_NAMESPACE
+    elif len(splited_name) == 2 and not is_registry(splited_name[0]):
+        registry = DEFAULT_REGISTRY_URL
+        namespace = splited_name[0]
+    # deal with none private
+    elif len(splited_name) == 2 and is_none_private_registry(splited_name[0]):
+        registry = splited_name[0]
+        namespace = DEFAULT_REGISTRY_NAMESPACE
+    elif len(splited_name) == 3 and is_none_private_registry(splited_name[0]):
+        registry = splited_name[0]
+        namespace = splited_name[1]
+    # deal with private registry
+    elif len(splited_name) == 2 and is_registry(splited_name[0]):
+        registry = splited_name[0]
+        namespace = ''
+    # elif len(splited_name) == 2 and is_registry(splited_name[0]):
+    else:
+        registry = splited_name[0]
+        namespace = splited_name[1]
+    return registry, namespace, name, tag
+
+
+
+_IMAGE_NAME_TEST_DATA = \
+    '''
+    python                                              ,registry-1.docker.io,library,python,latest
+    python:1.1                                          ,registry-1.docker.io,library,python,1.1
+    revol/python                                        ,registry-1.docker.io,revol  ,python,latest
+    revol/python:1.1                                    ,registry-1.docker.io,revol  ,python,1.1
+    revol/python@sha256:5a35100239643bfe                ,registry-1.docker.io,revol  ,python,sha256:5a35100239643bfe
+
+    daocloud.io/python                                  ,daocloud.io         ,library,python,latest
+    daocloud.io/python:1.1                              ,daocloud.io         ,library,python,1.1
+    daocloud.io/revol/python                            ,daocloud.io         ,revol  ,python,latest
+    daocloud.io/revol/python:1.1                        ,daocloud.io         ,revol  ,python,1.1
+    daocloud.io/revol/python@sha256:5a35100239643bfe    ,daocloud.io         ,revol  ,python,sha256:5a35100239643bfe
+
+    localhost/python                                    ,localhost           ,       ,python,latest
+    localhost/python:1.1                                ,localhost           ,       ,python,1.1
+    localhost/revol/python                              ,localhost           ,revol  ,python,latest
+    localhost/revol/python:1.1                          ,localhost           ,revol  ,python,1.1
+    localhost/revol/python@sha256:5a35100239643bfe      ,localhost           ,revol  ,python,sha256:5a35100239643bfe
+
+    localhost:5000/python                               ,localhost:5000      ,       ,python,latest
+    localhost:5000/python:1.1                           ,localhost:5000      ,       ,python,1.1
+    localhost:5000/revol/python                         ,localhost:5000      ,revol  ,python,latest
+    localhost:5000/revol/python:1.1                     ,localhost:5000      ,revol  ,python,1.1
+    localhost:5000/revol/python@sha256:5a35100239643bfe ,localhost:5000      ,revol  ,python,sha256:5a35100239643bfe
+
+    10.0.0.1/python                                     ,10.0.0.1            ,       ,python,latest
+    10.0.0.1/python:1.1                                 ,10.0.0.1            ,       ,python,1.1
+    10.0.0.1/revol/python                               ,10.0.0.1            ,revol  ,python,latest
+    10.0.0.1/revol/python:1.1                           ,10.0.0.1            ,revol  ,python,1.1
+    10.0.0.1/revol/python@sha256:5a35100239643bfe       ,10.0.0.1            ,revol  ,python,sha256:5a35100239643bfe
+
+    aaa:5000/python                                     ,aaa:5000            ,       ,python,latest
+    aaa:5000/python:1.1                                 ,aaa:5000            ,       ,python,1.1
+    aaa:5000/revol/python                               ,aaa:5000            ,revol  ,python,latest
+    aaa:5000/revol/python:1.1                           ,aaa:5000            ,revol  ,python,1.1
+    aaa:5000/revol/python@sha256:5a35100239643bfe       ,aaa:5000            ,revol  ,python,sha256:5a35100239643bfe
+    '''.strip().replace(' ', '').splitlines()
+IMAGE_NAME_TEST_DATA = (x.split(',') for x in _IMAGE_NAME_TEST_DATA if x)
+
+
+def test_parse_image_name():
+    for line in IMAGE_NAME_TEST_DATA:
+        _input = line[0]  # raw_name
+        _output = tuple(line[1:])  # registry, namespace, name, tag
+        if parse_image_name(_input) != _output:
+            print parse_image_name(_input)
+            print _output
+            assert False
+
+
+if __name__ == '__main__':
+    test_parse_image_name()
