@@ -16,6 +16,9 @@ class Storage(object):
             json.dump(self.data, f)
 
     def get(self, key):
+        with open(self.path) as f:
+            self.data = json.load(f)
         return self.data.get(key)
+
 
 store = Storage()

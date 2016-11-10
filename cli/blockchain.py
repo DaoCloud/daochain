@@ -1,12 +1,15 @@
+import os
+
 from web3 import RPCProvider, Web3
 
+from consts import SOURCE_ROOT
 from utils import hex_to_uint, load_json_from, print_dict, uint_to_hex
 from utils import memoize
 
 
 @memoize
 def contract_deployed():
-    return load_json_from('deployed_contract.json')
+    return load_json_from(os.path.join(SOURCE_ROOT, 'deployed_contract.json'))
 
 
 @memoize

@@ -1,9 +1,7 @@
 from flask_restful import Api, Resource
+from flask_restful import reqparse
 
 from server.imageutils import get_repos
-
-from flask_restful import reqparse
-from flask import request
 
 
 def load_api(app):
@@ -37,8 +35,9 @@ class ImageVerifyAPI(Resource):
         from imagetool import Client
         c = Client()
         args = self.reqparse.parse_args()
-        verify = c.verify_image_hash(args['repo_tag'])
-        return dict(verify=verify)
+        signed, verify = c.verify_image_hash(args['repo_tag'])
+        return dict(signed=signed, verify=verify)
+
 
 class ImagePullAPI(Resource):
     def __init__(self):
@@ -72,5 +71,5 @@ class ImageSignAPI(Resource):
         image_id = args['image_id']
         d = DaoHubVerify()
         hash = c.get_image_hash(repo_tag)
-        d.registerImage(hash, repo_tag, image_id)
-        return dict(sign=True)
+        tx = d.registerImage(hash, repo_tag, image_id)
+        return dict(sign=True, tx=tx)

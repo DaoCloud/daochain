@@ -1,20 +1,20 @@
-from hashlib import sha256
-
-from docker.client import Client as _C
-import requests
 import os
+import tarfile
+import tempfile
+from hashlib import md5, sha256
+
+import requests
+from docker.client import Client as _C
+
 from blockchain import DaoHubVerify
 
-hub_endpoint = os.getenv('HUB_ENDPOINT')
+hub_endpoint = os.getenv('HUB_ENDPOINT', 'http://api.daocloud.co')
 
 
 class Client(_C):
     def get_image_hash(self, resource_id, hasher=sha256, blocksize=4096):
-
-        import tempfile
-        import  tarfile
         image = self.get_image(resource_id)
-        f_handler,filename = tempfile.mkstemp(suffix='.tar', text=False)
+        f_handler, filename = tempfile.mkstemp(suffix='.tar', text=False)
         with open(filename, 'wb') as f:
             f.write(image.data)
         tar_file = tarfile.open(fileobj=open(filename))
@@ -24,7 +24,7 @@ class Client(_C):
             f = tar_file.extractfile(m)
             if f is None:
                 continue
-            h = hasher()
+            h = md5()
             h.update(f.read())
             hashes.append(h.hexdigest())
         os.remove(filename)
@@ -39,8 +39,8 @@ class Client(_C):
     def pull_image(self, repository, tag=None, username=None, password=None):
         auth_config = None
         if username and password:
-            auth_config = dict(username=username,password=password)
-        self.pull(repository,tag,insecure_registry=True,auth_config=auth_config)
+            auth_config = dict(username=username, password=password)
+        self.pull(repository, tag, insecure_registry=True, auth_config=auth_config)
 
     def verify_image_hash(self, repoTag):
         from server import imageutils
@@ -48,16 +48,22 @@ class Client(_C):
         resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(hub_endpoint, namespace))
         resp.raise_for_status()
         addresses = resp.json()["results"]
-        image_hash = addresses and self.get_image_hash(repoTag)
+        image_hash = addresses and self.get_image_hash_uint(repoTag)
         d = DaoHubVerify()
+        signed = False
+        verify = False
         for address in addresses:
             hash = d.queryImage(address['address'], repoTag)
-            if hash == image_hash:
-                return True
-        return False
+            if hash[0]:
+                signed = True
+            if hash[0] == image_hash:
+                verify = True
+        return signed, verify
+
 
 if __name__ == '__main__':
     from server.docker_utils import docker_client
+
     c = docker_client()
-    print c.get_image_hash('daocloud.io/library/ubuntu:latest')
-    print c.get_image_hash('daocloud.io/library/ubuntu:latest')
+    print(c.get_image_hash('daocloud.io/library/ubuntu:latest'))
+    print(c.get_image_hash('daocloud.io/library/ubuntu:latest'))
