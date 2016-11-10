@@ -10,10 +10,10 @@ from server.api import load_api
 def setup_routes(app):
     @app.route('/')
     def index():
-        return redirect('/site/index.html')
+        return redirect('/index.html')
 
-    @app.route('/site/<path:path>')
-    def send_js(path):
+    @app.route('/<path:path>')
+    def send_file(path):
         return send_from_directory('../website/dist', path)
 
         # MEDIA_PATH = app.config.get('MEDIA_PATH')
