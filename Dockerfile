@@ -8,7 +8,8 @@ RUN apt-get install -y npm
 RUN npm install -g gulp karma karma-cli webpack
 RUN npm install
 
-#ENV GETH
+ENV ETH_RPC_ENDPOINT=localhost:8545
+ENV HUB_ENDPOINT=http://api.daocloud.co
 
 VOLUME /var/run/docker.sock
 

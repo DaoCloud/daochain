@@ -12,6 +12,14 @@ from inspect import getdoc
 from docopt import DocoptExit, docopt
 
 
+def hex_to_uint(s):
+    return int(s, 16)
+
+
+def uint_to_hex(n):
+    return hex(n)[:-1]
+
+
 def print_dict(d, prefix=''):
     """
     :type d: dict

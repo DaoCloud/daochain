@@ -9,30 +9,29 @@ contract DaoHubVerify {
     }
 
     struct Image {
-        bytes32 imageHash;
+        uint imageHash;
         address owner;
         bytes repoTag;
-        bytes32 imageId;
+        uint imageId;
         // bool exist;
     }
 
     mapping(address => mapping(bytes => Image)) ownerIdImageMap;
 
-    event regImage(bytes32 imageHash,
-                   address indexed owner,
-                   bytes indexed repoTag,
-                   bytes32 imageId);
+    event regImage(uint imageHash,
+                   address owner,
+                   bytes repoTag,
+                   uint imageId);
 
-
-    function registerImage(bytes32 imageHash,
+    function registerImage(uint imageHash,
                            bytes repoTag,
-                           bytes32 imageId){
+                           uint imageId){
         ownerIdImageMap[msg.sender][repoTag] = Image(imageHash, msg.sender, repoTag, imageId);
         regImage(imageHash, msg.sender, repoTag, imageId);
     }
 
     function queryImage(address owner, bytes repoTag)
-        constant returns(bytes32, address, bytes, bytes32){
+        constant returns(uint, address, bytes, uint){
         Image memory i = ownerIdImageMap[owner][repoTag];
         return (i.imageHash, i.owner, i.repoTag, i.imageId);
     }

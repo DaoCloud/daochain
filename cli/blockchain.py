@@ -1,6 +1,6 @@
 from web3 import RPCProvider, Web3
 
-from utils import load_json_from
+from utils import hex_to_uint, load_json_from, print_dict, uint_to_hex
 from utils import memoize
 
 
@@ -11,7 +11,10 @@ def contract_deployed():
 
 @memoize
 def web3_client():
-    return Web3(RPCProvider())
+    import os
+    endpoint = os.getenv('ETH_RPC_ENDPOINT', 'localhost:8545')
+    host, port = endpoint.split(':')
+    return Web3(RPCProvider(host=host, port=int(port)))
 
 
 class DaoHubVerify(object):
@@ -49,8 +52,26 @@ class DaoHubVerify(object):
 
 
 if __name__ == '__main__':
+    from gevent import sleep
+
     d = DaoHubVerify()
-    print(d.registerImage('0x921fdcfd91e4237afaaf63bc3010e0993e012f816a409ee705f3db3b65fa274d',
+
+
+    def f(d):
+        print('\n')
+        print_dict(d)
+
+
+    d.regImage(f)
+
+    print(d.registerImage(hex_to_uint('0x921fdcfd91e4237afaaf63bc3010e0993e012f816a409ee705f3db3b65fa274b'),
                           'daocloud.io/daocloud/dao-2048',
-                          '067c8da9d5abd40c3f2aaf58bef8412cd42b535b847483837152fb877f1f15de'))
-    print(d.queryImage(web3_client().eth.coinbase, 'daocloud.io/daocloud/dao-2048'))
+                          hex_to_uint('0x067c8da9d5abd40c3f2aaf58bef8412cd42b535b847483837152fb877f1f15de')))
+    q = d.queryImage(web3_client().eth.coinbase, 'daocloud.io/daocloud/dao-2048')
+    print('\n')
+    print_dict(dict(hash=uint_to_hex(q[0]),
+                    address=q[1],
+                    repoTag=q[2],
+                    imageId=uint_to_hex(q[3])))
+
+    sleep(10)

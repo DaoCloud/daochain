@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import logging
+import os
 import sys
 from inspect import getdoc
 
@@ -11,6 +12,8 @@ from utils import parse_doc_section
 log = logging.getLogger(__name__)
 
 console_handler = logging.StreamHandler(sys.stderr)
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 
 def setup_logging():
@@ -35,9 +38,10 @@ class TopLevelCommand(DocoptCommand):
       status         Show the status of dao service.
       login          Login to daohub.
       images         Show all images.
-      sign           sign a image.
+      sign           Sign a image.
       publish        Publish a image to daochain.
       validate       Validate a image.
+      server         Start verifier server.
 
     """
     base_dir = '.'
@@ -72,11 +76,12 @@ class TopLevelCommand(DocoptCommand):
         """
         pass
 
-    def install(self, options):
-        """
-\
-        """
-        pass
+#     def server(self, options):
+#         """
+#         Usage: server
+#         """
+#         from server.gunicorn_runner import run_app
+#         run_app()
 
 
 def main():
