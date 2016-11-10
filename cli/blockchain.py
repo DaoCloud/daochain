@@ -12,7 +12,7 @@ def contract_deployed():
 @memoize
 def web3_client():
     import os
-    endpoint = os.getenv('ETH_RPC_ENDPOINT', 'localhost:8454')
+    endpoint = os.getenv('ETH_RPC_ENDPOINT', 'localhost:8545')
     host, port = endpoint.split(':')
     return Web3(RPCProvider(host=host, port=int(port)))
 
