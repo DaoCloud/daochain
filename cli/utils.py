@@ -20,6 +20,13 @@ def uint_to_hex(n):
     return hex(n)[:-1]
 
 
+def bytes_to_str(b):
+    b = b[2:]
+    n = 2
+    b_a = [b[i:i + n] for i in range(0, len(b), n)]
+    return "".join([chr(int(ib, 16)) for ib in b_a])
+
+
 def print_dict(d, prefix=''):
     """
     :type d: dict
