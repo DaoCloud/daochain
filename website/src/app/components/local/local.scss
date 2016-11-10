@@ -101,6 +101,26 @@
         color: #595f6a;
         border: 1px solid #ccd1d9;
       }
+
+      @-webkit-keyframes startLoading {
+        to {
+          -webkit-transform: rotate(1turn);
+        }
+      }
+
+      @keyframes startLoading {
+        to {
+          transform: rotate(1turn);
+        }
+      }
+
+      .loading-circle > svg {
+        width: 24px;
+        height: 24px;
+
+        -webkit-animation: startLoading 1s infinite linear;
+        animation: startLoading 1s infinite linear;
+      }
     }
   }
 }

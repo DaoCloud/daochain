@@ -1,4 +1,5 @@
 <navbar></navbar>
+<heading></heading>
 <section class="local">
   <section class="imagelist">
     <div class="dao-table-container top-banner">
@@ -11,14 +12,14 @@
         <thead>
           <tr>
             <th>
-              <input type="checkbox">
+              <!-- <input type="checkbox"> -->
               <span class="thead-title"><svg class="icon"><use xlink:href="#icon_stack-alt"></use></svg>镜像</span>
             </th>
             <th>
               <span class="thead-title"><svg class="icon"><use xlink:href="#icon_calendar"></use></svg>创建日期</span>
             </th>
             <th>
-              <span class="thead-title"><svg class="icon"><use xlink:href="#icon_status"></use></svg>认证</span>
+              <span class="thead-title"><svg class="icon"><use xlink:href="#icon_status"></use></svg>镜像验证</span>
             </th>
             <th>
               <span></span>
@@ -34,7 +35,11 @@
             </a>
           </td>
           <td>{{x.created_at}}</td>
-          <td>{{x.blockchain_verified}}</td>
+          <td>
+            <span class="icon loading-circle" ng-if="x.show"><svg><use xlink:href="#icon_status-progress-circle"></use></svg></span>
+            <span class="has-verified" ng-if="!x.show" style="color: {{x.text_color}}">{{x.blockchain_verified}}</span>
+            <dao-progress-pulsing progress="x.sign_val" class="pull-progress" ng-if="x.is_sign"></dao-progress-pulsing>
+          </td>
           <td>
             <div class="dao-btn-group">
                 <div class="dao-btn ghost">
@@ -49,8 +54,7 @@
                   <div dao-dropdown-menu="" role="menu" class="dropdown-menu-right dao-dropdown-menu top" aria-labelledby="single-button"><div class="arrow"></div>
                     <ul>
                       <li role="menuitem"><a href="http://dashboard.daocloud.co/packages/{{x.id}}" target="_blank">了解详情</a></li>
-                      <li role="menuitem">写入区块链</li>
-                      <li role="menuitem">拉取</li>
+                      <li role="menuitem" ng-click="$ctrl.signImage(x.repo_tag, x.image_id, $index)" ng-if="x.can_sign">签名</li>
                     </ul>
                   </div>
                 </div>
