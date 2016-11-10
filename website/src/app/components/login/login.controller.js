@@ -1,16 +1,12 @@
 import $ from 'jquery';
 
 class LoginController {
-  constructor($state/*, GlobalService, AuthStoreService, */, AuthService, $scope) {
+  constructor($state, AuthService, $scope) {
     'ngInject';
     this.$state = $state;
     this.AuthService = AuthService;
     this.captcha_id = "";
     this.$scope = $scope;
-    /*
-    this.AuthStoreService = AuthStoreService;
-    this.GlobalService = GlobalService;
-    */
     this.name = 'Login';
     this.account = {
       "email_or_mobile": "",
@@ -30,10 +26,8 @@ class LoginController {
         }
       });
     }
-  }
 
-  $onInit () {
-    (() => {
+    this.getCapture = () => {
       $.ajax({
         type: "GET",
         url: "http://api.daocloud.co/captcha/generate-id",
@@ -43,10 +37,15 @@ class LoginController {
           });
         }
       });
-    })();
+    }
+  }
+
+  $onInit () {
+    this.getCapture();
   }
 
   loginGo () {
+    $('.errMessage').remove();
     const postData = this.account;
     postData.captcha_id = this.captcha_id;
     console.log(this.account);
