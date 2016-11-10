@@ -1,12 +1,106 @@
 @import '../../common/common.scss';
 
-.local {
-	background-color: $darkBgColor;
-	height: 5rem;
-	padding: 3rem;
+.imagelist {
+  padding: 20px 40px;
+  background-color: #f1f3f6;
 
-	* {
-		color: $lightTextColor;
-	}
+  .top-banner {
+    > div {
+      display: inline-block;
+    }
 
+    .search-image {
+      float: right;
+      input {
+        box-sizing: border-box;
+      }
+    }
+    .show-sets {
+      float: right;
+      svg {
+        fill: #000;
+      }
+
+      span.text {
+        color: #000;
+      }
+    }
+  }
+
+  .dao-table {
+    color: #9ba3b0;
+    margin-top: 21px;
+    box-sizing: border-box;
+    min-height: 600px;
+
+    tr {
+      // display: table-row !important;
+      transform: none !important;
+
+      th, td {
+        display: table-cell;
+        white-space: normal;
+
+        span {
+          display: block;
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          -o-text-overflow: ellipsis;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    span {
+      color: #9ba3b0;
+    }
+
+    svg {
+        fill: #9ba3b0;
+    }
+
+    thead {
+      tr {
+        background-color: #f3f5f8;
+
+        input[type="checkbox"] {
+          margin-right: 17px;
+        }
+
+        .thead-title {
+          svg {
+            margin-right: 8px;
+          }
+        }
+
+        th {
+          padding-left: 20px;
+        }
+      }
+    }
+
+    tbody {
+      .dao-dropdown-menu > ul {
+        background-color: #fff;
+      }
+
+      tr {
+        td {
+          color: #9ba3af;
+          padding-left: 20px;
+        }
+      }
+
+      .image-info .name {
+        width: 40px;
+        height: 16px;
+        box-sizing: border-box;
+        border-radius: 2px;
+        font-size: 14px;
+        color: #595f6a;
+        border: 1px solid #ccd1d9;
+      }
+    }
+  }
 }

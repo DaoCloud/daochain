@@ -11,6 +11,9 @@ let headingModule = angular.module('heading', [
   $stateProvider
     .state('heading', {
       url: '/heading',
+      data: {
+        requireAuth: true
+      },
       component: 'heading'
     });
 })

@@ -10,6 +10,9 @@ let pointsModule = angular.module('points', [
 	$stateProvider
 		.state('points', {
 			url: '/points',
+      data: {
+        requireAuth: true
+      },
 			component: 'points'
 		});
 })

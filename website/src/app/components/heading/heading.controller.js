@@ -1,6 +1,7 @@
 class HeadingController {
   constructor() {
     this.name = 'heading';
+    this.username = localStorage.getItem('username');
   }
 }
 

@@ -14,6 +14,9 @@ let imagelistModule = angular.module('imagelist', [
   $stateProvider
     .state('imagelist', {
       url: '/',
+      data: {
+        requireAuth: true
+      },
       component: 'imagelist'
     });
 })
