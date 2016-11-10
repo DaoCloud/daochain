@@ -37,20 +37,22 @@ class ImageVerifyAPI(Resource):
         from imagetool import Client
         c = Client()
         args = self.reqparse.parse_args()
-        verify = c.verify_image_hash(args['repo_tag'], auth_token=request.headers.get('Authorization'), namespace=request.headers.get('Namespace'))
+        verify = c.verify_image_hash(args['repo_tag'], auth_token=request.headers.get('Authorization'), usernamespace=request.headers.get('UserNameSpace'))
         return dict(verify=verify)
 
 class ImagePullAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('repo_tag', type=str, required=True, help='No task title provided', location='json')
+        self.reqparse.add_argument('username', type=str, required=False, help='No task title provided', location='json')
+        self.reqparse.add_argument('password', type=str, required=False, help='No task title provided', location='json')
         super(ImagePullAPI, self).__init__()
 
     def post(self):
         from imagetool import Client
         c = Client()
         args = self.reqparse.parse_args()
-        c.pull_image(args['repo_tag'], username=args['username'], password=args['password'])
+        c.pull_image(args['repo_tag'], username=args.get('username'), password=args.get('password'))
         return dict(pull=True)
 
 
