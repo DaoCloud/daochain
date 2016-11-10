@@ -27,12 +27,13 @@ def setup_routes(app):
 
 def create_app(name=None):
     app = Flask(name or 'app')
+    app.config.root_path = os.path.dirname(os.path.abspath(__file__))
     app.config.from_pyfile('settings.py')
     load_api(app)
     setup_routes(app)
     return app
 
 
+app = create_app()
 if __name__ == '__main__':
-    app = create_app()
     app.run('0.0.0.0', 8000, True, use_reloader=True)

@@ -11,8 +11,6 @@ function AuthInterceptor($state, $q, appConfig/*, appState*/) {
         (config.url.indexOf(appConfig.APIUrl) > -1 || config.url.indexOf(appConfig.PricingUrl) > -1)
         && !config.headers.authorization
         && localStorage.getItem('token')) {
-        // add appState token
-        // const token = appState.token || AuthStoreService.getToken();
         const token = localStorage.getItem('token');
         config.headers.authorization = `Token ${token}`;
       }

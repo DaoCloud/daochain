@@ -10,6 +10,9 @@ let localModule = angular.module('local', [
 	$stateProvider
 		.state('local', {
 			url: '/local',
+      data: {
+        requireAuth: true
+      },
 			component: 'local'
 		});
 })

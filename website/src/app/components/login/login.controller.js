@@ -1,37 +1,58 @@
+import $ from 'jquery';
+
 class LoginController {
-  constructor($state/*, GlobalService, AuthStoreService, */, AuthService) {
+  constructor($state, AuthService, $scope) {
     'ngInject';
     this.$state = $state;
     this.AuthService = AuthService;
-    /*
-    this.AuthStoreService = AuthStoreService;
-    this.GlobalService = GlobalService;
-    */
+    this.captcha_id = "";
+    this.$scope = $scope;
     this.name = 'Login';
     this.account = {
-      "username": "",
-      "password": ""
+      "email_or_mobile": "",
+      "password": "",
+      "captcha_solution": ""
     };
-  }
-  loginGo () {
-    //this.AuthService.logout();
-    console.log(this.account);
-    this.AuthService.fetchToken({
-      "captcha_id": "Ik5wOVIxRkhlIg.CwXdnw.EaotRPGpsBrf-SUcfJhuXdQubFE",
-      "email_or_mobile":"sss",
-      "password":"sss",
-      "captcha_solution":"2237"
-    }).then(() =>{
-      this.$state.go('home');
-    });
 
-/*
-    {
-      "captcha_id":"Ik5wOVIxRkhlIg.CwXdnw.EaotRPGpsBrf-SUcfJhuXdQubFE",
-      "email_or_mobile":"sss",
-      "password":"sss",
-      "captcha_solution":"2237"
-    }   */
+    this.getUserInfo = () => {
+      $.ajax({
+        type: "GET",
+        url: "http://api.daocloud.co/get-token-info",
+        headers: {
+          "Authorization": localStorage.getItem('token')
+        },
+        success: res => {
+          localStorage.setItem('username', res.user.username);
+        }
+      });
+    }
+
+    this.getCapture = () => {
+      $.ajax({
+        type: "GET",
+        url: "http://api.daocloud.co/captcha/generate-id",
+        success: (res) => {
+          this.$scope.$apply(() => {
+            this.captcha_id = res.captcha_id;
+          });
+        }
+      });
+    }
+  }
+
+  $onInit () {
+    this.getCapture();
+  }
+
+  loginGo () {
+    $('.errMessage').remove();
+    const postData = this.account;
+    postData.captcha_id = this.captcha_id;
+    console.log(this.account);
+    this.AuthService.fetchToken(this.account).then(() =>{
+      this.$state.go('home');
+      this.getUserInfo();
+    });
   }
 }
 

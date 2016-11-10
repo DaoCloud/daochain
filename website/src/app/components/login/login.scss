@@ -75,6 +75,20 @@
         background-color: #fff;
         box-shadow: none;
       }
+      #captcha {
+        -webkit-width: calc(100% - 95px);
+        width: calc(100% - 95px);
+      }
+      .captcha_image {
+        display: inline-block;
+        float: right;
+        width: 85px;
+        height: 32px;
+        border-radius: 2px;
+      }
+      .captcha_image:hover {
+        cursor: pointer;
+      }
       .forget-pwd {
         color: #9ba3af;
         text-decoration: none;
@@ -91,5 +105,11 @@
       }
     }
   }
-
+  .errMessage {
+    text-align: center;
+    color: #f1483f;
+    font-size: 14px;
+    line-height: 24px;
+    margin-bottom: 15px;
+  }
 }
