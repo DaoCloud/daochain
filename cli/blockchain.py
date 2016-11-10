@@ -74,4 +74,4 @@ if __name__ == '__main__':
                     repoTag=q[2],
                     imageId=uint_to_hex(q[3])))
 
-    sleep(10)
+    sleep(300)
