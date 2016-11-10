@@ -10,11 +10,27 @@ hub_endpoint = os.getenv('HUB_ENDPOINT')
 
 class Client(_C):
     def get_image_hash(self, resource_id, hasher=sha256, blocksize=4096):
-        hash = hasher()
-        with self.get_image(resource_id) as f:
-            for block in iter(lambda: f.read(blocksize), b""):
-                hash.update(block)
-        return hash.hexdigest()
+
+        import tempfile
+        import  tarfile
+        image = self.get_image(resource_id)
+        f_handler,filename = tempfile.mkstemp(suffix='.tar', text=False)
+        with open(filename, 'wb') as f:
+            f.write(image.data)
+        tar_file = tarfile.open(fileobj=open(filename))
+        members = tar_file.getmembers()
+        hashes = []
+        for m in members:
+            f = tar_file.extractfile(m)
+            if f is None:
+                continue
+            h = hasher()
+            h.update(f.read())
+            hashes.append(h.hexdigest())
+        os.remove(filename)
+        h = hasher()
+        h.update("$".join(sorted(hashes)))
+        return h.hexdigest()
 
     def get_image_hash_uint(self, resource_id, hasher=sha256, blocksize=4096):
         hash = self.get_image_hash(resource_id, hasher, blocksize)
@@ -39,3 +55,9 @@ class Client(_C):
             if hash == image_hash:
                 return True
         return False
+
+if __name__ == '__main__':
+    from server.docker_utils import docker_client
+    c = docker_client()
+    print c.get_image_hash('daocloud.io/library/ubuntu:latest')
+    print c.get_image_hash('daocloud.io/library/ubuntu:latest')

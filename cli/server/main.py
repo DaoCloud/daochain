@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from flask import send_file
+from flask import send_file, send_from_directory, redirect
 from flask_restful import abort
 
 from server.api import load_api
@@ -10,9 +10,11 @@ from server.api import load_api
 def setup_routes(app):
     @app.route('/')
     def index():
-        if not os.path.isfile('static/index.html'):
-            abort(404)
-        return send_file('static/index.html')
+        return redirect('/site/index.html')
+
+    @app.route('/site/<path:path>')
+    def send_js(path):
+        return send_from_directory('../website/dist', path)
 
         # MEDIA_PATH = app.config.get('MEDIA_PATH')
         # if not os.path.isdir(MEDIA_PATH):
