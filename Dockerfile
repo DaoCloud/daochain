@@ -2,11 +2,16 @@ FROM ubuntu:latest
 
 MAINTAINER DCS <dao@daocloud.io> 
 
-ADD website .
+ADD . app
 
-RUN apt-get install -y npm
+WORKDIR app/cli
+
+RUN apt-get install -y npm python python-pip
 RUN npm install -g gulp karma karma-cli webpack
 RUN npm install
+RUN gulp webpack
+
+RUN pip install -r cli/requirements.pip
 
 ENV ETH_RPC_ENDPOINT=localhost:8545
 ENV HUB_ENDPOINT=http://api.daocloud.co
@@ -14,4 +19,4 @@ ENV HUB_ENDPOINT=http://api.daocloud.co
 VOLUME /var/run/docker.sock
 
 EXPOSE 3000
-CMD ["bash", "start.sh"]
+CMD [ "gunicorn","-k","gevent","--max-requests","3000","--access-logfile","-", "--error-logfile","-","-b","0.0.0.0:3000","server.main:app"  ]
