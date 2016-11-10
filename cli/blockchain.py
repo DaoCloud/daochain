@@ -11,7 +11,10 @@ def contract_deployed():
 
 @memoize
 def web3_client():
-    return Web3(RPCProvider())
+    import os
+    endpoint = os.getenv('ETH_RPC_ENDPOINT', 'localhost:8454')
+    host, port = endpoint.split(':')
+    return Web3(RPCProvider(host=host, port=int(port)))
 
 
 class DaoHubVerify(object):
