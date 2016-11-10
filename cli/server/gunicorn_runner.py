@@ -11,7 +11,7 @@ def run_app():
     sys.argv += ["-k", "gevent", "-w", "2",
                  "--max-requests", "5000", "--max-requests-jitter", "5000",
                  "--access-logfile", "-", "--error-logfile", "-",
-                 '-b', '0.0.0.0:8000', 'server.app:app']
+                 '-b', '0.0.0.0:8000', 'server.main:app']
 
     sys.exit(run())
 
