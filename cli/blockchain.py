@@ -1,12 +1,15 @@
+import os
+
 from web3 import RPCProvider, Web3
 
+from consts import SOURCE_ROOT
 from utils import hex_to_uint, load_json_from, print_dict, uint_to_hex
 from utils import memoize
 
 
 @memoize
 def contract_deployed():
-    return load_json_from('deployed_contract.json')
+    return load_json_from(os.path.join(SOURCE_ROOT, 'deployed_contract.json'))
 
 
 @memoize
@@ -28,6 +31,10 @@ class DaoHubVerify(object):
         self.trans_filter = self._contract.on('regImage')
 
     def registerImage(self, imageHash, repoTag, imageId):
+        if isinstance(imageHash, str):
+            imageHash = hex_to_uint(imageHash)
+        if isinstance(imageId, str):
+            imageId = hex_to_uint(imageId)
         return self._contract.transact().registerImage(imageHash, repoTag, imageId)
 
     def queryImage(self, owner, repoTag):
