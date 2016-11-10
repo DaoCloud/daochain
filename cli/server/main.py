@@ -24,6 +24,13 @@ def setup_routes(app):
         # def base_static(filename):
         #     return send_from_directory(MEDIA_PATH, filename)
 
+    @app.after_request
+    def after_request(response):
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+        return response
+
 
 def create_app(name=None):
     app = Flask(name or 'app')

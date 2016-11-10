@@ -17,3 +17,5 @@ class Storage(object):
 
     def get(self, key):
         return self.data.get(key)
+
+store = Storage()

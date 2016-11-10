@@ -20,13 +20,13 @@ def author_name(repoTag):
 
 
 def blockchain_verified(repoTag):
+    # return docker_client().verify_image_hash(repoTag)
     return True
-
 
 def blockchain_stat(repoTag):
     return {
-        'confirm': 5,
-        'transaction_id': '0x15527ae6a5e3c075cde6821aa5b6de5a326c5ac09fd71121f0d20f9b9e6a68d0',
+        # 'confirm': 5,
+        # 'transaction_id': '0x15527ae6a5e3c075cde6821aa5b6de5a326c5ac09fd71121f0d20f9b9e6a68d0',
         'imageHash': '0x921fdcfd91e4237afaaf63bc3010e0993e012f816a409ee705f3db3b65fa274b',
         'owner': '0xc268f55467127b94879a032093ded4c95cc511c1'
     }
@@ -84,7 +84,8 @@ def get_repos():
                 'author': author_name(_t),
                 'blockchain_stat': blockchain_stat(_t)
             }
-    return repo_tags
+    return repo_tags.values()
+
 
 import re
 
@@ -93,6 +94,7 @@ DEFAULT_IMAGE_TAG = 'latest'
 DEFAULT_REGISTRY_URL = 'registry-1.docker.io'
 IS_REGISTRY = re.compile('')
 IS_NONE_PRIVATE_REGISTRY = re.compile('')
+
 
 def parse_image_name(raw_name):
     def _name_tag(n):
@@ -135,7 +137,6 @@ def parse_image_name(raw_name):
         registry = splited_name[0]
         namespace = splited_name[1]
     return registry, namespace, name, tag
-
 
 
 _IMAGE_NAME_TEST_DATA = \
@@ -184,8 +185,8 @@ def test_parse_image_name():
         _input = line[0]  # raw_name
         _output = tuple(line[1:])  # registry, namespace, name, tag
         if parse_image_name(_input) != _output:
-            print parse_image_name(_input)
-            print _output
+            print(parse_image_name(_input))
+            print(_output)
             assert False
 
 

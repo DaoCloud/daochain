@@ -28,6 +28,10 @@ class DaoHubVerify(object):
         self.trans_filter = self._contract.on('regImage')
 
     def registerImage(self, imageHash, repoTag, imageId):
+        if isinstance(imageHash, str):
+            imageHash = hex_to_uint(imageHash)
+        if isinstance(imageId, str):
+            imageId = hex_to_uint(imageId)
         return self._contract.transact().registerImage(imageHash, repoTag, imageId)
 
     def queryImage(self, owner, repoTag):
