@@ -10,9 +10,7 @@ class AuthService {
     this.$http = $http;
     this.$q = $q;
     this.AuthStoreService = AuthStoreService;
-    // this.APIUrl = appConfig.APIUrl;
     this.APIUrl = "http://api.daocloud.co";
-    // this.appState = appState;
 
     // state
     this.currentUser = {};
@@ -31,30 +29,22 @@ class AuthService {
   fetchToken(daocloudToken) {
     let promise;
 
-    /*
-    if (!daocloudToken) {
-      promise = this.$http.get(this.APIUrl + '/access-token');
-    } else {
-      const data = {
-        daocloud_token: daocloudToken,
-      };
-      promise = this.$http.post(this.APIUrl + '/access-token', data);
-    }   */
-    // promise = this.$http.post(this.APIUrl + '/access-token', daocloudToken);
-    promise = this.$q.when();
+    promise = this.$http.post(this.APIUrl + '/access-token', daocloudToken);
+    // promise = this.$q.when();
+    // promise = $.ajax({
+    //   type: "POST",
+    //   url: this.APIUrl
+    // });
     return promise
       .then(response => {
-
-        const res = {
-          "access_token": "IjI2YmNjMTQ2LWFiZGItNGI2Yi04ZTZlLTA3ZTc5OTM5YTdjZSI.CwXgFw.gcZeYujLCZk5WFDaarBGg8vlqlA",
-          "expires_in": 604800,
-          "uid": "26bcc146-abdb-4b6b-8e6e-07e79939a7ce"
-        }
-        // const res = response.data;
-        // if (this.getToken() !== res.access_token) {
-        //   this.AuthStoreService.clean();
+        console.log(response);
+        // const res = {
+        //   "access_token": "IjI2YmNjMTQ2LWFiZGItNGI2Yi04ZTZlLTA3ZTc5OTM5YTdjZSI.CwXgFw.gcZeYujLCZk5WFDaarBGg8vlqlA",
+        //   "expires_in": 604800,
+        //   "uid": "26bcc146-abdb-4b6b-8e6e-07e79939a7ce"
         // }
-        //
+
+        const res = response.data;
         this.setToken(res.access_token);
         // this.setUserId(res.admin_uuid);
 
@@ -65,17 +55,6 @@ class AuthService {
         return this.$q.reject(e);
       });
   }
-
-  // /**
-  //  * 当前用户
-  //  * @return {[type]} [description]
-  //  */
-  // user() {
-  //   let currentUserId = this.getUserId();
-
-  //   return this.AdminService.find(currentUserId)
-  //     .then(response => response.data);
-  // }
 
   /**
    * 获取当前缓存的用户

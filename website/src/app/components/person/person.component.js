@@ -17,11 +17,14 @@ function Inject(...dependencies) {
         }
     };
 }
-@Inject('$scope')
+@Inject('$scope', '$state')
 class PersonController {
-  constructor($scope) {
+  constructor($scope, $state) {
+    "ngInject";
     this.name = 'person';
     this.scope = $scope;
+    this.$state = $state;
+    this.username = localStorage.getItem('username');
     this.isMining = web3.eth.mining;
     this.balance = balance.toNumber();
     this.walletList = [];
@@ -108,6 +111,11 @@ class PersonController {
           }
         });
       }
+    }
+
+    this.logout = () => {
+      localStorage.removeItem('token');
+      this.$state.go('home');
     }
   }
 

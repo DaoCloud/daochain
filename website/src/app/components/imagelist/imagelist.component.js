@@ -29,6 +29,10 @@ class controller {
     $.ajax({
       type: "GET",
       url: "http://api.daocloud.co/hub/v2/hub/daohub/repos?page=1&page_size=10&q=",
+      headers: {
+        "Authorization": localStorage.getItem('token'),
+        "UserNameSpace": ""
+      },
       success: res => {
         let results = res.results;
         results.map(result => {

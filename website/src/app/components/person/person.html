@@ -7,9 +7,9 @@
         <div class="user-logo">
           <img src="https://dn-daoweb-resource.qbox.me/devicon%2Ficons%2Fcadvisor%2Fcadvisor.jpeg" alt="" />
         </div>
-        <div class="user-name">丛九九</div>
+        <div class="user-name">{{ $ctrl.username }}</div>
         <div class="user-logout">
-          <button type="button" class="dao-btn blue">登出</button>
+          <button type="button" class="dao-btn blue" ng-click=" $ctrl.logout() ">登出</button>
         </div>
       </div>
       <div class="wallet">
