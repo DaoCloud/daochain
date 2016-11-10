@@ -9,9 +9,11 @@
     "dao-style": "git://github.com/Ye-Ting/dao-style-package.git#master",
     "jquery": "^2.2.3",
     "jquery.cookie": "1.4.1",
+    "json-loader": "^0.5.4",
     "node-sass": "^3.10.1",
     "normalize.css": "^3.0.3",
-    "sass-loader": "^4.0.2"
+    "sass-loader": "^4.0.2",
+    "web3": "^0.17.0-beta"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.0",

@@ -1,6 +1,7 @@
 var path    = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var json = require("json-loader");
 
 module.exports = {
   devtool: 'source-map',
@@ -11,7 +12,8 @@ module.exports = {
        { test: /\.html$/, loader: 'raw' },
        { test: /\.styl$/, loader: 'style!css!stylus' },
        { test: /\.css$/, loader: 'style!css' },
-       { test: /\.scss/, loader: 'style!css!sass' }
+       { test: /\.scss/, loader: 'style!css!sass' },
+       { test: /\.json/, loader: 'json'}
     ]
   },
   plugins: [

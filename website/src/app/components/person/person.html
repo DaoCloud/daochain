@@ -3,17 +3,43 @@
 <section class="person">
   <div class="form-wrapper">
     <form class="switch-group">
-      <div class="">
-        <dao-switch name="start-dig" class="asd hhh" ng-model="vm.dig" ng-change="vm.changeCallback()"></dao-switch>
-        <span>自动挖矿</span>
+      <div class="user">
+        <div class="user-logo">
+          <img src="https://dn-daoweb-resource.qbox.me/devicon%2Ficons%2Fcadvisor%2Fcadvisor.jpeg" alt="" />
+        </div>
+        <div class="user-name">丛九九</div>
+        <div class="user-logout">
+          <button type="button" class="dao-btn blue">登出</button>
+        </div>
       </div>
-      <div class="">
-        <dao-switch name="auto-verify" class="asd hhh" ng-model="vm.verify" ng-change="vm.changeCallback()"></dao-switch>
-        <span>自动认证本地所有镜像</span>
+      <div class="wallet">
+        <ul>
+          <li ng-repeat=" x in $ctrl.walletList " class="wallet-address">
+            <span>{{x}}</span><button class="dao-btn blue" ng-click="$ctrl.deleteWallet(x, $index)">删除</button>
+          </li>
+        </ul>
+        <div class="add-new" style="display: none">
+          <dao-input-container icon-inside loading="false">
+            <input type="text">
+          </dao-input-container>
+          <!-- <input type="text" name="name" value="" placeholder="填写新地址"> -->
+          <button type="button" class="dao-btn" ng-click="$ctrl.getWalletValue()">提交</button>
+        </div>
+        <button type="button" class="dao-btn blue" ng-click="$ctrl.newWallet()">添加钱包</button>
       </div>
-      <div class="">
-        <dao-switch name="open-notice" class="asd hhh" ng-model="vm.notice" ng-change="vm.changeCallback()"></dao-switch>
-        <span>开启通知</span>
+      <div class="settings">
+        <div class="">
+          <dao-switch name="start-dig" class="asd hhh" ng-model="$ctrl.isMining" ng-change="$ctrl.changeMine()"></dao-switch>
+          <span>开始挖矿</span>
+        </div>
+        <!-- div class="">
+          <dao-switch name="auto-verify" class="asd hhh" ng-model="vm.verify" ng-change="vm.changeCallback()"></dao-switch>
+          <span>自动认证本地所有镜像</span>
+        </div>
+        <div class="">
+          <dao-switch name="open-notice" class="asd hhh" ng-model="vm.notice" ng-change="vm.changeCallback()"></dao-switch>
+          <span>开启通知</span>
+        </div -->
       </div>
     </form>
   </div>
