@@ -6,6 +6,7 @@ ADD . app
 
 WORKDIR app/cli
 
+RUN apt-get update
 RUN apt-get install -y npm python python-pip
 RUN npm install -g gulp karma karma-cli webpack
 RUN npm install
