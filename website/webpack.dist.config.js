@@ -8,8 +8,24 @@ config.output = {
   path: path.resolve(__dirname, 'dist')
 };
 
-config.plugins = config.plugins.concat([
+var DEFAULT_ENV = {
+  API_URL: '"http://api.daocloud.co/hub/v2"',
+  LOCAL_URL: '"http://10.1.4.173:8000/api"'
+};
 
+var CURRENT_ENV = extend({}, DEFAULT_ENV);
+
+Object.keys(CURRENT_ENV)
+  .forEach(function(k) {
+    if (process.env[k]) {
+      CURRENT_ENV[k] = JSON.stringify(process.env[k]);
+    }
+  });
+
+config.plugins = config.plugins.concat([
+  new webpack.DefinePlugin({
+    'process.env': CURRENT_ENV,
+  }),
   // Reduces bundles total size
   new webpack.optimize.UglifyJsPlugin({
     mangle: {
