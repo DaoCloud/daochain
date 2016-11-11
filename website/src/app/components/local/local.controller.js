@@ -1,13 +1,16 @@
 import $ from 'jquery';
 import Web3 from 'web3';
+// import AppConfig from '../../app.config.js';
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
 class LocalController {
-  constructor($scope) {
+  constructor($scope, appConfig) {
     "ngInject";
     this.name = 'local';
     this.$scope = $scope;
+    this.localUrl = appConfig.LocalUrl;
+    this.APIUrl = appConfig.APIUrl;
   }
 
   $onInit(){
@@ -21,7 +24,7 @@ class LocalController {
 
       $.ajax({
         type: "POST",
-        url: "http://10.1.4.173:8000/api/verify-image",
+        url: this.localUrl + "/verify-image",
         data: JSON.stringify(postData),
         headers: {
           "Content-Type": "application/json"
@@ -92,7 +95,7 @@ class LocalController {
 
       $.ajax({
         type: "POST",
-        url: "http://10.1.4.173:8000/api/sign-image",
+        url: this.localUrl + "/sign-image",
         headers: {
           "Content-Type": "application/json"
         },
@@ -105,7 +108,7 @@ class LocalController {
 
     $.ajax({
       type: "GET",
-      url: "http://10.1.4.173:8000/api/images",
+      url: this.localUrl + "/images",
       success: res => {
         let results = res;
         let rid = 0;

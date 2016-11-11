@@ -15,12 +15,14 @@ function Inject(...dependencies) {
     };
 }
 
-@Inject('$scope', '$daoDialog')
+@Inject('$scope', '$daoDialog', 'appConfig')
 class controller {
-  constructor(scope, $daoDialog) {
+  constructor(scope, $daoDialog, appConfig) {
     // this.dataA = 'sss';
     this.scope = scope;
     this.$daoDialog = $daoDialog;
+    this.APIUrl = appConfig.APIUrl;
+    this.localUrl = appConfig.LocalUrl;
   }
 
   $onInit() {
@@ -31,7 +33,7 @@ class controller {
 
     $.ajax({
       type: "GET",
-      url: "http://api.daocloud.co/hub/v2/hub/daohub/repos?page=1&page_size=10&q=",
+      url: this.APIUrl + "/hub/daohub/repos?page=1&page_size=10&q=",
       headers: {
         "Authorization": localStorage.getItem('token'),
         "UserNameSpace": ""
@@ -78,7 +80,7 @@ class controller {
       };
       $.ajax({
         type: "POST",
-        url: "http://10.1.4.173:8000/api/pull-image",
+        url: this.localUrl + "/pull-image",
         headers: {
           "Content-Type": "application/json"
         },
