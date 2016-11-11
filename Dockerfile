@@ -18,5 +18,5 @@ ENV HUB_ENDPOINT=http://api.daocloud.co
 
 VOLUME /var/run/docker.sock
 
-EXPOSE 3000
-CMD [ "gunicorn","-k","gevent","--max-requests","3000","--access-logfile","-", "--error-logfile","-","-b","0.0.0.0:3000","server.main:app"  ]
+EXPOSE 8000
+CMD [ "python", "server/gunicorn_runner.py" ]
