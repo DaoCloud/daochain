@@ -6,6 +6,7 @@ ADD . app
 
 WORKDIR app/cli
 
+RUN apt-get update
 RUN apt-get install -y npm python python-pip
 RUN npm install -g gulp karma karma-cli webpack
 RUN npm install
@@ -18,5 +19,5 @@ ENV HUB_ENDPOINT=http://api.daocloud.co
 
 VOLUME /var/run/docker.sock
 
-EXPOSE 3000
-CMD [ "gunicorn","-k","gevent","--max-requests","3000","--access-logfile","-", "--error-logfile","-","-b","0.0.0.0:3000","server.main:app"  ]
+EXPOSE 8000
+CMD [ "python", "server/gunicorn_runner.py" ]
