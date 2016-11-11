@@ -3,6 +3,7 @@
 angular.module('app.config', [])
   .constant('appConfig', {
     APIUrl: "http://api.daocloud.co/hub/v2",
+    LocalUrl: "http://10.1.4.173:8000/api",
     // DaoAuth: constant.DAO_AUTH,
     // AuthLogOut: constant.AUTH_LOG_OUT,
     // AuthSignUp: constant.AUTH_SIGN_UP,

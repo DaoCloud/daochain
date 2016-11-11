@@ -1,10 +1,12 @@
 import $ from 'jquery';
 
 class MarketController {
-  constructor($scope) {
+  constructor($scope, appConfig) {
     "ngInject";
     this.name = 'market';
     this.$scope = $scope;
+    this.APIUrl = appConfig.APIUrl;
+    this.localUrl = appConfig.LocalUrl;
   }
 
   $onInit(){
@@ -14,7 +16,7 @@ class MarketController {
 
     $.ajax({
       type: "GET",
-      url: "http://api.daocloud.co/hub/v2/blockchain/verified-public-repos?page=1&page_size=3",
+      url: this.APIUrl + "/blockchain/verified-public-repos?page=1&page_size=3",
       headers: {
         "Authorization": localStorage.getItem('token'),
       },

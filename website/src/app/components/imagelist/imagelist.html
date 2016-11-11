@@ -31,6 +31,8 @@
           <a href="http://dashboard.daocloud.co/packages/{{x.id}}" target="_blank">
             <div class="image-info">
               <span class="title">{{x.repo_title}}</span>
+              <dao-progress-pulsing progress="$ctrl.sign_val" class="pull-progress"></dao-progress-pulsing>
+
             </div>
           </a>
         </td>
@@ -60,7 +62,7 @@
                 <div dao-dropdown-menu="" role="menu" class="dropdown-menu-right dao-dropdown-menu top" aria-labelledby="single-button"><div class="arrow"></div>
                   <ul>
                     <li role="menuitem"><a href="http://dashboard.daocloud.co/packages/{{x.id}}" target="_blank">了解详情</a></li>
-                    <li role="menuitem">拉取</li>
+                    <li role="menuitem" ng-click=" $ctrl.pullImage(x.latest_tag.image_url, $index) ">拉取</li>
                   </ul>
                 </div>
               </div>

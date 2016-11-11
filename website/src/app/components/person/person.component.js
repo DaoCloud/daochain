@@ -17,13 +17,15 @@ function Inject(...dependencies) {
         }
     };
 }
-@Inject('$scope', '$state')
+@Inject('$scope', '$state', 'appConfig')
 class PersonController {
-  constructor($scope, $state) {
+  constructor($scope, $state, appConfig) {
     "ngInject";
     this.name = 'person';
     this.scope = $scope;
     this.$state = $state;
+    this.APIUrl = appConfig.APIUrl;
+    this.LocalUrl = appConfig.LocalUrl;
     this.username = localStorage.getItem('username');
     this.isMining = web3.eth.mining;
     this.balance = balance.toNumber();
@@ -32,7 +34,7 @@ class PersonController {
       this.walletList.splice(index, 1);
       $.ajax({
         type: "DELETE",
-        url: "http://api.daocloud.co/hub/v2/blockchain/addresses/"+ content,
+        url: this.APIUrl + "/blockchain/addresses/"+ content,
         headers: {
           "Authorization": "ImU5NjYwMzUxLTMyY2UtNGE2OS05MGRiLTA2YzNlMGVjNzE1MSI.CwNVBg.FFx7wUGgflqynUsMktEjWcdC_cg"
         },
@@ -57,7 +59,7 @@ class PersonController {
       };
       $.ajax({
         type: "POST",
-        url: " http://api.daocloud.co/hub/v2/blockchain/addresses",
+        url: this.APIUrl + "/blockchain/addresses",
         headers: {
           "Authorization": "ImU5NjYwMzUxLTMyY2UtNGE2OS05MGRiLTA2YzNlMGVjNzE1MSI.CwNVBg.FFx7wUGgflqynUsMktEjWcdC_cg",
           "Content-Type": "application/json"
@@ -123,7 +125,7 @@ class PersonController {
     (()=>{
       $.ajax({
         type: "GET",
-        url: "http://api.daocloud.co/hub/v2/blockchain/addresses",
+        url: this.APIUrl + "/blockchain/addresses",
         headers: {
           "Authorization": "ImU5NjYwMzUxLTMyY2UtNGE2OS05MGRiLTA2YzNlMGVjNzE1MSI.CwNVBg.FFx7wUGgflqynUsMktEjWcdC_cg"
         },
