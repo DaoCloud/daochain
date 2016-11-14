@@ -30,12 +30,12 @@ class DaoHubVerify(object):
         self._contract = self._eth.contract(self.abi, address=self.address)
         self.trans_filter = self._contract.on('regImage')
 
-    def registerImage(self, imageHash, repoTag, imageId):
+    def registerImage(self, imageHash, repoTag, imageId, from_account=None):
         if isinstance(imageHash, str):
             imageHash = hex_to_uint(imageHash)
         if isinstance(imageId, str):
             imageId = hex_to_uint(imageId)
-        return self._contract.transact().registerImage(imageHash, repoTag, imageId)
+        return self._contract.transact({'from':from_account}).registerImage(imageHash, repoTag, imageId)
 
     def queryImage(self, owner, repoTag):
         return self._contract.call().queryImage(owner, repoTag)
@@ -72,9 +72,9 @@ if __name__ == '__main__':
     d.regImage(f)
 
     print(d.registerImage(hex_to_uint('0x921fdcfd91e4237afaaf63bc3010e0993e012f816a409ee705f3db3b65fa274b'),
-                          'daocloud.io/daocloud/dao-2048',
+                          'daocloud.co/eric/asdfasdfwerwer:master-f7941bd',
                           hex_to_uint('0x067c8da9d5abd40c3f2aaf58bef8412cd42b535b847483837152fb877f1f15de')))
-    q = d.queryImage(web3_client().eth.coinbase, 'daocloud.io/daocloud/dao-2048')
+    q = d.queryImage(web3_client().eth.coinbase, 'daocloud.co/eric/asdfasdfwerwer:master-f7941bd')
     print('\n')
     print_dict(dict(hash=uint_to_hex(q[0]),
                     address=q[1],

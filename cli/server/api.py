@@ -11,6 +11,7 @@ def load_api(app):
     rest.add_resource(ImageVerifyAPI, '/api/verify-image')
     rest.add_resource(ImagePullAPI, '/api/pull-image')
     rest.add_resource(ImageSignAPI, '/api/sign-image')
+    rest.add_resource(DefaultAccountAPI, '/api/default-account')
     # rest.add_resource(UserListAPI, '/api/user')
     # rest.add_resource(UserAPI, '/api/user/<int:uid>')
 
@@ -65,11 +66,34 @@ class ImageSignAPI(Resource):
     def post(self):
         from imagetool import Client
         from blockchain import DaoHubVerify
+        from storage import Storage
         c = Client()
         args = self.reqparse.parse_args()
         repo_tag = args['repo_tag']
         image_id = args['image_id']
         d = DaoHubVerify()
         hash = c.get_image_hash(repo_tag)
-        tx = d.registerImage(hash, repo_tag, image_id)
+        s = Storage()
+        tx = d.registerImage(hash, repo_tag, image_id, from_account=s.get('default_address'))
         return dict(sign=True, tx=tx)
+
+
+class DefaultAccountAPI(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('address', type=str, required=False, help='No task title provided', location='json')
+        super(DefaultAccountAPI, self).__init__()
+
+    def post(self):
+        from storage import Storage
+        s = Storage()
+        args = self.reqparse.parse_args()
+        default_address = args['address']
+        s.set('default_address', default_address)
+        return dict(default_address=default_address)
+
+    def get(self):
+        from storage import Storage
+        s = Storage()
+        default_address = s.get('default_address')
+        return dict(default_address=default_address)

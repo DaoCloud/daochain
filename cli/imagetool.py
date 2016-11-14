@@ -43,6 +43,7 @@ class Client(_C):
         self.pull(repository, tag, insecure_registry=True, auth_config=auth_config)
 
     def verify_image_hash(self, repoTag):
+        from eth_abi.exceptions import DecodingError
         from server import imageutils
         registry, namespace, repo, tag = imageutils.parse_image_name(repoTag)
         resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(hub_endpoint, namespace))
@@ -56,11 +57,14 @@ class Client(_C):
         signed = False
         verify = False
         for address in addresses:
-            hash = d.queryImage(address['address'], repoTag)
-            if hash[0]:
-                signed = True
-            if hash[0] == image_hash:
-                verify = True
+            try:
+                hash = d.queryImage(address['address'], repoTag)
+                if hash[0]:
+                    signed = True
+                if hash[0] == image_hash:
+                    verify = True
+            except DecodingError:
+                continue
         return signed, verify
 
 
