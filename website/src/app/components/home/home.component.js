@@ -1,3 +1,4 @@
+import uiRouter from 'angular-ui-router';
 import template from './home.html';
 import controller from './home.controller';
 import './home.scss';
