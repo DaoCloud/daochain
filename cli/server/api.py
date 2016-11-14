@@ -72,7 +72,7 @@ class ImageSignAPI(Resource):
         repo_tag = args['repo_tag']
         image_id = args['image_id']
         d = DaoHubVerify()
-        hash = c.get_image_hash(repo_tag)
+        hash = c.get_image_hash_with_cache(repo_tag)
         s = Storage()
         tx = d.registerImage(hash, repo_tag, image_id, from_account=s.get('default_address'))
         return dict(sign=True, tx=tx)

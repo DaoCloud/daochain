@@ -1,17 +1,28 @@
 import os
 import tarfile
 import tempfile
-from hashlib import md5, sha256
+from hashlib import md5, sha256, sha1
 
 import requests
 from docker.client import Client as _C
 
 from blockchain import DaoHubVerify
+from server.storage import Storage
 
 hub_endpoint = os.getenv('HUB_ENDPOINT', 'http://api.daocloud.co')
 
 
 class Client(_C):
+    def get_image_hash_with_cache(self, resource_id, *args):
+        s = Storage()
+        r = self.inspect_image(resource_id)
+        image_id = r['Config']['Image']
+        h = s.get(image_id)
+        if not h:
+            h = self.get_image_hash(resource_id, *args)
+            s.set(image_id, h)
+        return h
+
     def get_image_hash(self, resource_id, hasher=sha256, blocksize=4096):
         image = self.get_image(resource_id)
         f_handler, filename = tempfile.mkstemp(suffix='.tar', text=False)
@@ -37,7 +48,7 @@ class Client(_C):
         return h.hexdigest()
 
     def get_image_hash_uint(self, resource_id, hasher=sha256, blocksize=4096):
-        hash = self.get_image_hash(resource_id, hasher, blocksize)
+        hash = self.get_image_hash_with_cache(resource_id, hasher, blocksize)
         return int(hash, 16)
 
     def pull_image(self, repository, tag=None, username=None, password=None):
@@ -77,4 +88,4 @@ if __name__ == '__main__':
 
     c = docker_client()
     print(c.get_image_hash('daocloud.io/library/ubuntu:latest'))
-    print(c.get_image_hash('daocloud.io/library/ubuntu:latest'))
+    print(c.get_image_hash_with_cache('daocloud.io/library/ubuntu:latest'))
