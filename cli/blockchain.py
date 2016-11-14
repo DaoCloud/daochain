@@ -35,7 +35,7 @@ class DaoHubVerify(object):
             imageHash = hex_to_uint(imageHash)
         if isinstance(imageId, str):
             imageId = hex_to_uint(imageId)
-        return self._contract.transact({'from':from_account}).registerImage(imageHash, repoTag, imageId)
+        return self._contract.transact().registerImage(imageHash, repoTag, imageId)
 
     def queryImage(self, owner, repoTag):
         return self._contract.call().queryImage(owner, repoTag)
