@@ -25,20 +25,28 @@ class DaoHubVerify(object):
         data = contract_deployed()
         self.abi = data['DaoHubVerify']['abi']
         self.address = data['DaoHubVerify']['address']
-        self._client = web3_client()
-        self._eth = self._client.eth
-        self._contract = self._eth.contract(self.abi, address=self.address)
-        self.trans_filter = self._contract.on('regImage')
+
+    @property
+    def client(self):
+        return web3_client()
+
+    @property
+    def trans_filter(self):
+        return self.contract.on('regImage')
+
+    @property
+    def contract(self):
+        return self.client.eth.contract(self.abi, address=self.address)
 
     def registerImage(self, imageHash, repoTag, imageId, from_account=None):
         if isinstance(imageHash, str):
             imageHash = hex_to_uint(imageHash)
         if isinstance(imageId, str):
             imageId = hex_to_uint(imageId)
-        return self._contract.transact().registerImage(imageHash, repoTag, imageId)
+        return self.contract.transact().registerImage(imageHash, repoTag, imageId)
 
     def queryImage(self, owner, repoTag):
-        return self._contract.call().queryImage(owner, repoTag)
+        return self.contract.call().queryImage(owner, repoTag)
 
     def regImage(self, callback):
         """

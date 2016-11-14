@@ -25,7 +25,11 @@ class Client(_C):
             if f is None:
                 continue
             h = md5()
-            h.update(f.read())
+            while True:
+                line = f.readline(4096)
+                if not line:
+                    break
+                h.update(line)
             hashes.append(h.hexdigest())
         os.remove(filename)
         h = hasher()
