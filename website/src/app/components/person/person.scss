@@ -32,14 +32,45 @@
 
       .wallet-address {
         list-style: none;
+        position: relative;
         margin-top: 5px;
 
-        span {
+        .wallet-name {
           padding: 5px;
           font-size: 1.2rem;
           display: inline-block;
           min-width: 500px;
         }
+
+        .add-default {
+          color: #cecece;
+          font-size: 14px;
+          height: 14px;
+          line-height: 14px;
+          display: inline-block;
+          position: absolute;
+          top: 50%;
+          -webkit-transform: translateY(-7px);
+          transform: translateY(-7px);
+          cursor: pointer;
+          display: none;
+        }
+
+        .default-wallet {
+          font-size: 14px;
+          height: 14px;
+          line-height: 14px;
+          display: inline-block;
+          position: absolute;
+          color: #217ef2;
+          top: 50%;
+          -webkit-transform: translateY(-7px);
+          transform: translateY(-7px);
+        }
+      }
+
+      .wallet-address:hover > .add-default {
+        display: inline-block;
       }
     }
 
