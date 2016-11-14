@@ -1,5 +1,18 @@
 @import '../../common/common.scss';
 
+.dao-dialog-footer {
+  position: relative;
+}
+
+.error-message {
+  height: 32px;
+  line-height: 32px;
+  color: red;
+  display: inline-block;
+  position: absolute;
+  left: 22px;
+}
+
 .imagelist {
   padding: 20px 40px;
   background-color: #f1f3f6;

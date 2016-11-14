@@ -15,7 +15,8 @@
       <div class="wallet">
         <ul>
           <li ng-repeat=" x in $ctrl.walletList " class="wallet-address">
-            <span>{{x}}</span><button class="dao-btn blue" ng-click="$ctrl.deleteWallet(x, $index)">删除</button>
+            <span class="wallet-name">{{x.id}}</span><span class="add-default" ng-if="!x.is_default" ng-click="$ctrl.setDefault(x.id)">设为默认</span>
+            <span ng-if="x.is_default" class="default-wallet">默认钱包</span>
           </li>
         </ul>
         <div class="add-new" style="display: none">

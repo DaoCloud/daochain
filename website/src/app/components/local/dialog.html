@@ -1,0 +1,8 @@
+<dao-dialog-header>请输入密码</dao-dialog-header>
+<div class="dao-dialog-body">
+  <input class="dao-control input-password" type="text" ng-model="vm.pwd">
+</div>
+<div class="dao-dialog-footer">
+    <span class="error-message" ng-if="vm.error">{{vm.errorMessage}}</span>
+    <button class="dao-btn blue send-password" ng-click="vm.checkPwd()">确定</button>
+</div>
