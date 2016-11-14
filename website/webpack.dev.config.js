@@ -11,7 +11,7 @@ config.output = {
 
 var DEFAULT_ENV = {
   API_URL: '"http://api.daocloud.co/hub/v2"',
-  LOCAL_URL: '"http://10.1.4.173:8000/api"'
+  LOCAL_URL: '"http://10.1.4.111:8000/api"'
 };
 
 var CURRENT_ENV = extend({}, DEFAULT_ENV);
