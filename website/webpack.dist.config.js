@@ -1,6 +1,7 @@
 var webpack = require('webpack');
 var path    = require('path');
 var config  = require('./webpack.config');
+var extend = require('lodash/extend');
 
 config.output = {
   filename: '[name].bundle.js',

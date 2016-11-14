@@ -46,8 +46,11 @@ class Client(_C):
         from server import imageutils
         registry, namespace, repo, tag = imageutils.parse_image_name(repoTag)
         resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(hub_endpoint, namespace))
-        resp.raise_for_status()
-        addresses = resp.json()["results"]
+        try:
+            resp.raise_for_status()
+            addresses = resp.json()["results"]
+        except:
+            addresses = []
         image_hash = addresses and self.get_image_hash_uint(repoTag)
         d = DaoHubVerify()
         signed = False
