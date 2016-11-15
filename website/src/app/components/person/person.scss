@@ -1,92 +1,85 @@
 .person {
-  .form-wrapper {
-    width: 800px;
-    margin: 40px auto 0;
-  }
-  .switch-group {
-    width: 100%;
-    height: 100%;
-
-    > div {
-      padding: 20px;
+    .form-wrapper {
+        width: 800px;
+        margin: 40px auto 0;
     }
-
-    .user {
-      text-align: center;
-      border-bottom: 1px solid #eaeaea;
-
-      .user-name {
-        margin-top: 25px;
-        font-size: 1.5rem;
-        color: #6f6f6f;
-      }
-
-      .user-logout {
-        margin-top: 15px;
-      }
+    .switch-group {
+        width: 100%;
+        height: 100%;
+        >div {
+            padding: 20px;
+        }
+        .user {
+            text-align: center;
+            border-bottom: 1px solid #eaeaea;
+            .user-name {
+                margin-top: 25px;
+                font-size: 1.8rem;
+                color: #6f6f6f;
+            }
+            .user-balance {
+                color: #6f6f6f;
+                font-size: 1.2rem;
+                margin: 5px;
+            }
+            .user-logout {
+                margin-top: 15px;
+            }
+        }
+        .wallet {
+            text-align: center;
+            border-bottom: 1px solid #eaeaea;
+            .wallet-address {
+                list-style: none;
+                position: relative;
+                margin-top: 5px;
+                .wallet-name {
+                    padding: 5px;
+                    font-size: 1.2rem;
+                    display: inline-block;
+                    min-width: 500px;
+                }
+                .add-default {
+                    color: #cecece;
+                    font-size: 14px;
+                    height: 14px;
+                    line-height: 14px;
+                    display: inline-block;
+                    position: absolute;
+                    top: 50%;
+                    -webkit-transform: translateY(-7px);
+                    transform: translateY(-7px);
+                    cursor: pointer;
+                    display: none;
+                }
+                .default-wallet {
+                    font-size: 14px;
+                    height: 14px;
+                    line-height: 14px;
+                    display: inline-block;
+                    position: absolute;
+                    color: #217ef2;
+                    top: 50%;
+                    -webkit-transform: translateY(-7px);
+                    transform: translateY(-7px);
+                }
+            }
+            .wallet-address:hover>.add-default {
+                display: inline-block;
+            }
+        }
+        .settings {
+            >div {
+                text-align: center;
+                padding: 20px;
+                >span {
+                    display: inline-block;
+                    margin-left: 12px;
+                    height: 34px;
+                    line-height: 34px;
+                    vertical-align: top;
+                }
+            }
+        }
     }
-
-    .wallet {
-      text-align: center;
-      border-bottom: 1px solid #eaeaea;
-
-      .wallet-address {
-        list-style: none;
-        position: relative;
-        margin-top: 5px;
-
-        .wallet-name {
-          padding: 5px;
-          font-size: 1.2rem;
-          display: inline-block;
-          min-width: 500px;
-        }
-
-        .add-default {
-          color: #cecece;
-          font-size: 14px;
-          height: 14px;
-          line-height: 14px;
-          display: inline-block;
-          position: absolute;
-          top: 50%;
-          -webkit-transform: translateY(-7px);
-          transform: translateY(-7px);
-          cursor: pointer;
-          display: none;
-        }
-
-        .default-wallet {
-          font-size: 14px;
-          height: 14px;
-          line-height: 14px;
-          display: inline-block;
-          position: absolute;
-          color: #217ef2;
-          top: 50%;
-          -webkit-transform: translateY(-7px);
-          transform: translateY(-7px);
-        }
-      }
-
-      .wallet-address:hover > .add-default {
-        display: inline-block;
-      }
-    }
-
-    .settings {
-      > div {
-        text-align: center;
-        padding: 20px;
-
-        > span {
-          display: inline-block;
-          margin-left: 12px;
-          height: 34px;
-          line-height: 34px;
-          vertical-align: top;
-        }
-      }
-    }
-  }
 }

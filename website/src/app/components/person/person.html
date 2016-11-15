@@ -1,39 +1,40 @@
 <navbar></navbar>
 <heading></heading>
 <section class="person">
-  <div class="form-wrapper">
-    <form class="switch-group">
-      <div class="user">
-        <div class="user-logo">
-          <img src="https://dn-daoweb-resource.qbox.me/devicon%2Ficons%2Fcadvisor%2Fcadvisor.jpeg" alt="" />
-        </div>
-        <div class="user-name">{{ $ctrl.username }}</div>
-        <div class="user-logout">
-          <button type="button" class="dao-btn blue" ng-click=" $ctrl.logout() ">登出</button>
-        </div>
-      </div>
-      <div class="wallet">
-        <ul>
-          <li ng-repeat=" x in $ctrl.walletList " class="wallet-address">
-            <span class="wallet-name">{{x.id}}</span><span class="add-default" ng-if="!x.is_default" ng-click="$ctrl.setDefault(x.id)">设为默认</span>
-            <span ng-if="x.is_default" class="default-wallet">默认钱包</span>
-          </li>
-        </ul>
-        <div class="add-new" style="display: none">
-          <dao-input-container icon-inside loading="false">
-            <input type="text">
-          </dao-input-container>
-          <!-- <input type="text" name="name" value="" placeholder="填写新地址"> -->
-          <button type="button" class="dao-btn" ng-click="$ctrl.getWalletValue()">提交</button>
-        </div>
-        <button type="button" class="dao-btn blue" ng-click="$ctrl.newWallet()">添加钱包</button>
-      </div>
-      <div class="settings">
-        <div class="">
-          <dao-switch name="start-dig" class="asd hhh" ng-model="$ctrl.isMining" ng-change="$ctrl.changeMine()"></dao-switch>
-          <span>开始挖矿</span>
-        </div>
-        <!-- div class="">
+    <div class="form-wrapper">
+        <form class="switch-group">
+            <div class="user">
+                <div class="user-logo">
+                    <img src="{{ $ctrl.userInfo.avatar }}" alt="" />
+                </div>
+                <div class="user-name">{{ $ctrl.userInfo.username }}</div>
+                <div class="user-balance">余额 : {{ $ctrl.balance }}</div>
+                <div class="user-logout">
+                    <button type="button" class="dao-btn blue" ng-click=" $ctrl.logout() ">登出</button>
+                </div>
+            </div>
+            <div class="wallet">
+                <ul>
+                    <li ng-repeat=" x in $ctrl.walletList " class="wallet-address">
+                        <span class="wallet-name tabular-num">{{x.id}}</span><span class="add-default" ng-if="!x.is_default" ng-click="$ctrl.setDefault(x.id)">设为默认</span>
+                        <span ng-if="x.is_default" class="default-wallet">默认钱包</span>
+                    </li>
+                </ul>
+                <div class="add-new" style="display: none">
+                    <dao-input-container icon-inside loading="false">
+                        <input type="text">
+                    </dao-input-container>
+                    <!-- <input type="text" name="name" value="" placeholder="填写新地址"> -->
+                    <button type="button" class="dao-btn" ng-click="$ctrl.getWalletValue()">提交</button>
+                </div>
+                <button type="button" class="dao-btn blue" ng-click="$ctrl.newWallet()">添加钱包</button>
+            </div>
+            <div class="settings">
+                <div class="">
+                    <dao-switch name="start-dig" class="asd hhh" ng-model="$ctrl.isMining" ng-change="$ctrl.changeMine()"></dao-switch>
+                    <span>开始挖矿</span>
+                </div>
+                <!-- div class="">
           <dao-switch name="auto-verify" class="asd hhh" ng-model="vm.verify" ng-change="vm.changeCallback()"></dao-switch>
           <span>自动认证本地所有镜像</span>
         </div>
@@ -41,7 +42,7 @@
           <dao-switch name="open-notice" class="asd hhh" ng-model="vm.notice" ng-change="vm.changeCallback()"></dao-switch>
           <span>开启通知</span>
         </div -->
-      </div>
-    </form>
-  </div>
+            </div>
+        </form>
+    </div>
 </section>
