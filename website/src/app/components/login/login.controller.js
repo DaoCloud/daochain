@@ -6,6 +6,7 @@ class LoginController {
         this.$state = $state;
         this.AuthService = AuthService;
         this.captcha_id = "";
+        this.captcha_url = "";
         this.$scope = $scope;
         this.$http = $http;
         this.name = 'Login';
@@ -21,7 +22,8 @@ class LoginController {
                 method: 'GET',
                 url: this.ApiUrl + '/captcha/generate-id',
             }).then((res) => {
-                this.captcha_id = `${this.ApiUrl}/captcha/image?captcha_id=${res.data.captcha_id}`;
+                this.captcha_id = res.data.captcha_id;
+                this.captcha_url = `${this.ApiUrl}/captcha/image?captcha_id=${res.data.captcha_id}`;
             });
         }
     }
