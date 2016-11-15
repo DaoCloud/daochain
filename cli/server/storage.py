@@ -9,7 +9,7 @@ class Storage(object):
     def set(self, key, val):
         self.load()
         self.data[key] = val
-        with open(self.path, 'w+') as f:
+        with open(self.path, 'w') as f:
             json.dump(self.data, f)
 
     def get(self, key):
@@ -24,6 +24,8 @@ class Storage(object):
                 self.data = json.load(f)
         except IOError:
             self.data = {}
+            with open(self.path, 'w') as f:
+                json.dump(self.data, f)
 
 
 store = Storage()

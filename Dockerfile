@@ -6,8 +6,6 @@ ADD . /app
 
 WORKDIR /app/cli
 
-ADD app/dist/* /app/cli/server/static
-
 RUN apk add --no-cache --virtual .build-deps  \
 		bzip2-dev \
 		gcc \
@@ -29,6 +27,7 @@ RUN apk add --no-cache --virtual .build-deps  \
 	&& apk del .build-deps \
 	&& rm -rf /usr/src/python ~/.cache
 
+ADD app/dist/* /app/cli/server/static/
 
 ENV ETH_RPC_ENDPOINT=localhost:8545
 ENV HUB_ENDPOINT=http://api.daocloud.co

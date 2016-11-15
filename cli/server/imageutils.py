@@ -23,6 +23,7 @@ def blockchain_verified(repoTag):
     # return docker_client().verify_image_hash(repoTag)
     return
 
+
 def blockchain_stat(repoTag):
     return {
         # 'confirm': 5,

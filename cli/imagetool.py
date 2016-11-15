@@ -1,15 +1,14 @@
 import os
 import tarfile
 import tempfile
-from hashlib import md5, sha256, sha1
+from hashlib import md5, sha256
 
 import requests
 from docker.client import Client as _C
 
 from blockchain import DaoHubVerify
+from server.settings import HUB_ENDPOINT
 from server.storage import Storage
-
-hub_endpoint = os.getenv('HUB_ENDPOINT', 'http://api.daocloud.co')
 
 
 class Client(_C):
@@ -61,7 +60,7 @@ class Client(_C):
         from eth_abi.exceptions import DecodingError
         from server import imageutils
         registry, namespace, repo, tag = imageutils.parse_image_name(repoTag)
-        resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(hub_endpoint, namespace))
+        resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(HUB_ENDPOINT, namespace))
         try:
             resp.raise_for_status()
             addresses = resp.json()["results"]
