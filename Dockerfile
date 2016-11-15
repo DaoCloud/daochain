@@ -13,15 +13,11 @@ RUN apk add --no-cache --virtual .build-deps  \
 		libc-dev \
 		linux-headers \
 		make \
-		ncurses-dev \
 		openssl \
 		openssl-dev \
 		pax-utils \
 		readline-dev \
 		sqlite-dev \
-		tcl-dev \
-		tk \
-		tk-dev \
 		zlib-dev \
 	&& pip install --no-cache-dir -r requirements.pip \
 	&& apk del .build-deps \
