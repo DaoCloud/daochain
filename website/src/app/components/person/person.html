@@ -20,28 +20,21 @@
                         <span ng-if="x.is_default" class="default-wallet">默认钱包</span>
                     </li>
                 </ul>
-                <div class="add-new" style="display: none">
+                <div class="add-new" ng-if=" !$ctrl.defaultAddress ">
                     <dao-input-container icon-inside loading="false">
                         <input type="text">
                     </dao-input-container>
-                    <!-- <input type="text" name="name" value="" placeholder="填写新地址"> -->
                     <button type="button" class="dao-btn" ng-click="$ctrl.getWalletValue()">提交</button>
                 </div>
-                <button type="button" class="dao-btn blue" ng-click="$ctrl.newWallet()">添加钱包</button>
+                <button type="button" class="dao-btn blue" ng-if=" !$ctrl.defaultAddress " ng-click=" !$ctrl.newWallet() ">添加钱包</button>
             </div>
             <div class="settings">
                 <div class="">
                     <dao-switch name="start-dig" class="asd hhh" ng-model="$ctrl.isMining" ng-change="$ctrl.changeMine()"></dao-switch>
-                    <span>开始挖矿</span>
+                    <span ng-if=" !$ctrl.isMining ">开始挖矿</span>
+                    <span ng-if=" $ctrl.isMining ">正在挖矿...</span>
+                    <span ng-if=" $ctrl.isMining ">{{ $ctrl.hashrate }} kH/s</span>
                 </div>
-                <!-- div class="">
-          <dao-switch name="auto-verify" class="asd hhh" ng-model="vm.verify" ng-change="vm.changeCallback()"></dao-switch>
-          <span>自动认证本地所有镜像</span>
-        </div>
-        <div class="">
-          <dao-switch name="open-notice" class="asd hhh" ng-model="vm.notice" ng-change="vm.changeCallback()"></dao-switch>
-          <span>开启通知</span>
-        </div -->
             </div>
         </form>
     </div>

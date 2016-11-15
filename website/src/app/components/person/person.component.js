@@ -14,14 +14,15 @@ function Inject(...dependencies) {
         }
     };
 }
-@Inject('$scope', '$state', '$http', 'appConfig')
+@Inject('$scope', '$state', '$http', 'appConfig', '$interval')
 class PersonController {
-    constructor($scope, $state, $http, appConfig) {
+    constructor($scope, $state, $http, appConfig, $interval) {
         "ngInject";
         this.name = 'person';
         this.scope = $scope;
         this.$state = $state;
         this.$http = $http;
+        this.$interval = $interval;
         this.APIUrl = appConfig.APIUrl;
         this.LocalUrl = appConfig.LocalUrl;
         this.Web3Url = appConfig.Web3Url;
@@ -33,7 +34,9 @@ class PersonController {
         this.walletList = [];
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.Web3Url));
         this.isMining = this.web3.eth.mining;
-        this.balance = this.web3.fromWei(this.web3.eth.getBalance(this.web3.eth.coinbase), 'ether').toNumber();
+        this.hashrate = this.web3.eth.hashrate / 1000;
+        this.defaultAddress = this.web3.eth.getBalance(this.web3.eth.coinbase);
+        this.balance = this.web3.fromWei(this.defaultAddress, 'ether').toNumber();
         this.deleteWallet = function(content, index) {
             this.walletList.splice(index, 1);
             $.ajax({
@@ -80,12 +83,20 @@ class PersonController {
             });
         }
 
+        this.monitBalance = () => {
+            this.moniter = this.$interval(() => {
+                this.defaultAddress = this.web3.eth.getBalance(this.web3.eth.coinbase);
+                this.balance = this.web3.fromWei(this.defaultAddress, 'ether').toNumber();
+                this.hashrate = this.web3.eth.hashrate / 1000;
+            }, 4000);
+        }
+
         this.changeMine = () => {
             console.log(this.web3);
             let requestDataStart = {
                 "jsonrpc": "2.0",
                 "method": "miner_start",
-                "params": [],
+                "params": [1],
                 "id": 74
             };
             let requestDataStop = {
@@ -95,7 +106,7 @@ class PersonController {
                 "id": 74
             };
             if (this.isMining) {
-                // web3.miner.start();
+                this.monitBalance();
                 $.ajax({
                     type: "POST",
                     url: this.Web3Url,
@@ -108,6 +119,7 @@ class PersonController {
                     }
                 });
             } else {
+                this.$interval.cancel(this.moniter);
                 $.ajax({
                     type: "POST",
                     url: this.Web3Url,
@@ -195,6 +207,10 @@ class PersonController {
             getDefault.success((res, status) => {
                 this.setDefaultTag(res.default_address);
             });
+
+            if (this.isMining) {
+                this.monitBalance();
+            }
         })();
     }
 }

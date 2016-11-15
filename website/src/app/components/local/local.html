@@ -32,11 +32,9 @@
                 </thead>
                 <tr ng-repeat="x in $ctrl.data | filter:searchImage">
                     <td>
-                        <a href="http://dashboard.daocloud.co/packages/{{x.image_id}}" target="_blank">
-                            <div class="image-info">
-                                <span class="title">{{x.repo_tag}}</span>
-                            </div>
-                        </a>
+                        <div class="image-info">
+                            <span class="title">{{x.repo_tag}}</span>
+                        </div>
                     </td>
                     <td>{{x.created_at}}</td>
                     <td>

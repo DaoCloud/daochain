@@ -6,7 +6,7 @@
             <!--div class="add-image"><button class="dao-btn blue">添加镜像</button></div-->
             <!--
       -->
-            <div class="search-image"><input class="dao-control search" type="text" ng-model="searchImage" placeholder="搜索镜像" /></div>
+            <div class="search-image"><input class="dao-control search" type="text" ng-model="$ctrl.searchImage" ng-change=" $ctrl.search()" placeholder="搜索镜像" /></div>
             <!--
     -->
         </div>
@@ -33,7 +33,7 @@
                         </th>
                     </tr>
                 </thead>
-                <tr ng-repeat="x in $ctrl.data | filter:searchImage">
+                <tr ng-repeat="x in $ctrl.data">
                     <td>
                         <a href="http://dashboard.daocloud.co/packages/{{x.id}}" target="_blank">
                             <div class="image-info">
@@ -76,6 +76,17 @@
                     </td>
                 </tr>
             </table>
+            <div class="dao-pagination">
+                <button class="dao-btn ghost has-icon" ng-class="{ 'disabled': $ctrl.nowPageNumber==1}" ng-click=" $ctrl.lastPage() ">
+                    <svg class="icon"><use xlink:href="#icon_caret-left"></use></svg>
+                    <span class="text">上一页</span>
+                </button>
+                <button class="dao-btn ghost has-icon" ng-class="{ 'disabled': $ctrl.nowPageNumber==$ctrl.totalPageNumber}" ng-click=" $ctrl.nextPage() ">
+                    <span class="text">下一页</span>
+                    <svg class="icon"><use xlink:href="#icon_caret-right"></use></svg>
+                </button>
+                <span class="dao-page-number">第 {{ $ctrl.nowPageNumber }} 页， 共 {{ $ctrl.totalPageNumber }} 页</span>
+            </div>
         </div>
     </section>
 </section>
