@@ -67,7 +67,9 @@ class Client(_C):
             addresses = resp.json()["results"]
         except:
             addresses = []
-        image_hash = addresses and self.get_image_hash_uint(repoTag)
+        if not addresses:
+            return False, False
+        image_hash = self.get_image_hash_uint(repoTag)
         d = DaoHubVerify()
         signed = False
         verify = False

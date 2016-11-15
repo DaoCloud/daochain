@@ -20,6 +20,10 @@ def web3_client():
     return Web3(RPCProvider(host=host, port=int(port)))
 
 
+class NotEnoughBalance(Exception):
+    pass
+
+
 class DaoHubVerify(object):
     def __init__(self):
         data = contract_deployed()
@@ -38,11 +42,16 @@ class DaoHubVerify(object):
     def contract(self):
         return self.client.eth.contract(self.abi, address=self.address)
 
-    def registerImage(self, imageHash, repoTag, imageId, from_account=None):
+    def registerImage(self, imageHash, repoTag, imageId):
         if isinstance(imageHash, str):
             imageHash = hex_to_uint(imageHash)
         if isinstance(imageId, str):
             imageId = hex_to_uint(imageId)
+        eth = self.client.eth
+        balance = eth.getBalance(eth.coinbase)
+        estimate = self.contract.estimateGas().registerImage(imageHash, repoTag, imageId)
+        if balance < estimate:
+            raise NotEnoughBalance()
         return self.contract.transact().registerImage(imageHash, repoTag, imageId)
 
     def queryImage(self, owner, repoTag):

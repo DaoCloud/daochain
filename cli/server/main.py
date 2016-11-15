@@ -1,10 +1,10 @@
 import os
 
 from flask import Flask
-from flask import send_file, send_from_directory, redirect
-from flask_restful import abort
+from flask import redirect, send_from_directory
 
 from server.api import load_api
+from server.settings import SERVER_ROOT_PATH
 
 
 def setup_routes(app):
@@ -14,15 +14,7 @@ def setup_routes(app):
 
     @app.route('/<path:path>')
     def send_file(path):
-        return send_from_directory('../website/dist', path)
-
-        # MEDIA_PATH = app.config.get('MEDIA_PATH')
-        # if not os.path.isdir(MEDIA_PATH):
-        #     os.mkdir(MEDIA_PATH)
-        #
-        # @app.route('/uploads/<path:filename>')
-        # def base_static(filename):
-        #     return send_from_directory(MEDIA_PATH, filename)
+        return send_from_directory(os.path.join(SERVER_ROOT_PATH, 'static'), path)
 
     @app.after_request
     def after_request(response):

@@ -6,7 +6,7 @@ ADD . /app
 
 WORKDIR /app/cli
 
-ADD app/dist /app/cli/server/static
+ADD app/dist/* /app/cli/server/static
 
 RUN apk add --no-cache --virtual .build-deps  \
 		bzip2-dev \

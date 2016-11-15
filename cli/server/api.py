@@ -1,7 +1,11 @@
 from flask_restful import Api, Resource
 from flask_restful import reqparse
 
+from blockchain import DaoHubVerify
+from blockchain import NotEnoughBalance
+from imagetool import Client
 from server.imageutils import get_repos
+from server.storage import store as _S
 
 
 def load_api(app):
@@ -12,8 +16,6 @@ def load_api(app):
     rest.add_resource(ImagePullAPI, '/api/pull-image')
     rest.add_resource(ImageSignAPI, '/api/sign-image')
     rest.add_resource(DefaultAccountAPI, '/api/default-account')
-    # rest.add_resource(UserListAPI, '/api/user')
-    # rest.add_resource(UserAPI, '/api/user/<int:uid>')
 
 
 class API(Resource):
@@ -64,18 +66,17 @@ class ImageSignAPI(Resource):
         super(ImageSignAPI, self).__init__()
 
     def post(self):
-        from imagetool import Client
-        from blockchain import DaoHubVerify
-        from storage import Storage
         c = Client()
         args = self.reqparse.parse_args()
         repo_tag = args['repo_tag']
         image_id = args['image_id']
         d = DaoHubVerify()
         hash = c.get_image_hash_with_cache(repo_tag)
-        s = Storage()
-        tx = d.registerImage(hash, repo_tag, image_id, from_account=s.get('default_address'))
-        return dict(sign=True, tx=tx)
+        try:
+            tx = d.registerImage(hash, repo_tag, image_id)
+        except NotEnoughBalance:
+            return dict(msg='not enough balance'), 402
+        return dict(msg='ok', tx=tx), 200
 
 
 class DefaultAccountAPI(Resource):
@@ -93,7 +94,5 @@ class DefaultAccountAPI(Resource):
         return dict(default_address=default_address)
 
     def get(self):
-        from storage import Storage
-        s = Storage()
-        default_address = s.get('default_address')
+        default_address = _S.get('default_address')
         return dict(default_address=default_address)

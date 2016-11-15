@@ -1,5 +1,4 @@
 import json
-import os
 
 
 class Storage(object):
