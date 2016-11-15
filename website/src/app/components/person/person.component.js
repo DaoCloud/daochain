@@ -135,7 +135,7 @@ class PersonController {
         }
 
         this.logout = () => {
-            localStorage.removeItem('token');
+            localStorage.clear();
             this.$state.go('home');
         }
 

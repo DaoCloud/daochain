@@ -20,7 +20,7 @@
       <div class="form-group">
         <label>验证码</label>
         <input type="text" id="captcha" value="" ng-model="vm.account.captcha_solution" tabindex="3">
-        <img src="http://api.daocloud.co/captcha/image?captcha_id={{vm.captcha_id}}" alt="" class="captcha_image" ng-click=" vm.getCapture() "/>
+        <img src="{{vm.captcha_id}}" alt="" class="captcha_image" ng-click=" vm.getCapture() "/>
       </div>
       <!-- ngIf: needVerify -->
     </form>

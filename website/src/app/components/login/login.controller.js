@@ -21,7 +21,7 @@ class LoginController {
                 method: 'GET',
                 url: this.ApiUrl + '/captcha/generate-id',
             }).then((res) => {
-                this.captcha_id = res.data.captcha_id;
+                this.captcha_id = `${this.ApiUrl}/captcha/image?captcha_id=${res.data.captcha_id}`;
             });
         }
     }

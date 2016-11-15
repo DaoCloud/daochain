@@ -1,6 +1,25 @@
 <navbar></navbar>
 <section>
   <div class="heading">
-    <div class="sign"><span>{{ $ctrl.username }}</span></div>
+    <dao-demo-block>
+      <div class="btn-group userspace" dao-dropdown style="margin-left: 100px; display: inline-block;">
+        <button type="button" class="dao-btn ghost username-btn" dao-dropdown-toggle ng-disabled="disabled">
+          {{ $ctrl.username }}
+        </button>
+        <!-- <div class="arrow"></div> -->
+        <div dao-dropdown-menu role="menu" class="dropdown-menu-right" aria-labelledby="single-button">
+          <ul class="has-icon">
+            <li role="menuitem" class="active" ng-repeat="tenant in $ctrl.tenants">
+              <a ng-click=" $ctrl.changeOrg(tenant) ">
+                {{ tenant.org_name }}
+                <svg class="icon">
+                  <use xlink:href="#icon_eye"></use>
+                </svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </dao-demo-block>
   </div>
 </section>

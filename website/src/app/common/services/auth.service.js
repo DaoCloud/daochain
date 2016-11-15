@@ -11,7 +11,7 @@ class AuthService {
         this.$http = $http;
         this.$q = $q;
         this.AuthStoreService = AuthStoreService;
-        this.APIUrl = "http://api.daocloud.co";
+        this.APIUrl = appConfig.APIUrl;
 
         // state
         this.currentUser = {};

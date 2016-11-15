@@ -1,6 +1,7 @@
 .heading {
 	background-color: #fff;
 	height: 60px;
+	line-height: 60px;
 	border-bottom: 1px solid #e4e7ee;
 
 	.sign {
@@ -16,5 +17,11 @@
 			float: right;
 			border-left: 1px solid #e4e7ed;
 		}
+	}
+
+	.userspace {
+		position: absolute;
+		right: 40px;
+
 	}
 }

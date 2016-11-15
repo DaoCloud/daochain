@@ -9,20 +9,26 @@ class HeadingController {
     }
 
     $onInit() {
+        this.changeOrg = (tanent) => {
+            localStorage.setItem('default-user', tanent.org_name);
+            this.username = tanent.org_name;
+        }
+
         (() => {
-            if (!localStorage.getItem('username') || !localStorage.getItem('user-avatar')) {
-                this.$http({
-                    method: 'GET',
-                    url: this.ApiUrl + '/get-token-info',
-                    headers: {
-                        'Authorization': localStorage.getItem('token')
-                    }
-                }).then((res, status) => {
-                    this.username = res.data.user.username;
-                    localStorage.setItem('username', res.data.user.username);
-                    localStorage.setItem('user-avatar', res.data.user.avatar_url);
-                });
-            }
+            this.$http({
+                method: 'GET',
+                url: this.ApiUrl + '/get-token-info',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            }).then((res, status) => {
+                this.username = res.data.user.username;
+                localStorage.setItem('username', res.data.user.username);
+                localStorage.setItem('user-avatar', res.data.user.avatar_url);
+                this.tenants = res.data.user.tenants;
+            });
+
+
         })();
     }
 }
