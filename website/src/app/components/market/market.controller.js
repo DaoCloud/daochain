@@ -40,7 +40,7 @@ class MarketController {
         this.search = () => {
             this.$http({
                 method: 'GET',
-                url: `${this.APIUrl}/hub/v2/blockchain/verified-public-repos?q=${this.searchImage}&page=${this.pageNumber}&page_size=${this.pageSize}`,
+                url: `http://api.daocloud.co/hub/v2/blockchain/verified-public-repos?q=${this.searchImage}&page=${this.pageNumber}&page_size=${this.pageSize}`,
                 headers: {
                     "Authorization": localStorage.getItem('token'),
                 }
@@ -52,7 +52,7 @@ class MarketController {
         this.getVerifiedRepo = () => {
             this.$http({
                 method: 'GET',
-                url: `${this.APIUrl}/hub/v2/blockchain/verified-public-repos?page=${this.pageNumber}&page_size=${this.pageSize}`,
+                url: `http://api.daocloud.co/hub/v2/blockchain/verified-public-repos?page=${this.pageNumber}&page_size=${this.pageSize}`,
                 headers: {
                     "Authorization": localStorage.getItem('token'),
                 }

@@ -63,7 +63,7 @@ class PersonController {
             };
             $.ajax({
                 type: "POST",
-                url: this.APIUrl + "/hub/v2/blockchain/addresses",
+                url: "http://api.daocloud.co/hub/v2/blockchain/addresses",
                 headers: {
                     "Authorization": localStorage.getItem('token'),
                     "Content-Type": "application/json"
