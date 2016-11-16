@@ -15,7 +15,7 @@ let remoteModule = angular.module('remote', [
                 },
                 component: 'remote'
             });
-            $locationProvider.html5Mode(true).hashPrefix('!');
+            // $locationProvider.html5Mode(false);
     })
     .component('remote', remoteComponent)
     .name;

@@ -15,7 +15,7 @@ let localModule = angular.module('local', [
       },
 			component: 'local'
 		});
-    $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(false);
 })
 .component('local', localComponent)
   .name;
