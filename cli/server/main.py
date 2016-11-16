@@ -1,7 +1,7 @@
 import os
 
 from flask import Flask
-from flask import redirect, send_from_directory
+from flask import send_file, send_from_directory
 
 from server.api import load_api
 from server.settings import SERVER_ROOT_PATH
@@ -10,10 +10,10 @@ from server.settings import SERVER_ROOT_PATH
 def setup_routes(app):
     @app.route('/')
     def index():
-        return redirect('/index.html')
+        return send_file(os.path.join(SERVER_ROOT_PATH, 'static', 'index.html'))
 
     @app.route('/<path:path>')
-    def send_file(path):
+    def static_files(path):
         return send_from_directory(os.path.join(SERVER_ROOT_PATH, 'static'), path)
 
     @app.after_request
