@@ -2,6 +2,10 @@ FROM python:2.7-alpine
 
 MAINTAINER DCS <dao@daocloud.io> 
 
+RUN apk add --no-cache nginx supervisor
+
+ADD nginx.conf /etc/nginx/nginx.conf
+
 ADD . /app
 
 WORKDIR /app/cli
@@ -25,11 +29,11 @@ RUN apk add --no-cache --virtual .build-deps  \
 
 ADD app/dist/* /app/cli/server/static/
 
-ENV ETH_RPC_ENDPOINT=localhost:8545
+ENV ETH_RPC_ENDPOINT=geth:8545
 ENV HUB_ENDPOINT=http://api.daocloud.co
 
 VOLUME /var/run/docker.sock
 
-EXPOSE 8000
+EXPOSE 80
 
-CMD [ "python", "server/gunicorn_runner.py" ]
+CMD [ "entrypoint.sh" ]
