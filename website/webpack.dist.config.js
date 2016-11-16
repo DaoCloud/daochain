@@ -10,7 +10,7 @@ config.output = {
 };
 
 var DEFAULT_ENV = {
-  API_URL: '"https://api.daocloud.io"',
+  API_URL: '"http://api.daocloud.co"',
   LOCAL_URL: '"/api"',
   WEB3_URL: '"/"',
 };
