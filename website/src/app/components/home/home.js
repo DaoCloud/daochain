@@ -23,9 +23,7 @@ let homeModule = angular.module('home', [
                 component: 'home',
                 onEnter: ($state) => {
                     "ngInject";
-                    if ($.cookie('token')) {} else {
-                        $state.go('login');
-                    }
+                    $state.go('remote');
                 }
             });
     })

@@ -1,11 +1,12 @@
 import $ from 'jquery';
 
 class MarketController {
-    constructor($scope, appConfig, $http) {
+    constructor($scope, appConfig, $state, $http) {
         "ngInject";
         this.name = 'market';
         this.$scope = $scope;
         this.$http = $http;
+        this.$state = $state;
         this.searchImage = '';
         this.pageNumber = 1;
         this.pageSize = 5;

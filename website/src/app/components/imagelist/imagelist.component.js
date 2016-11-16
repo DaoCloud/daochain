@@ -40,14 +40,15 @@ class controller {
             success: res => {
                 let results = res.results;
                 results.map(result => {
-                    // console.log(result.created_at);
                     result.created_at = result.created_at.split('T')[0];
                     result.updated_at = result.updated_at.split('T')[0];
                     const verified = result.blockchain_verified;
                     if (verified) {
                         result.blockchain_verified = "可信";
+                        result.blockchain_verified_color = "#22c36a";
                     } else {
                         result.blockchain_verified = "不可信";
+                        result.blockchain_verified_color = "#f1483f";
                     }
                     this.scope.$apply(() => {
                         this.data.push(result);

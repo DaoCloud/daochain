@@ -5,7 +5,7 @@ import localComponent from './local.component';
 let localModule = angular.module('local', [
   uiRouter
 ])
-.config(($stateProvider) => {
+.config(($stateProvider, $locationProvider) => {
 	"ngInject";
 	$stateProvider
 		.state('local', {
@@ -15,6 +15,7 @@ let localModule = angular.module('local', [
       },
 			component: 'local'
 		});
+    $locationProvider.html5Mode(true);
 })
 .component('local', localComponent)
   .name;

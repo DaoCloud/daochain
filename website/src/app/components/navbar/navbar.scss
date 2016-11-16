@@ -14,16 +14,15 @@
     text-align: center;
 
     div {
-      height: 30px;
-      line-height: 30px;
+      height: 60px;
       position: relative;
       top: 50%;
-      transform: translateY(-15px);
+      transform: translateY(-30px);
     }
 
     a {
       display: block;
-      font-size: 22px;
+      font-size: 20px;
       color: #fff;
       text-decoration: none;
     }
@@ -56,6 +55,10 @@
           height: 100%;
         }
       }
+    }
+
+    a.active {
+      background-color: #31343a;
     }
   }
 }

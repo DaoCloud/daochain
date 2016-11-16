@@ -1,6 +1,8 @@
 class NavbarController {
-  constructor() {
-    this.name = 'Dao';
+  constructor($state) {
+    "ngInject";
+    this.name = 'DaoCloud 区块链验证系统';
+    this.$state = $state;
   }
 }
 

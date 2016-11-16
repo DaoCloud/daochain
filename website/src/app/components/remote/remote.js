@@ -5,8 +5,9 @@ import remoteComponent from './remote.component';
 let remoteModule = angular.module('remote', [
         uiRouter
     ])
-    .config(($stateProvider) => {
+    .config(($stateProvider, $locationProvider) => {
         "ngInject";
+        $locationProvider.html5Mode(true);
         $stateProvider
             .state('remote', {
                 url: '/',
