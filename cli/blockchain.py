@@ -15,7 +15,7 @@ def contract_deployed():
 @memoize
 def web3_client():
     import os
-    endpoint = os.getenv('ETH_RPC_ENDPOINT', 'geth:8545')
+    endpoint = os.getenv('ETH_RPC_ENDPOINT', 'localhost:8545')
     host, port = endpoint.split(':')
     return Web3(RPCProvider(host=host, port=int(port)))
 
@@ -43,9 +43,9 @@ class DaoHubVerify(object):
         return self.client.eth.contract(self.abi, address=self.address)
 
     def registerImage(self, imageHash, repoTag, imageId):
-        if isinstance(imageHash, str):
+        if isinstance(imageHash, (str, unicode)):
             imageHash = hex_to_uint(imageHash)
-        if isinstance(imageId, str):
+        if isinstance(imageId, (str, unicode)):
             imageId = hex_to_uint(imageId)
         eth = self.client.eth
         balance = eth.getBalance(eth.coinbase)
