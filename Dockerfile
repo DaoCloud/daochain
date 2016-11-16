@@ -36,4 +36,4 @@ VOLUME /var/run/docker.sock
 
 EXPOSE 80
 
-CMD [ "entrypoint.sh" ]
+CMD [ "/app/entrypoint.sh" ]
