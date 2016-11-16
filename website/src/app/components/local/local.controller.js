@@ -17,40 +17,40 @@ class DialogController {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.Web3Url));
 
         this.checkPwd = () => {
-            let getDefault = this.$http({
-                method: "GET",
-                url: this.localUrl + '/default-account'
-            });
-
-            getDefault.success((res, status) => {
-                try {
-                    let couldUnlock = this.web3.personal.unlockAccount(res.default_address, this.pwd, 5000);
-                    if (couldUnlock) {
-                        this.$close();
-                        this.signImage(this.image);
-                    }
-                } catch (e) {
-                    this.errorMessage = e.message;
-                    this.error = true;
-                }
-            });
+          try {
+              let couldUnlock = this.web3.personal.unlockAccount(this.web3.eth.coinbase, this.pwd, 5000);
+              if (couldUnlock) {
+                  this.$close();
+                  this.signImage(this.image);
+              }
+          } catch (e) {
+              this.errorMessage = e.message;
+              this.error = true;
+          }
         }
     }
 }
 
 class LocalController {
-    constructor($scope, appConfig, $daoDialog, $http) {
+    constructor($scope, appConfig, $daoDialog, $http, $state) {
         "ngInject";
         this.name = 'local';
         this.$scope = $scope;
         this.$daoDialog = $daoDialog;
         this.$http = $http;
+        this.$state = $state;
         this.localUrl = appConfig.LocalUrl;
         this.APIUrl = appConfig.APIUrl;
+        this.Web3Url = appConfig.Web3Url;
+        this.web3 = new Web3(new Web3.providers.HttpProvider(this.Web3Url));
     }
 
     $onInit() {
         this.appendTo = document.querySelector('.images');
+        let accounts = this.web3.eth.accounts;
+        if (!accounts.length) {
+          this.$state.go('person');
+        }
         this.name = 'imagelist';
         this.data = [];
         this.verifyImage = (tag) => {

@@ -3,7 +3,7 @@
         <div><a>{{ $ctrl.name }}</a></div>
     </div>
     <div class="nav-links">
-        <a ui-sref="remote" ng-class="{active: $ctrl.$state.includes('')}">
+        <a ui-sref="remote" ng-class="{active: !($ctrl.$state.includes('local') || $ctrl.$state.includes('market') || $ctrl.$state.includes('person'))}">
             <div><span class="icon"><svg><use xlink:href="#icon_star-line"></use></svg></span><span>云端镜像</span></div>
         </a>
         <a ui-sref="local" ng-class="{active: $ctrl.$state.includes('local')}">

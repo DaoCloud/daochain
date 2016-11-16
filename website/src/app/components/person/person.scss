@@ -67,6 +67,14 @@
             .wallet-address:hover>.add-default {
                 display: inline-block;
             }
+            .add-new {
+              margin-bottom: 30px;
+
+              span {
+                font-size: 1.1rem;
+                color: grey;
+              }
+            }
         }
         .settings {
             >div {

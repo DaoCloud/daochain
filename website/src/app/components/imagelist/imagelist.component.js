@@ -35,7 +35,7 @@ class controller {
             url: this.APIUrl + "/hub/v2/hub/daohub/repos?page=1&page_size=10&q=",
             headers: {
                 "Authorization": localStorage.getItem('token'),
-                "UserNameSpace": ""
+                "UserNameSpace": localStorage.getItem('default-user') !== 'null' &&  localStorage.getItem('default-user') ? localStorage.getItem('default-user') : ""
             },
             success: res => {
                 let results = res.results;

@@ -8,7 +8,7 @@
                     <img src="{{ $ctrl.userInfo.avatar }}" alt="" />
                 </div>
                 <div class="user-name">{{ $ctrl.userInfo.username }}</div>
-                <div class="user-balance">余额 : {{ $ctrl.balance }}</div>
+                <div class="user-balance" ng-if=" $ctrl.defaultAddress ">余额 : {{ $ctrl.balance }}</div>
                 <div class="user-logout">
                     <button type="button" class="dao-btn blue" ng-click=" $ctrl.logout() ">登出</button>
                 </div>
@@ -21,6 +21,7 @@
                     </li>
                 </ul>
                 <div class="add-new" ng-if=" !$ctrl.defaultAddress ">
+                    <span>请输入密码，创建新钱包</span>
                     <dao-input-container icon-inside loading="false">
                         <input type="text">
                     </dao-input-container>

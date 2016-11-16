@@ -35,8 +35,6 @@ class PersonController {
         this.web3 = new Web3(new Web3.providers.HttpProvider(this.Web3Url));
         this.isMining = this.web3.eth.mining;
         this.hashrate = this.web3.eth.hashrate / 1000;
-        this.defaultAddress = this.web3.eth.getBalance(this.web3.eth.coinbase);
-        this.balance = this.web3.fromWei(this.defaultAddress, 'ether').toNumber();
         this.deleteWallet = function(content, index) {
             this.walletList.splice(index, 1);
             $.ajax({
@@ -56,7 +54,6 @@ class PersonController {
         }
 
         this.getWalletValue = function() {
-            // console.log($('.wallet > .add-new > input'));
             $('.dao-input-container.icon-inside').attr('loading', 'true');
             const str = $('.wallet > .add-new input')[0].value;
             const new_account = this.web3.personal.newAccount(str);
@@ -68,7 +65,7 @@ class PersonController {
                 type: "POST",
                 url: this.APIUrl + "/hub/v2/blockchain/addresses",
                 headers: {
-                    "Authorization": "ImU5NjYwMzUxLTMyY2UtNGE2OS05MGRiLTA2YzNlMGVjNzE1MSI.CwNVBg.FFx7wUGgflqynUsMktEjWcdC_cg",
+                    "Authorization": localStorage.getItem('token'),
                     "Content-Type": "application/json"
                 },
                 data: JSON.stringify(sentData),
@@ -78,6 +75,7 @@ class PersonController {
                             'id': res.address,
                             'is_default': false
                         });
+                        this.defaultAddress = res.address;
                     });
                 }
             });
@@ -192,6 +190,10 @@ class PersonController {
     $onInit() {
         (() => {
             let localList = this.web3.personal.listAccounts;
+            if (localList) {
+              this.defaultAddress = this.web3.eth.getBalance(this.web3.eth.coinbase);
+              this.balance = this.web3.fromWei(this.defaultAddress, 'ether').toNumber();
+            }
             localList.forEach(v => {
                 this.walletList.push({
                     'id': v,

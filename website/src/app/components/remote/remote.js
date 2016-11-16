@@ -7,7 +7,6 @@ let remoteModule = angular.module('remote', [
     ])
     .config(($stateProvider, $locationProvider) => {
         "ngInject";
-        $locationProvider.html5Mode(true);
         $stateProvider
             .state('remote', {
                 url: '/',
@@ -16,6 +15,7 @@ let remoteModule = angular.module('remote', [
                 },
                 component: 'remote'
             });
+            $locationProvider.html5Mode(true).hashPrefix('!');
     })
     .component('remote', remoteComponent)
     .name;
