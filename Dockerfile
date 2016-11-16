@@ -32,8 +32,6 @@ ADD app/dist/* /app/cli/server/static/
 ENV ETH_RPC_ENDPOINT=geth:8545
 ENV HUB_ENDPOINT=http://api.daocloud.co
 
-VOLUME /var/run/docker.sock
-
 EXPOSE 80
 
 CMD [ "/app/entrypoint.sh" ]
