@@ -8,19 +8,21 @@ from docker.client import Client as _C
 
 from blockchain import DaoHubVerify
 from server.settings import HUB_ENDPOINT
-from server.storage import Storage
+from server.storage import store
+from utils import hex_to_uint
 
 
 class Client(_C):
     def get_image_hash_with_cache(self, resource_id, *args):
-        s = Storage()
-        r = self.inspect_image(resource_id)
-        image_id = r['Config']['Image']
-        h = s.get(image_id)
+        image_id = self.image_id(resource_id)
+        h = store.get(image_id)
         if not h:
             h = self.get_image_hash(resource_id, *args)
-            s.set(image_id, h)
+            store.set(image_id, h)
         return h
+
+    def image_id(self, resource_id):
+        return self.inspect_image(resource_id)['Config']['Image']
 
     def get_image_hash(self, resource_id, hasher=sha256, blocksize=4096):
         image = self.get_image(resource_id)
@@ -36,7 +38,7 @@ class Client(_C):
                 continue
             h = md5()
             while True:
-                line = f.readline(4096)
+                line = f.readline(blocksize)
                 if not line:
                     break
                 h.update(line)
@@ -44,11 +46,15 @@ class Client(_C):
         os.remove(filename)
         h = hasher()
         h.update("$".join(sorted(hashes)))
-        return h.hexdigest()
+        rt = h.hexdigest()
+        image_id = self.image_id(resource_id)
+        if store.get(image_id) != rt:
+            store.set(image_id, rt)
+        return rt
 
     def get_image_hash_uint(self, resource_id, hasher=sha256, blocksize=4096):
-        hash = self.get_image_hash_with_cache(resource_id, hasher, blocksize)
-        return int(hash, 16)
+        h = self.get_image_hash_with_cache(resource_id, hasher, blocksize)
+        return hex_to_uint(h)
 
     def pull_image(self, repository, tag=None, username=None, password=None):
         auth_config = None
@@ -86,7 +92,14 @@ class Client(_C):
 
 if __name__ == '__main__':
     from server.docker_utils import docker_client
+    from time import time
 
     c = docker_client()
-    print(c.get_image_hash('daocloud.io/library/ubuntu:latest'))
-    print(c.get_image_hash_with_cache('daocloud.io/library/ubuntu:latest'))
+    t1 = time()
+    print(c.get_image_hash('daocloud.io/revolution1/ethereum_geth:latest'))
+    t2 = time()
+    # print(c.get_image_hash('daocloud.co/eric/d2053:latest'))
+    print(c.get_image_hash_with_cache('daocloud.io/revolution1/ethereum_geth:latest'))
+    t3 = time()
+
+    print('hash: %ss   cache: %ss' % (t2 - t1, t3 - t2))
