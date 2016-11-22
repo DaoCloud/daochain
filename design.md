@@ -17,7 +17,7 @@ Blockchain is a distributed database that maintains a continuously-growing list 
   <img src="resources/block_chain.png"/>
 </div>
 ```
-区块链是一个类似于链表都数据结构，该数据结构中每一个节点记录了前节点中数据的 Hash 值、当前节点的数据。
+区块链是一个类似于链表的数据结构，该数据结构中每一个节点记录了前节点中数据的 Hash 值、当前节点的数据。
 在当前节点不变都情况下，前节点的任何改变都会使得这条链无效(invalid)。
 ```
 
@@ -70,9 +70,9 @@ Docker 镜像及分享
 
 Blockchain 独角戏上演太久，大家应该迫不及待想要看到第二位主角出场了吧？
 
-Docker 镜像(images)
+Docker 镜像(images)留学归来，操着一口浓重的伦敦音：
 
-An image is an inert, immutable, file that's essentially a snapshot of a container. Images are created with the build command, and they'll produce a container when started with run. Images are stored in a Docker registry such as registry.hub.docker.com. Because they can become quite large, images are designed to be composed of layers of other images, allowing a miminal amount of data to be sent when transferring images over the network.
+An image is an inert, immutable, file that's essentially a snapshot of a container. Images are created with the build command, and they'll produce a container when started with `docker run`. Images are stored in a Docker registry such as `hub.docker.com`. Because they can become quite large, images are designed to be composed of layers of other images, allowing a miminal amount of data to be sent when transferring images over the network.
 
 本地的镜像可以通过 `docker images` 命令来查看，比如：
 
@@ -80,8 +80,6 @@ An image is an inert, immutable, file that's essentially a snapshot of a contain
 $> docker images
 REPOSITORY                             TAG                 IMAGE ID            CREATED             SIZE
 daocloud.io/daocloud/cockroach         v0.4                9845d5c4db1d        2 weeks ago         206.1 MB
-daocloud.io/daocloud/hue               v0.1                0983a918d23a        2 weeks ago         1.184 GB
-daocloud.io/daocloud/hive-docker       v0.6                8d286cb94751        3 weeks ago         967.2 MB
 daocloud.io/daocloud/spark-cluster     v0.6                9862ddb186a4        4 weeks ago         738.3 MB
 daocloud.io/daocloud/dce-agent         2.0.3               3edfca3bd5aa        5 weeks ago         227.8 MB
 daocloud.io/daocloud/dce               2.0.3               08a9b59123b5        5 weeks ago         27.08 MB
@@ -95,39 +93,43 @@ daocloud.io/daocloud/zookeeper         v0.4                72d5965155da        3
 daocloud.io/daocloud/dce-etcd          2.0.3               e81032a59e55        5 months ago        32.29 MB
 ```
 
+镜像存在镜像仓库里，通过 `docker pull` 的命令把它从仓库下载下来并通过 `docker run` 的方式启动容器。镜像开发者通过 `docker build` 命令把写好的 `Dockerfile` 以及一些二进制文件打包成镜像，然后 `docker push` 把镜像上传到镜像仓库，镜像可谓是容器技术的内容市场，心细的小伙伴可能已经发现 Docker 的布局 https://store.docker.com/ 俨然 Docker 在向乔帮主致敬啊。
 
-我们试图构建第二个能被证实都blockchain
+但是，前段时间看到一个新闻，说是一家金融公司把文本数据放在公有云上，不可见部分被篡改了！！！公有云厂商不愿意背这个锅，有些人就咆哮，私下看人家数据太不好了，小白客户可能不知道什么是 `sha256`, `md5`, 不知道什么是加密，可是金融行业从业人员，难道不知道加密防他人读、校验防篡改吗？发散来讲，镜像也有被篡改的可能！算了，从业有先后、术业有专攻，你们安心做应用，剩下的我们来帮你搞定。
 
-我们遇到的问题，我们是一家做容器都公司，俗称卖外卖盒、水杯。好好做容器嘛，怎么抢区块链的地盘？但是积累了分布式专家，这帮家伙闲不着，他们看到一个新闻，说是一个金融公司把数据放到公有云上被篡改了，怎么说呢，私自看人家数据的确不好，并且还篡改了不可见字符，神乎其神，客户小白不知道什么是sha256、md5，不知道什么是数据加密？加密防其他人读，校验防篡改。两个锦囊那好了！
-不知道公有云这个锅要不要背。
+我们试图构建第二个能被证实的blockchain。
 
-镜像仓库
--------
+Daochain
+--------
 
-镜像构成了容器技术的基石，镜像共享。相信大家都从 hub.docker.com 上下载过镜像，并且最近 store.docker.com 俨然学习乔帮主，占领内容市场。镜像有没有被篡改，假设更苛刻一点，docker 公司有个家伙年终奖发少了，你害怕不？
+假设这样一种场景，仓库提供者与贵公司大哥八字不合，或者 Docker 公司有个家伙年终奖发少了？你的镜像是安全的吗？
 
-刚才都锦囊我都知道，我自己存 hash 值
-小红花戴起来，的确比小白上升了一个数量级都觉悟，但是你都同事想用你都镜像呢？
-把hash值邮件给他，他自己下载镜像自己校验。
-但是有一天老板给你好几天假期，你可以度假了，你还能(愿意)及时都处理邮件吗，或者说你在帮一个美女实习生调bug，那位同事估计要等到黄花菜都凉了。
-公司内部共享一个共享数据库就好了嘛
-但是每次上传或者更新镜像，你都会记得及时更新数据库吗？另外，企业间的共享怎么做？
-怎么那么多但是，你说怎么办？
+```
+> 刚才都锦囊我都知道，我自己存 hash 值
+> 小红花戴起来，的确比小白上升了一个数量级的觉悟，但是你都同事想用你都镜像呢？
+> 把hash值邮件给他，他自己下载镜像自己校验。
+> 但是有一天老板给你好几天假期，你可以度假了，你还能(愿意)及时地处理邮件吗，或者说你在帮一个美女实习生调 bug。
+> 公司内部共享一个共享数据库就好了嘛
+> 但是每次上传或者更新镜像，你都会记得及时更新数据库吗？另外，企业间的共享怎么做？比如隔壁家一个叫 google 的公司做的镜像挺好用的。
+> 怎么那么多但是，你说怎么办？
+```
 
-正式一点，目前的公共镜像仓库是建立在开发者对仓库维护者的信任的基础上的，开发者相信共有仓库的维护者不会改变他们的镜像，但是在一些极端的情况下这个假设是不存在的，比如篡改
+正式一点，目前的公共镜像仓库是建立在开发者对仓库维护者的信任的基础上的，开发者相信共有仓库的维护者不会改变他们的镜像，但是在一些极端的情况下这个假设是不存在的，比如商业竞争、黑客攻击、内部员工故意使坏等等。
 
-用户有分享的需求，甚至有镜像售卖的需求，这正是 store.docker.com 正在布局的，
-有保证数据不被篡改的强烈需求。
+用户有分享(有偿或者无偿)的需求，这正是 store.docker.com 正在布局的，有保证数据不被篡改的强烈需求。
 
-安全无小事
+**安全无小事**
+
 Daocloud在反病毒，漏洞检查之后隆重推出了分布式镜像校验机制——基于区块链的技术。
+
 简单来讲，用户A在上传镜像到共有仓库的同时，会将hash值上传到区块链上，DaoCloud 与众多区块链对维护者共同维护这条区块链（移除了开发者对集中化管理者的信任假设），保证任何人对区块链对非法篡改都不会得逞，正常的数据读写得到满足。用户 B 凭借对用户 A 的信任(比如声望很好的大公司，比如阿里、Google 或者公司同事)从共有仓库获取 Docker 镜像，同时从区块链中读取该镜像的 Hash 值，本地验证。
+
+我们是不是 the second proven blockchain 呢？欢迎大家来讨论！
 
 镜像分享经济
 ----------
 
-最近火热了一把的共享经济，IT 行业有着不重复造轮子的原则，区块链的 Hash 值标示了 Author 对该镜像对著作权，
-
+最近火热了一把的共享经济，IT 行业又有着不重复造轮子的原则，区块链的 Hash 值标示了 Author 对该镜像对著作权，镜像的共享经济值得我们共同期待。
 
 内测及奖励
 --------
