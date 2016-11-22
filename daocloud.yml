@@ -4,8 +4,8 @@ version: 2.0
 build:
     lite_image:
         compile:
-            dockerfile_path: /website/Dockerfile
-            build_dir: /website/
+            dockerfile_path: /webui/Dockerfile
+            build_dir: /webui/
             cache: true
 
         extract:
