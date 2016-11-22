@@ -1,0 +1,89 @@
+<navbar></navbar>
+<heading></heading>
+<section class="init">
+    <div class="init-title">
+        个人设置
+    </div>
+    <dao-panel-multi-steps current-index="$ctrl.nestedStepIndex" nested="true">
+        <dao-panel-step title="{{ '组织选择' }}" is-successful="">
+            <div class="dao-setting-layout">
+                <div class="dao-setting-layout-title">
+                    <div class="dao-setting-title">
+                        组织选择
+                    </div>
+                </div>
+                <div class="dao-setting-section">
+                    <div class="dao-setting-item">
+                        <div class="dao-setting-label">
+                            组织类型
+                        </div>
+                        <div class="dao-setting-content">
+                            <dao-select ng-model="$ctrl.selectedOrg" default-title="选择一个镜像">
+                                <dao-option-group label="组织列表" no-option-tip="未找到符合条件的结果">
+                                    <dao-option value="option" text="option" ng-repeat="option in $ctrl.orgList "></dao-option>
+                                </dao-option-group>
+                            </dao-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="dao-setting-layout-footer">
+                    <button class="dao-btn blue" ng-click="$ctrl.nestedStepIndex = $ctrl.nestedStepIndex + 1">下一步</button>
+                </div>
+            </div>
+        </dao-panel-step>
+        <dao-panel-step title="{{ '创建钱包' }}" is-successful="">
+            <div class="dao-setting-layout" ng-if=" $ctrl.walletSet ">
+                <div class="dao-setting-layout-title">
+                    <div class="dao-setting-title">
+                        创建钱包
+                    </div>
+                </div>
+                <div class="dao-setting-section">
+                    <div class="dao-setting-item">
+                        <div class="dao-setting-label">
+                            输入密码
+                        </div>
+                        <div class="dao-setting-content">
+                            <dao-input-container>
+                                <input type="text" placeholder="请输入密码" ng-model=" $ctrl.pwd ">
+                            </dao-input-container>
+                        </div>
+                        <div class="dao-setting-label errinfo" ng-if=" $ctrl.errInfo ">
+                            {{ $ctrl.errInfo }}
+                        </div>
+                    </div>
+                </div>
+                <div class="dao-setting-layout-footer">
+                    <div class="dao-btn blue" ng-click=" $ctrl.createWallet() ">提交</div>
+                </div>
+            </div>
+            <div class="dao-setting-layout" ng-if=" !$ctrl.walletSet ">
+                <div class="dao-setting-layout-title">
+                    <div class="dao-setting-title">
+                        获取钱包账号
+                    </div>
+                </div>
+                <div class="dao-setting-section">
+                    <div class="dao-setting-item">
+                        <div class="success-info">
+                            <div class="success-info-title">
+                                恭喜你！已成功获取钱包账号
+                            </div>
+                            <div class="success-info-image">
+                                <svg class="icon">
+                                    <use xlink:href="#icon_checkmark"></use>
+                                </svg>
+                            </div>
+                            <div class="success-info-wallet">
+                                {{ $ctrl.walletAccount }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dao-setting-layout-footer">
+                    <div class="dao-btn blue" ng-click=" $ctrl.finish() ">完成</div>
+                </div>
+            </div>
+        </dao-panel-step>
+    </dao-panel-multi-steps>
+</section>

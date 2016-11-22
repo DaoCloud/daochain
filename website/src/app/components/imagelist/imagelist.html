@@ -51,27 +51,12 @@
                     </div>
                 </td>
                 <td>{{x.created_at}}</td>
-                <td style="color: {{x.blockchain_verified_color}}">{{x.blockchain_verified}}</td>
+                <td style="color: {{x.blockchain_verified_color}}">
+                    <span ng-if=" x.blockchain_verified == '可信' " class="verify-svg has-verified"></span>
+                    <span ng-if=" x.blockchain_verified == '不可信' " class="verify-svg not-verified"></span> {{x.blockchain_verified}}
+                </td>
                 <td>
-                    <div class="dao-btn-group">
-                        <div class="dao-btn ghost">
-                            了解详情
-                        </div>
-                        <div dao-dropdown="" dropdown-placement="auto bottom" class="dao-btn-group dao-dropdown">
-                            <div dao-dropdown-toggle="" class="dao-btn dao-icon ghost dao-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                                <svg class="icon">
-                    <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon_down-arrow"></use>
-                  </svg>
-                            </div>
-                            <div dao-dropdown-menu="" role="menu" class="dropdown-menu-right dao-dropdown-menu top" aria-labelledby="single-button">
-                                <div class="arrow"></div>
-                                <ul>
-                                    <li role="menuitem"><a href="http://dashboard.daocloud.co/packages/{{x.id}}" target="_blank">了解详情</a></li>
-                                    <li role="menuitem" ng-click=" $ctrl.pullImage(x.latest_tag.image_url, $index) ">拉取</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="dao-btn ghost" ng-click=" $ctrl.pullImage(x.latest_tag.image_url, $index) ">拉取</button>
                 </td>
             </tr>
         </table>

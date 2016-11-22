@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "dao-style": "git://github.com/Ye-Ting/dao-style-package.git#master",
+    "image-webpack-loader": "^3.0.0"
+  }
+}

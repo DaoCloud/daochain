@@ -15,7 +15,11 @@ class HeadingController {
             localStorage.setItem('username', tenant.tenant_name);
             localStorage.setItem('user-avatar', tenant.logo_url);
             this.username = tenant.tenant_name;
-            this.$state.go('person');
+            if (this.$state.includes('person')) {
+                location.reload();
+            } else {
+                this.$state.go('person');
+            }
         }
 
         (() => {
