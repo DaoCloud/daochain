@@ -17,18 +17,56 @@ Blockchain is a distributed database that maintains a continuously-growing list 
   <img src="resources/block_chain.png"/>
 </div>
 ```
-区块链是一个类似于链表都数据结构，该数据结构中每一个节点记录了前节点中数据的 Hash 值、当前节点的数据，在当前节点不变都情况下，前节点的任何改变都会使得这条链无效(invalid)。
+区块链是一个类似于链表都数据结构，该数据结构中每一个节点记录了前节点中数据的 Hash 值、当前节点的数据。
+在当前节点不变都情况下，前节点的任何改变都会使得这条链无效(invalid)。
 ```
 
-笔者认为两种定义是不冲突的、可以说是相辅相成的。前者更多的强调区块链的分布式协作的集体行为，后者更多的关注这一协作群体中每一个个体——区块链本身。在大多数语境下，大家关注更多的是区块链分布式协作的集体效应，因此下文关于区块链，不特意说明的情况下，都与 wikipedia 的分布式数据库定义一致，关于区块链数据结构，推荐大家看一下一本详细讲解 bitcoin 技术书籍 [Mastering Bitcoin](http://uplib.fr/w/images/8/83/Mastering_Bitcoin-Antonopoulos.pdf)。
+笔者认为两种定义是不冲突的、可以说是相辅相成的。前者更多的强调区块链的分布式协作的集体行为，后者更多的关注这一协作群体中每一个个体——区块链本身。在大多数语境下，大家关注更多的是区块链分布式协作的集体效应，因此下文关于区块链，不特意说明的情况下，都与 wikipedia 的分布式数据库定义一致，关于区块链数据结构，推荐大家看一下一本详细讲解 bitcoin 技术书籍 [Mastering Bitcoin](http://uplib.fr/w/images/8/83/Mastering_Bitcoin-Antonopoulos.pdf)，你将看到，Bitcoin 的成功，不仅仅只有区块链的功劳，Game design 和密码学都是极其重要的部分！
 
-提到那些号称颠覆银河系的新科技、新技术，就不得不提 Garter 技术成熟度曲线(The Garter hyper cycle)。区块链号称颠覆整个金融行业的既有规则、既有模式。Garter 2016 技术成熟度曲线中，我们可以在过高期望的峰值（Peak of Inflated Expectations）附近找到区块链，所以，冷静再冷静。并且 Garter 也 [Bitcoin is the only proven blockchain](http://www.gartner.com/smarterwithgartner/3-trends-appear-in-the-gartner-hype-cycle-for-emerging-technologies-2016/)
-
+提到那些号称颠覆银河系的新科技、新技术，就不得不提 Garter 技术成熟度曲线(The Garter hyper cycle)。区块链号称颠覆整个金融行业的既有规则、既有模式，Garter 2016 技术成熟度曲线中，我们可以在过高期望的峰值（Peak of Inflated Expectations）附近找到区块链，所以，各位同学冷静再冷静。并且 Garter 也在分析 2016 成熟度曲线中提到 [Bitcoin is the only proven blockchain](http://www.gartner.com/smarterwithgartner/3-trends-appear-in-the-gartner-hype-cycle-for-emerging-technologies-2016/)，注意这里的区块链指的是 wikipedia 版的定义。接下来笔者信口胡来，跟大家一起分析一下为什么 Bitcoin is the only proven blockchain。
 <div style="text-align: center">
   <img src="resources/garter-2016.jpg"/>
 </div>
 
+Why Bitcoin is the only proven blockchain
+-----------------------------------------
 
+前面我们已经定义过，区块链是一个分布式数据库，维护持续增长的记录链表——被称为 blocks 的东西(神啊，原谅笔者蹩脚的汉语吧)，既然是分布式数据库，那么接下来这块由分布式数据库专家来写。
+
+提到分布式数据库，肯定离不开 [CAP 理论](https://en.wikipedia.org/wiki/CAP_theorem)，CAP 是一个很有意思的理论，在分布式系统中有着霸主一样的地位。
+
+CAP 理论：一个分布式系统最多只能同时满足一致性（Consistency）、可用性（Availability）和分区容忍性（Partition tolerance）这三项中的两项。
+
+这三项看起来都是很好的东西，怎么不能同时满足呢？宝宝不开心，一定是架构师技术不好，没有找到更好的方式。但是，有一个坏人还给证明了，CAP 是正确的！
+
+* 一致性 `All nodes see the same data at the same time`
+* 可用性 `Reads and writes always succeed`
+* 分区容忍性 `The system continues to operate despite arbitrary message loss or failure of part of the system`
+
+我们根据 Blockchain 的工作方式(Bitcoin 中矿工网络所维护的 blockchain 的工作方式)，每个矿工节点独立的工作(不考虑矿池，会加入无谓的复杂度)，接收 Bitcoin 用户的转账请求，竞争寻找新的满足要求的 Hash 值，将这些交易打包到新的 block 并广播出去(Gossip 算法)，或者接收并验证收到的广播数据，在同一刻，各个矿工的数据并不是严格一致的（有些接收到了一个广播，有些还没有，有些接收到了另一个广播），但是每个用户的读写请求都是会成功的，只是有可能读到的数据并不是最新的，也可能不是最终的，因此这是一个满足最终一致性的 AP 的系统。
+
+区块链(最起码 Bitcoin 用到的区块链)是一个完全副本的(每个矿工节点都维护一份完全都数据)、W=1, R=1 的单读单写的(客户端写成功一个矿工就算了，读一个矿工都数据就返回)、满足最终一致性的分布式数据库。完全副本带来的去中心化的好处，但是这是一剂很猛的药，理论上讲区块链所维护的数据量不能超过矿工参与者中磁盘容量最小值，否则这个矿工将要面临被退出的情况。另外受限于单个矿工的计算能力、全网的广播扩散速度，Bitcoin 限制了每 10min 一个 Block，每个 Block 1MB 的上限，使的 Bitcoin 网络的交易频率相对于 Visa、银联等低得多的多。
+
+但是比特币依然是唯一被证实的区块链，那什么是`证实的区块链`呢？笔者网上找了好久也找不到答案，笔者又要信口胡来了，区块链是一个完全副本的对不对，要全网广播都对不对？
+
+被证实的区块链(项目)指的是：
+
+```
+如果不能将这个项目中的区块链替换为分布式共享数据库，这个项目就是被证实的区块链
+```
+
+如果 Bitcoin 将区块链换成分布式共享数据库(变得易受攻击、篡改历史难度降低等)，Bitcoin 就不是目前大家看到的 Bitcoin，所以 Bitcoin 是被证明的区块链。
+
+被证实的区块链的定义提醒了各位，在区块链的基础上设计合理的游戏规则、奖励规则，将区块链用成区块链，而不是把区块链仅仅用成了一个分布式共享数据库，这才是真正意义的区块链。
+
+可惜的是，目前这样的项目真不多，笔者抱一下大腿：
+
+```
+Bitcoin is the only proven blockchain
+```
+
+DaoChain, the second proven blockchain
+--------------------------------------
 
 
 CP or AP? AP of course
