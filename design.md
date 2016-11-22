@@ -13,15 +13,21 @@ Blockchain is a distributed database that maintains a continuously-growing list 
 ```
 
 越来越多的研究者、专家把区块链归类为分布式数据库的范畴，也有人把区块链定义为一种类似于链表的数据结构：
-![](blockchain.png)
+<div style="text-align: center">
+  <img src="resources/block_chain.png"/>
+</div>
 ```
 区块链是一个类似于链表都数据结构，该数据结构中每一个节点记录了前节点中数据的 Hash 值、当前节点的数据，在当前节点不变都情况下，前节点的任何改变都会使得这条链无效(invalid)。
 ```
 
 笔者认为两种定义是不冲突的、可以说是相辅相成的。前者更多的强调区块链的分布式协作的集体行为，后者更多的关注这一协作群体中每一个个体——区块链本身。在大多数语境下，大家关注更多的是区块链分布式协作的集体效应，因此下文关于区块链，不特意说明的情况下，都与 wikipedia 的分布式数据库定义一致，关于区块链数据结构，推荐大家看一下一本详细讲解 bitcoin 技术书籍 [Mastering Bitcoin](http://uplib.fr/w/images/8/83/Mastering_Bitcoin-Antonopoulos.pdf)。
 
-提到那些号称颠覆银河系的新科技、新技术，就不得不提 Garter 技术成熟度曲线(The Garter hyper cycle)。区块链号称颠覆整个金融行业的既有规则、既有模式。Garter 2016 技术成熟度曲线中，我们可以在过高期望的峰值（Peak of Inflated Expectations）附近找到区块链，所以，冷静再冷静。并且 Garter 也 [Bitcoin is the only proven blockchain] http://www.gartner.com/smarterwithgartner/3-trends-appear-in-the-gartner-hype-cycle-for-emerging-technologies-2016/
-![](garter-2016.png)
+提到那些号称颠覆银河系的新科技、新技术，就不得不提 Garter 技术成熟度曲线(The Garter hyper cycle)。区块链号称颠覆整个金融行业的既有规则、既有模式。Garter 2016 技术成熟度曲线中，我们可以在过高期望的峰值（Peak of Inflated Expectations）附近找到区块链，所以，冷静再冷静。并且 Garter 也 [Bitcoin is the only proven blockchain](http://www.gartner.com/smarterwithgartner/3-trends-appear-in-the-gartner-hype-cycle-for-emerging-technologies-2016/)
+
+<div style="text-align: center">
+  <img src="resources/garter-2016.jpg"/>
+</div>
+
 
 
 
