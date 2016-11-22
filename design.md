@@ -43,7 +43,7 @@ CAP 理论：一个分布式系统最多只能同时满足一致性（Consistenc
 * 可用性 `Reads and writes always succeed`
 * 分区容忍性 `The system continues to operate despite arbitrary message loss or failure of part of the system`
 
-我们根据 Blockchain 的工作方式(Bitcoin 中矿工网络所维护的 blockchain 的工作方式)，每个矿工节点独立的工作(不考虑矿池，会加入无谓的复杂度)，接收 Bitcoin 用户的转账请求，竞争寻找新的满足要求的 Hash 值，将这些交易打包到新的 block 并广播出去(Gossip 算法)，或者接收并验证收到的广播数据，在同一刻，各个矿工的数据并不是严格一致的（有些接收到了一个广播，有些还没有，有些接收到了另一个广播），但是每个用户的读写请求都是会成功的，只是有可能读到的数据并不是最新的，也可能不是最终的，因此这是一个满足最终一致性的 AP 的系统。
+我们根据 Blockchain 的工作方式(Bitcoin 中矿工网络所维护的 blockchain 的工作方式)，每个矿工节点独立的工作(不考虑矿池，会加入无谓的复杂度)，接收 Bitcoin 用户的转账请求，竞争寻找新的满足要求的 Hash 值，将这些交易打包到新的 block 并广播出去(Gossip 算法)，或者接收并验证收到的广播数据，在同一刻，各个矿工的数据并不是严格一致的（有些接收到了一个广播，有些还没有，有些接收到了另一个广播），但是每个用户的读写请求都是会成功的，只是有可能读到的数据并不是最新的，也可能不是最终的，因此这是一个满足最终一致性的 `AP` 的系统。
 
 区块链(最起码 Bitcoin 用到的区块链)是一个完全副本的(每个矿工节点都维护一份完全都数据)、W=1, R=1 的单读单写的(客户端写成功一个矿工就算了，读一个矿工都数据就返回)、满足最终一致性的分布式数据库。完全副本带来的去中心化的好处，但是这是一剂很猛的药，理论上讲区块链所维护的数据量不能超过矿工参与者中磁盘容量最小值，否则这个矿工将要面临被退出的情况。另外受限于单个矿工的计算能力、全网的广播扩散速度，Bitcoin 限制了每 10min 一个 Block，每个 Block 1MB 的上限，使的 Bitcoin 网络的交易频率相对于 Visa、银联等低得多的多。
 
@@ -55,34 +55,46 @@ CAP 理论：一个分布式系统最多只能同时满足一致性（Consistenc
 如果不能将这个项目中的区块链替换为分布式共享数据库，这个项目就是被证实的区块链
 ```
 
-如果 Bitcoin 将区块链换成分布式共享数据库(变得易受攻击、篡改历史难度降低等)，Bitcoin 就不是目前大家看到的 Bitcoin，所以 Bitcoin 是被证明的区块链。
+如果 Bitcoin 将区块链换成分布式共享数据库(变得易受攻击、篡改历史难度大大降低等)，Bitcoin 就不是目前大家看到的 Bitcoin，所以 Bitcoin 是被证实的区块链。
 
 被证实的区块链的定义提醒了各位，在区块链的基础上设计合理的游戏规则、奖励规则，将区块链用成区块链，而不是把区块链仅仅用成了一个分布式共享数据库，这才是真正意义的区块链。
 
-可惜的是，目前这样的项目真不多，笔者抱一下大腿：
+可惜的是，目前这样的项目真不多，笔者抱一下 Garter 的大腿，站在 Garter 战队：
 
 ```
 Bitcoin is the only proven blockchain
 ```
 
-DaoChain, the second proven blockchain
---------------------------------------
+Docker 镜像及分享
+---------------
 
+Blockchain 独角戏上演太久，大家应该迫不及待想要看到第二位主角出场了吧？
 
-CP or AP? AP of course
+Docker 镜像(images)
 
-一致性与读写模型、副本策略
-单读单写、完全副本（这个真不多见啊，一个难题就是数据总量大的时候），最终一致性
+An image is an inert, immutable, file that's essentially a snapshot of a container. Images are created with the build command, and they'll produce a container when started with run. Images are stored in a Docker registry such as registry.hub.docker.com. Because they can become quite large, images are designed to be composed of layers of other images, allowing a miminal amount of data to be sent when transferring images over the network.
 
-等等，好像频道不对。我听到的区块链怎么不是这个？
-区块链技术试图在一个利益冲突的场景下构建一个满足分布式最终一致性的系统，它试图
-区块链技术试图调和各个利益相关方对每次数据更新达成共识，同时保证历史记录不会被篡改。High level
+本地的镜像可以通过 `docker images` 命令来查看，比如：
 
-Gartner 图，看图，bitcoin 玩家要注意了
+```shell
+$> docker images
+REPOSITORY                             TAG                 IMAGE ID            CREATED             SIZE
+daocloud.io/daocloud/cockroach         v0.4                9845d5c4db1d        2 weeks ago         206.1 MB
+daocloud.io/daocloud/hue               v0.1                0983a918d23a        2 weeks ago         1.184 GB
+daocloud.io/daocloud/hive-docker       v0.6                8d286cb94751        3 weeks ago         967.2 MB
+daocloud.io/daocloud/spark-cluster     v0.6                9862ddb186a4        4 weeks ago         738.3 MB
+daocloud.io/daocloud/dce-agent         2.0.3               3edfca3bd5aa        5 weeks ago         227.8 MB
+daocloud.io/daocloud/dce               2.0.3               08a9b59123b5        5 weeks ago         27.08 MB
+daocloud.io/daocloud/dce-controller    2.0.3               3bde2c3b0204        5 weeks ago         401 MB
+daocloud.io/daocloud/sparrow           v0.1                f4040ff887c8        7 weeks ago         599.2 MB
+daocloud.io/daocloud/dce-compose       2.0.3               e32a31fda169        8 weeks ago         21.08 MB
+daocloud.io/daocloud/dce-swarm         2.0.3               55c1954cdfb4        8 weeks ago         19.49 MB
+centos                                 6.8                 0cd976dc0a98        11 weeks ago        194.5 MB
+daocloud.io/daocloud/hadoop-cluster    v0.5                db929fad9145        12 weeks ago        858.1 MB
+daocloud.io/daocloud/zookeeper         v0.4                72d5965155da        3 months ago        567.2 MB
+daocloud.io/daocloud/dce-etcd          2.0.3               e81032a59e55        5 months ago        32.29 MB
+```
 
-
-
-我的狗币呢？狗币等其他仿bitcoin等虚拟货币应该是bitcoin的堂兄弟，甚至是亲兄弟，表兄弟都不能算。
 
 我们试图构建第二个能被证实都blockchain
 
