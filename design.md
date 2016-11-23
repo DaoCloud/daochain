@@ -116,21 +116,56 @@ Daochain
 
 正式一点，目前的公共镜像仓库是建立在开发者对仓库维护者的信任的基础上的，开发者相信共有仓库的维护者不会改变他们的镜像，但是在一些极端的情况下这个假设是不存在的，比如商业竞争、黑客攻击、内部员工故意使坏等等。
 
-用户有分享(有偿或者无偿)的需求，这正是 store.docker.com 正在布局的，有保证数据不被篡改的强烈需求。
+用户有分享(有偿或者无偿)的需求，这正是 https://store.docker.com/ 正在布局的，有保证数据不被篡改的强烈需求。
 
 **安全无小事**
 
 Daocloud在反病毒，漏洞检查之后隆重推出了分布式镜像校验机制——基于区块链的技术。
 
-简单来讲，用户A在上传镜像到共有仓库的同时，会将hash值上传到区块链上，DaoCloud 与众多区块链对维护者共同维护这条区块链（移除了开发者对集中化管理者的信任假设），保证任何人对区块链对非法篡改都不会得逞，正常的数据读写得到满足。用户 B 凭借对用户 A 的信任(比如声望很好的大公司，比如阿里、Google 或者公司同事)从共有仓库获取 Docker 镜像，同时从区块链中读取该镜像的 Hash 值，本地验证。
+简单来讲，用户 A 在上传镜像到共有仓库的同时，会将 hash 值上传到区块链上，DaoCloud 与众多区块链对维护者共同维护这条区块链（移除了开发者对集中化管理者的信任假设），保证任何人对区块链对非法篡改都不会得逞，正常的数据读写得到满足。用户 B 凭借对用户 A 的信任(比如声望很好的大公司，比如阿里、Google 或者公司同事)从共有仓库获取 Docker 镜像，同时从区块链中读取该镜像的 hash 值，本地验证。
 
-我们是不是 the second proven blockchain 呢？欢迎大家来讨论！
+Daochain 使用[以太坊](https://www.ethereum.org/) 作为 Blockchain 的实现，以太坊号称是第二代区块链(相对 Bitcoin 作为第一代区块链)，具有图灵完备的特征，是一个有智能合约功能的公共区块链平台，通过过密货币以太币的润滑作用，提供去中心化的虚拟机来处理点对点合约。注意 Daochain 只是用到了以太坊的实现，并没有使用它的公共区块链，而是自己私搭乱建了另一个专属的区块链，我们欢迎各位矿工加入我们的挖矿队伍，具体方式参见[内测及奖励](#内测及奖励)。
 
-镜像分享经济
+一个典型的智能合约长这个样子：
+
+```
+contract mortal {
+    /* Define variable owner of the type address*/
+    address owner;
+
+    /* this function is executed at initialization and sets the owner of the contract */
+    function mortal() { owner = msg.sender; }
+
+    /* Function to recover the funds on the contract */
+    function kill() { if (msg.sender == owner) selfdestruct(owner); }
+}
+
+contract greeter is mortal {
+    /* define variable greeting of the type string */
+    string greeting;
+
+    /* this runs when the contract is executed */
+    function greeter(string _greeting) public {
+        greeting = _greeting;
+    }
+
+    /* main function */
+    function greet() constant returns (string) {
+        return greeting;
+    }
+}
+```
+
+更多更详细关于智能合约的知识，可以参阅以太坊的 [Hello world sample](https://www.ethereum.org/greeter)
+
+讲到这里，聪明的你应该猜出来我们怎么做的了。我们是不是 the second proven blockchain 呢？欢迎大家来讨论！
+
+镜像共享经济
 ----------
 
-最近火热了一把的共享经济，IT 行业又有着不重复造轮子的原则，区块链的 Hash 值标示了 Author 对该镜像对著作权，镜像的共享经济值得我们共同期待。
+最近火热了一把的共享经济，IT 行业又供奉着不重复造轮子的原则，区块链的 hash 值完全标示了 Author 对该镜像对著作权，对智能合约加点盐，再加些密码，神奇的效果是不是就出来了？镜像的共享经济值得我们共同期待。
+
+**区块链真是一个神奇的存在，特别是具备图灵完备的以太坊!**
 
 内测及奖励
 --------
-
