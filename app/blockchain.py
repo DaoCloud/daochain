@@ -2,7 +2,7 @@ import os
 
 from web3 import RPCProvider, Web3
 
-from consts import SOURCE_ROOT
+from settings import SOURCE_ROOT
 from utils import hex_to_uint, load_json_from, print_dict, uint_to_hex
 from utils import memoize
 

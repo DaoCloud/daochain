@@ -1,9 +1,11 @@
 import json
 
+from settings import in_data_dir
+
 
 class Storage(object):
     def __init__(self):
-        self.path = '/tmp/dao_storage.json'
+        self.path = in_data_dir('dao_storage.json')
         self.data = None
 
     def set(self, key, val):

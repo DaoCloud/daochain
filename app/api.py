@@ -1,11 +1,11 @@
 from flask_restful import Api, Resource
 from flask_restful import reqparse
+from storage import store as _S
 
 from blockchain import DaoHubVerify
 from blockchain import NotEnoughBalance
 from imagetool import Client
-from server.imageutils import get_repos
-from server.storage import store as _S
+from imageutils import get_repos
 
 
 def load_api(app):

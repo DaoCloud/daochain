@@ -1,4 +1,5 @@
 import os
+import re
 import tarfile
 import tempfile
 from hashlib import md5, sha256
@@ -7,8 +8,8 @@ import requests
 from docker.client import Client as _C
 
 from blockchain import DaoHubVerify
-from server.settings import HUB_ENDPOINT
-from server.storage import store
+from settings import HUB_ENDPOINT
+from storage import store
 from utils import hex_to_uint
 
 
@@ -64,8 +65,7 @@ class Client(_C):
 
     def verify_image_hash(self, repoTag):
         from eth_abi.exceptions import DecodingError
-        from server import imageutils
-        registry, namespace, repo, tag = imageutils.parse_image_name(repoTag)
+        registry, namespace, repo, tag = parse_image_name(repoTag)
         resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(HUB_ENDPOINT, namespace))
         try:
             resp.raise_for_status()
@@ -90,8 +90,57 @@ class Client(_C):
         return signed, verify
 
 
+def parse_image_name(raw_name):
+    DEFAULT_REGISTRY_NAMESPACE = 'library'
+    DEFAULT_IMAGE_TAG = 'latest'
+    DEFAULT_REGISTRY_URL = 'registry-1.docker.io'
+    IS_REGISTRY = re.compile(r'\.|:|localhost')
+    IS_NONE_PRIVATE_REGISTRY = re.compile(DEFAULT_REGISTRY_URL + r'|daocloud.io')
+
+    def _name_tag(n):
+        s = n.split('@')
+        if len(s) != 1:
+            return s[0], s[1]
+
+        s = n.split(':')
+        if len(s) == 1:
+            return n, DEFAULT_IMAGE_TAG
+        # elif len(s) == 2:
+        else:
+            return s[0], s[1]
+
+    is_registry = lambda x: bool(IS_REGISTRY.search(x))
+    is_none_private_registry = lambda x: bool(IS_NONE_PRIVATE_REGISTRY.search(x))
+    raw_name = raw_name.strip()
+    splited_name = raw_name.split('/')
+    # deal with default registry
+    name, tag = _name_tag(splited_name[-1])
+    if len(splited_name) == 1:
+        registry = DEFAULT_REGISTRY_URL
+        namespace = DEFAULT_REGISTRY_NAMESPACE
+    elif len(splited_name) == 2 and not is_registry(splited_name[0]):
+        registry = DEFAULT_REGISTRY_URL
+        namespace = splited_name[0]
+    # deal with none private
+    elif len(splited_name) == 2 and is_none_private_registry(splited_name[0]):
+        registry = splited_name[0]
+        namespace = DEFAULT_REGISTRY_NAMESPACE
+    elif len(splited_name) == 3 and is_none_private_registry(splited_name[0]):
+        registry = splited_name[0]
+        namespace = splited_name[1]
+    # deal with private registry
+    elif len(splited_name) == 2 and is_registry(splited_name[0]):
+        registry = splited_name[0]
+        namespace = ''
+    # elif len(splited_name) == 2 and is_registry(splited_name[0]):
+    else:
+        registry = splited_name[0]
+        namespace = splited_name[1]
+    return registry, namespace, name, tag
+
+
 if __name__ == '__main__':
-    from server.docker_utils import docker_client
+    from app import docker_client
     from time import time
 
     c = docker_client()

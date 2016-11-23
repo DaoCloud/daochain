@@ -1,14 +1,13 @@
 version: '2'
 services:
   geth:
-    image: daocloud.io/revolution1/ethereum_geth
+    image: daocloud.io/alphabeta_com/geth
     restart: on-failure
     environment:
       - WS_SERVER=ws://47.90.1.168:3000
       - WS_SECRET=eth-net-stats-secret
       - NODES=enode://4356fb340716c7efed5c35dedcd89c0f42af5b974ababd9c4d60a0df6a949500258a045e4286100a6276cc339aacab4de44576c68659736b2d2df449f7dc1759@47.90.1.168:30303
     volumes:
-      - ./files/password:/root/files/password:ro
       - ./files/genesis.json:/root/files/genesis.json:ro
       - ./files/static-nodes.json:/root/.ethereum/static-nodes.json:ro
       - /etc/localtime:/etc/localtime:ro

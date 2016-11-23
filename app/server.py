@@ -2,19 +2,19 @@ import os
 
 from flask import Flask
 from flask import send_file, send_from_directory
+from settings import SOURCE_ROOT
 
-from server.api import load_api
-from server.settings import SERVER_ROOT_PATH
+from api import load_api
 
 
 def setup_routes(app):
     @app.route('/')
     def index():
-        return send_file(os.path.join(SERVER_ROOT_PATH, 'static', 'index.html'))
+        return send_file(os.path.join(SOURCE_ROOT, 'static', 'index.html'))
 
     @app.route('/<path:path>')
     def static_files(path):
-        return send_from_directory(os.path.join(SERVER_ROOT_PATH, 'static'), path)
+        return send_from_directory(os.path.join(SOURCE_ROOT, 'static'), path)
 
     @app.after_request
     def after_request(response):
@@ -33,6 +33,6 @@ def create_app(name=None):
     return app
 
 
-app = create_app()
 if __name__ == '__main__':
+    app = create_app()
     app.run('0.0.0.0', 8000, True, use_reloader=True)
