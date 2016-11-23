@@ -9,7 +9,7 @@ build:
             cache: true
 
         extract:
-            - /app/dist
+            - /root/dist
 
         package:
               dockerfile_path: Dockerfile

@@ -14,13 +14,13 @@ RUN apt-key adv --keyserver hkp://pgp.mit.edu:80 --recv-keys 573BFD6B3D8FBC64107
 
 COPY nginx.conf /etc/nginx/nginx.conf
 
-WORKDIR /app
+WORKDIR /root
 
-COPY ./package.json /app/
+COPY ./package.json /root/
 RUN npm install -q
 #RUN cnpm install -q
 
-COPY . /app/
+COPY . /root/
 
 ENV APP_DEBUG=true
 ENV NODE_ENV=production
