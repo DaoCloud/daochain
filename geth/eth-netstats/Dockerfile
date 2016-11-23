@@ -1,11 +1,17 @@
-FROM node:6.9.1
+FROM node:alpine
 
-RUN git clone https://github.com/cubedro/eth-netstats
-RUN cd /eth-netstats && npm install
-RUN cd /eth-netstats && npm install -g grunt-cli
-RUN cd /eth-netstats && grunt
+MAINTAINER DCS <dao@daocloud.io>
 
-WORKDIR /eth-netstats
+ADD https://github.com/cubedro/eth-netstats/archive/master.zip /root/
+
+RUN cd /root && \
+    unzip -q master.zip && \
+    cd eth-netstats-master && \
+    npm install -q && \
+    npm install -q -g grunt-cli && \
+    grunt
+
+WORKDIR /root/eth-netstats-master
 
 EXPOSE 3000
 

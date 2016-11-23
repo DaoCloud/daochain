@@ -1,5 +1,7 @@
 FROM node:alpine
 
+MAINTAINER DCS <dao@daocloud.io>
+
 RUN apk add --no-cache --virtual .build-deps  \
 	    go git make gcc musl-dev && \
     git clone --depth 1 https://github.com/ethereum/go-ethereum && \
