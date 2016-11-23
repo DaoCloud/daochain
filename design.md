@@ -1,5 +1,5 @@
-当区块链遇到docker 容器与区块链的美丽邂逅
-=================================
+当 Docker 遇到区块链
+==================
 
 这是一个文艺范十足(恶俗)的标题，试图撮合两个八杆子打不着的家伙。故事的结局一般都是按照套路出牌，两个主角愉快地在一起了。结局总是类似的，不过过程却有各自的精彩。
 
@@ -156,7 +156,7 @@ contract greeter is mortal {
 }
 ```
 
-更多更详细关于智能合约的知识，可以参阅以太坊的 [Hello world sample](https://www.ethereum.org/greeter)
+更多更详细关于智能合约的知识，可以参阅以太坊的 [Hello world sample](https://www.ethereum.org/greeter)。
 
 讲到这里，聪明的你应该猜出来我们怎么做的了。我们是不是 the second proven blockchain 呢？欢迎大家来讨论！
 
