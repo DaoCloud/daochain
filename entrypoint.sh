@@ -16,7 +16,7 @@ stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
 
 [program:daoserver]
-command=python /app/cli/server/gunicorn_runner.py
+command=python /daocloud/app/gunicorn_runner.py
 autorestart=true
 startsecs=0
 stderr_logfile=/dev/stderr

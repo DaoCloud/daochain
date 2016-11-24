@@ -1,0 +1,28 @@
+<div class="dao-layout">
+    <div class="login-layout">
+        <div class="bg-img"></div>
+        <div class="logo"></div>
+        <div class="login-container">
+            <h2 class="title">登录 DaoCloud 账号</h2>
+            <hr class="header-line">
+            <form class="ng-valid ng-dirty ng-valid-parse">
+                <div class="form-group">
+                    <label>邮箱/用户名</label>
+                    <input type="text" id="username" tabindex="1" ng-model="vm.account.email_or_mobile" ng-keypress="enter($event)" class="ng-valid ng-touched ng-not-empty ng-dirty ng-valid-parse">
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                    <a class="forget-pwd">忘记密码?</a>
+                    <input type="password" id="password" ng-model="vm.account.password" ng-keypress="enter($event)" tabindex="2" class="ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched">
+                </div>
+                <div class="form-group">
+                    <label>验证码</label>
+                    <input type="text" id="captcha" value="" ng-model="vm.account.captcha_solution" tabindex="3">
+                    <img src="{{vm.captcha_url}}" alt="" class="captcha_image" ng-click=" vm.getCapture() " />
+                </div>
+                <!-- ngIf: needVerify -->
+            </form>
+            <button class="dao-btn blue signin-btn" ng-click="vm.loginGo()" tabindex="3">登录</button>
+        </div>
+    </div>
+</div>

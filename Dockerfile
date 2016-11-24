@@ -6,9 +6,9 @@ RUN apk add --no-cache nginx supervisor
 
 ADD nginx.conf /etc/nginx/nginx.conf
 
-ADD . /app
+WORKDIR /daocloud
 
-WORKDIR /app/cli
+ADD app/requirements.pip /daocloud/
 
 RUN apk add --no-cache --virtual .build-deps  \
 		bzip2-dev \
@@ -27,11 +27,13 @@ RUN apk add --no-cache --virtual .build-deps  \
 	&& apk del .build-deps \
 	&& rm -rf /usr/src/python ~/.cache
 
-ADD app/dist/* /app/cli/server/static/
+ADD . /daocloud
+
+ADD root/dist/* /daocloud/app/static/
 
 ENV ETH_RPC_ENDPOINT=geth:8545
 ENV HUB_ENDPOINT=http://api.daocloud.co
 
 EXPOSE 80
 
-CMD [ "/app/entrypoint.sh" ]
+CMD [ "/daocloud/entrypoint.sh" ]
