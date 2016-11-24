@@ -122,7 +122,7 @@ class DefaultNamespaceAPI(Resource):
 
     def post(self):
         args = reqparse.RequestParser() \
-            .add_argument('namespace') \
+            .add_argument('namespace', required=True) \
             .parse_args()
         token = request.headers.get('Authorization')
         return hub_client(token=token) \

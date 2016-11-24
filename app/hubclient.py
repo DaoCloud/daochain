@@ -147,7 +147,7 @@ class Client(BaseClient):
         header = {'UserNameSpace': namespace}
         if namespace:
             header = {'UserNameSpace': namespace}
-        resp = self._post(url, data={"address": addr}, headers=header)
+        resp = self._post(url, json={"address": addr}, headers=header)
         if resp.status_code == 500:
             raise BindAddressFail(resp.status_code, addr, namespace)
         return resp.json()
