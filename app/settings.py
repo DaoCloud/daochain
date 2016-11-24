@@ -1,8 +1,10 @@
 import os
 
-SECRET_KEY = os.environ.get('SECRET_KEY') or 'monitor'
-HUB_ENDPOINT = os.getenv('HUB_ENDPOINT', 'http://api.daocloud.co')
+ERROR_404_HELP = False
 
+SECRET_KEY = os.getenv('SECRET_KEY') or 'monitor'
+HUB_ENDPOINT = os.getenv('HUB_ENDPOINT') or 'http://api.daocloud.co'
+ETH_RPC_ENDPOINT = os.getenv('ETH_RPC_ENDPOINT') or 'localhost:8545'
 DATA_DIR = os.path.expanduser('~/.daocloud')
 
 if not os.path.exists(DATA_DIR):

@@ -10,5 +10,5 @@ sleep 3
 /usr/bin/geth --datadir "/root/.ethereum" init /root/files/genesis.json
 
 /usr/bin/geth --networkid=23333 --datadir "/root/.ethereum" \
---rpc --rpccorsdomain="*" --rpcaddr '0.0.0.0' --rpcapi "admin,db,personal,eth,net,web3,miner" \
+--rpc --rpccorsdomain="*" --rpcaddr '0.0.0.0' --rpcapi "admin,db,personal,eth,net,web3,miner,txpool" \
 --bootnodes="$NODES"

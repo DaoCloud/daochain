@@ -1,14 +1,13 @@
 import os
-import re
 import tarfile
 import tempfile
 from hashlib import md5, sha256
 
-import requests
 from docker.client import Client as _C
+from eth_abi.exceptions import DecodingError
 
 from blockchain import DaoHubVerify
-from settings import HUB_ENDPOINT
+from hubclient import Client as Hub
 from storage import store
 from utils import hex_to_uint, parse_image_name
 
@@ -64,14 +63,8 @@ class Client(_C):
         self.pull(repository, tag, insecure_registry=True, auth_config=auth_config)
 
     def verify_image_hash(self, repoTag):
-        from eth_abi.exceptions import DecodingError
         registry, namespace, repo, tag = parse_image_name(repoTag)
-        resp = requests.get('{}/hub/v2/blockchain/tenant/{}/addresses'.format(HUB_ENDPOINT, namespace))
-        try:
-            resp.raise_for_status()
-            addresses = resp.json()["results"]
-        except:
-            addresses = []
+        addresses = Hub().addresses(namespace)
         if not addresses:
             return False, False
         image_hash = self.get_image_hash_uint(repoTag)
