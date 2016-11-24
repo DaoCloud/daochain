@@ -1,11 +1,11 @@
 from flask_restful import Api, Resource
 from flask_restful import reqparse
-from storage import store as _S
 
 from blockchain import DaoHubVerify
 from blockchain import NotEnoughBalance
-from imagetool import Client
-from imageutils import get_repos
+from dockerclient import Client
+from localimage import get_repos
+from storage import store as _S
 
 
 def load_api(app):
@@ -35,7 +35,6 @@ class ImageVerifyAPI(Resource):
         super(ImageVerifyAPI, self).__init__()
 
     def post(self):
-        from imagetool import Client
         c = Client()
         args = self.reqparse.parse_args()
         signed, verify = c.verify_image_hash(args['repo_tag'])
@@ -51,7 +50,6 @@ class ImagePullAPI(Resource):
         super(ImagePullAPI, self).__init__()
 
     def post(self):
-        from imagetool import Client
         c = Client()
         args = self.reqparse.parse_args()
         c.pull_image(args['repo_tag'], username=args.get('username'), password=args.get('password'))

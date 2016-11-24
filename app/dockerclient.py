@@ -10,7 +10,7 @@ from docker.client import Client as _C
 from blockchain import DaoHubVerify
 from settings import HUB_ENDPOINT
 from storage import store
-from utils import hex_to_uint
+from utils import hex_to_uint, parse_image_name
 
 
 class Client(_C):
@@ -88,55 +88,6 @@ class Client(_C):
             except DecodingError:
                 continue
         return signed, verify
-
-
-def parse_image_name(raw_name):
-    DEFAULT_REGISTRY_NAMESPACE = 'library'
-    DEFAULT_IMAGE_TAG = 'latest'
-    DEFAULT_REGISTRY_URL = 'registry-1.docker.io'
-    IS_REGISTRY = re.compile(r'\.|:|localhost')
-    IS_NONE_PRIVATE_REGISTRY = re.compile(DEFAULT_REGISTRY_URL + r'|daocloud.io')
-
-    def _name_tag(n):
-        s = n.split('@')
-        if len(s) != 1:
-            return s[0], s[1]
-
-        s = n.split(':')
-        if len(s) == 1:
-            return n, DEFAULT_IMAGE_TAG
-        # elif len(s) == 2:
-        else:
-            return s[0], s[1]
-
-    is_registry = lambda x: bool(IS_REGISTRY.search(x))
-    is_none_private_registry = lambda x: bool(IS_NONE_PRIVATE_REGISTRY.search(x))
-    raw_name = raw_name.strip()
-    splited_name = raw_name.split('/')
-    # deal with default registry
-    name, tag = _name_tag(splited_name[-1])
-    if len(splited_name) == 1:
-        registry = DEFAULT_REGISTRY_URL
-        namespace = DEFAULT_REGISTRY_NAMESPACE
-    elif len(splited_name) == 2 and not is_registry(splited_name[0]):
-        registry = DEFAULT_REGISTRY_URL
-        namespace = splited_name[0]
-    # deal with none private
-    elif len(splited_name) == 2 and is_none_private_registry(splited_name[0]):
-        registry = splited_name[0]
-        namespace = DEFAULT_REGISTRY_NAMESPACE
-    elif len(splited_name) == 3 and is_none_private_registry(splited_name[0]):
-        registry = splited_name[0]
-        namespace = splited_name[1]
-    # deal with private registry
-    elif len(splited_name) == 2 and is_registry(splited_name[0]):
-        registry = splited_name[0]
-        namespace = ''
-    # elif len(splited_name) == 2 and is_registry(splited_name[0]):
-    else:
-        registry = splited_name[0]
-        namespace = splited_name[1]
-    return registry, namespace, name, tag
 
 
 if __name__ == '__main__':
