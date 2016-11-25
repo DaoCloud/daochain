@@ -90,14 +90,14 @@ class DefaultAccountAPI(Resource):
 class AddressAPI(Resource):
     def get(self):
         args = reqparse.RequestParser() \
-            .add_argument('org') \
+            .add_argument('namespace') \
             .parse_args()
-        org = args.get('org')
+        namespace = args.get('namespace')
         token = request.headers.get('Authorization')
-        if not org:
+        if not namespace:
             return hub_client(token=token) \
                        .get_all_bound_addresses(), 200
-        return hub_client().addresses(org), 200
+        return hub_client().addresses(namespace), 200
 
     def post(self):
         args = reqparse.RequestParser() \

@@ -110,12 +110,12 @@ class Client(BaseClient):
             if resp.json()['error_id'] == 'tenant_not_found':
                 raise TenantNotFound(resp.json())
         addresses = [i.get('address') for i in resp.json()["results"]]
-        return {'tenant': tenant, 'addresses': addresses}
+        return {tenant: addresses}
 
     def get_all_bound_addresses(self):
         def get_addr(org, org_addrs):
             try:
-                org_addrs[org] = self.addresses(org).get('addresses')
+                org_addrs[org] = self.addresses(org).get(org)
             except:
                 pass
 
@@ -160,6 +160,7 @@ class Client(BaseClient):
 
     def set_default_namespace(self, namespace):
         self.default_namespace = namespace
+        return namespace
 
     def get_default_namespace(self):
         return self.default_namespace
