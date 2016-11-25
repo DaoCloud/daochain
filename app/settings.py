@@ -7,6 +7,8 @@ HUB_ENDPOINT = os.getenv('HUB_ENDPOINT') or 'http://api.daocloud.co'
 ETH_RPC_ENDPOINT = os.getenv('ETH_RPC_ENDPOINT') or 'localhost:8545'
 DATA_DIR = os.path.expanduser('~/.daocloud')
 
+RECENT_HASH_TIME_BUCKET_SIZE = 50
+
 if not os.path.exists(DATA_DIR):
     os.mkdir(DATA_DIR)
 

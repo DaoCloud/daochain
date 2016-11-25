@@ -1,7 +1,11 @@
+import json
+
+import docker
 from flask import request
 from flask_restful import Api, Resource
 from flask_restful import reqparse
 
+from app.errors import NotFound
 from blockchain import DaoHubVerify
 from blockchain import NotEnoughBalance
 from dockerclient import Client as docker_client
@@ -16,6 +20,7 @@ def load_api(app):
     rest.add_resource(ImagesAPI, '/api/images')
     rest.add_resource(ImageVerifyAPI, '/api/verify-image')
     rest.add_resource(ImagePullAPI, '/api/pull-image')
+    rest.add_resource(EstimatePull, '/api/pull-estimate')
     rest.add_resource(ImageSignAPI, '/api/sign-image')
     rest.add_resource(DefaultAccountAPI, '/api/default-account')
     rest.add_resource(AddressAPI, '/api/hub/addresses')
@@ -60,6 +65,21 @@ class ImagePullAPI(Resource):
                                              username=args.get('username'),
                                              password=args.get('password'))
         return dict(task_id=task_id), 200
+
+
+class EstimatePull(Resource):
+    def get(self):
+        args = reqparse.RequestParser() \
+            .add_argument('repo_tag', required=True) \
+            .add_argument('with_cache', type=bool, default=False) \
+            .parse_args()
+        repo_tag = args.get('repo_tag')
+        with_cache = args.get('with_cache')
+        try:
+            time = docker_client().estimate_image_hash_time(repo_tag, with_cache)
+            return time, 200
+        except docker.errors.NotFound as e:
+            raise NotFound(json.loads(e.explanation))
 
 
 class ImageSignAPI(Resource):

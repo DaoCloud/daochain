@@ -2,7 +2,7 @@ import gevent
 from requests import request
 
 from app.blockchain import web3_client
-from app.errors import BindAddressFail, TenantNotFound, Unauthorized
+from app.errors import BindAddressFail, NotFound, Unauthorized
 from app.settings import HUB_ENDPOINT
 from app.utils import memoize
 from storage import store as _S
@@ -108,7 +108,7 @@ class Client(BaseClient):
         resp = self._get(url)
         if resp.status_code == 404:
             if resp.json()['error_id'] == 'tenant_not_found':
-                raise TenantNotFound(resp.json())
+                raise NotFound(resp.json())
         addresses = [i.get('address') for i in resp.json()["results"]]
         return {tenant: addresses}
 

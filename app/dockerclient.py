@@ -3,31 +3,39 @@ import os
 import tarfile
 import tempfile
 from hashlib import md5, sha256
+from time import time
 
 import gevent
 from docker.client import Client as _C
 from eth_abi.exceptions import DecodingError
 
+from app.settings import RECENT_HASH_TIME_BUCKET_SIZE
 from blockchain import DaoHubVerify
 from hubclient import Client as Hub
 from storage import Cache
-from storage import store
+from storage import store as _S
+from thirdparty.purepythonpolyfit.purePythonPolyFit import PolyFit
+from utils import Bucket
 from utils import gen_random_str, hex_to_uint, parse_image_name
 
 
 class Client(_C):
     def get_image_hash_with_cache(self, resource_id, *args):
         image_id = self.image_id(resource_id)
-        h = store.get(image_id)
+        h = _S.get(image_id)
         if not h:
             h = self.get_image_hash(resource_id, *args)
-            store.set(image_id, h)
+            _S.set(image_id, h)
         return h
 
     def image_id(self, resource_id):
-        return self.inspect_image(resource_id)['Config']['Image']
+        return self.inspect_image(resource_id)['Id']
 
     def get_image_hash(self, resource_id, hasher=sha256, blocksize=4096):
+        start_t = time()
+        image_detail = self.inspect_image(resource_id)
+        image_id = image_detail['Id']
+        size = image_detail['Size']
         image = self.get_image(resource_id)
         f_handler, filename = tempfile.mkstemp(suffix='.tar', text=False)
         with open(filename, 'wb') as f:
@@ -41,24 +49,50 @@ class Client(_C):
                 continue
             h = md5()
             while True:
-                line = f.readline(blocksize)
-                if not line:
+                buf = f.readline(blocksize)
+                if not buf:
                     break
-                h.update(line)
+                h.update(buf)
             hashes.append(h.hexdigest())
         os.remove(filename)
         h = hasher()
         h.update("$".join(sorted(hashes)))
         rt = h.hexdigest()
-        image_id = self.image_id(resource_id)
-        if store.get(image_id) != rt:
-            store.set(image_id, rt)
+        end_t = time()
+        b = Bucket(_S.get('RECENT_HASH_TIME', []), RECENT_HASH_TIME_BUCKET_SIZE)
+        b.push((size, (end_t - start_t)))
+        _S.set('RECENT_HASH_TIME', b)
+        if _S.get(image_id) != rt:
+            _S.set(image_id, rt)
         return rt
+
+    def estimate_image_hash_time(self, resource_id, with_cache=False):
+        b = _S.get('RECENT_HASH_TIME', [])
+        if with_cache and _S.has(self.image_id(resource_id)):
+            return 0
+        if b:
+            size = self.inspect_image(resource_id)['Size']
+            points = {}
+            for i in b:
+                if i[0] in points:
+                    points[i[0]] = (points[i[0]] + i[1]) / 2.0
+                else:
+                    points[i[0]] = i[1]
+            x = points.keys()
+            y = points.values()
+            if len(x) > 2:
+                predict = PolyFit(x, y)
+                return predict[size]
+            else:
+                efficiency = sum(x) / sum(y)
+                return size / efficiency
+        return -1
 
     def get_image_hash_uint(self, resource_id, hasher=sha256, blocksize=4096):
         h = self.get_image_hash_with_cache(resource_id, hasher, blocksize)
         return hex_to_uint(h)
 
+    # TODO: make it better using websocket
     def pull_image(self, repository, tag=None, username=None, password=None):
         _, _, _, _tag = parse_image_name(repository)
         if not tag:
@@ -104,7 +138,7 @@ class Client(_C):
                         finished=False
                     )
 
-        task_id = gen_random_str(8)
+        task_id = 'p_%s' % gen_random_str(8)
 
         def consume():
             cache = Cache()
@@ -142,15 +176,13 @@ class Client(_C):
 
 
 if __name__ == '__main__':
-    from app import docker_client
-    from time import time
-
-    c = docker_client()
+    c = Client()
+    repo_tag = 'debian:latest'
+    print('repo_tag:                   %s' % repo_tag)
+    print('estimate:                   %ss' % c.estimate_image_hash_time(repo_tag))
     t1 = time()
-    print(c.get_image_hash('daocloud.io/revolution1/ethereum_geth:latest'))
+    print('get_image_hash:             %s' % c.get_image_hash(repo_tag))
     t2 = time()
-    # print(c.get_image_hash('daocloud.co/eric/d2053:latest'))
-    print(c.get_image_hash_with_cache('daocloud.io/revolution1/ethereum_geth:latest'))
+    print('get_image_hash_with_cache:\t%s' % c.get_image_hash_with_cache(repo_tag))
     t3 = time()
-
-    print('hash: %ss   cache: %ss' % (t2 - t1, t3 - t2))
+    print('hash: %ss   cache: %ss\n' % (t2 - t1, t3 - t2))

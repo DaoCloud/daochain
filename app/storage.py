@@ -8,6 +8,10 @@ class Storage(object):
         self.path = in_data_dir('dao_storage.json')
         self.data = None
 
+    def has(self, key):
+        self.load()
+        return key in self.data
+
     def set(self, key, val):
         self.load()
         self.data[key] = val
@@ -21,9 +25,9 @@ class Storage(object):
         with open(self.path, 'w') as f:
             json.dump(self.data, f)
 
-    def get(self, key):
+    def get(self, key, default=None):
         self.load()
-        return self.data.get(key)
+        return self.data.get(key, default)
 
     def load(self, force=False):
         if not force and self.data is not None:
@@ -51,6 +55,10 @@ class Cache(object):
         with open(cls.path, 'w'):
             pass
 
+    def has(self, key):
+        self.load()
+        return key in self.data
+
     def set(self, key, val):
         self.load()
         self.data[key] = val
@@ -64,9 +72,9 @@ class Cache(object):
         with open(self.path, 'w') as f:
             json.dump(self.data, f)
 
-    def get(self, key):
+    def get(self, key, default=None):
         self.load()
-        return self.data.get(key)
+        return self.data.get(key, default)
 
     def load(self, force=False):
         if not force and self.data is not None:

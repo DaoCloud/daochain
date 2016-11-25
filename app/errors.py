@@ -1,7 +1,7 @@
 from werkzeug.exceptions import HTTPException
 
 
-class TenantNotFound(HTTPException):
+class NotFound(HTTPException):
     def __init__(self, data):
         self.code = 404
         self.data = data
