@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import unittest
 
-from app.imagetool import parse_image_name
+from app.utils import parse_image_name
 
 _IMAGE_NAME_TEST_DATA = \
     '''
@@ -49,7 +49,7 @@ class MyTestCase(unittest.TestCase):
     def test_parse_image_name(self):
         for line in IMAGE_NAME_TEST_DATA:
             _input = line[0]  # raw_name
-            _output = tuple(line[1:])  # registry, namespace, name, tag
+            _output = tuple(line[1:])  # registry, default_namespace, name, tag
             self.assertEqual(parse_image_name(_input), _output)
 
 

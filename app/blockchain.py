@@ -2,7 +2,7 @@ import os
 
 from web3 import RPCProvider, Web3
 
-from settings import SOURCE_ROOT
+from settings import ETH_RPC_ENDPOINT, SOURCE_ROOT
 from utils import hex_to_uint, load_json_from, print_dict, uint_to_hex
 from utils import memoize
 
@@ -14,8 +14,7 @@ def contract_deployed():
 
 @memoize
 def web3_client():
-    import os
-    endpoint = os.getenv('ETH_RPC_ENDPOINT', 'localhost:8545')
+    endpoint = ETH_RPC_ENDPOINT
     host, port = endpoint.split(':')
     return Web3(RPCProvider(host=host, port=int(port)))
 
