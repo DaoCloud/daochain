@@ -44,16 +44,22 @@ class ImageVerifyAPI(Resource):
 
 
 class ImagePullAPI(Resource):
+    def get(self):
+        args = reqparse.RequestParser() \
+            .add_argument('task_id', required=True) \
+            .parse_args()
+        return docker_client().poll_pull_progress(task_id=args.get('task_id')), 200
+
     def post(self):
         args = reqparse.RequestParser() \
             .add_argument('repo_tag', required=True) \
-            .add_argument('username', required=True) \
-            .add_argument('password', required=True) \
+            .add_argument('username') \
+            .add_argument('password') \
             .parse_args()
-        docker_client().pull_image(args.get('repo_tag'),
-                                   username=args.get('username'),
-                                   password=args.get('password'))
-        return dict(pull=True)
+        task_id = docker_client().pull_image(args.get('repo_tag'),
+                                             username=args.get('username'),
+                                             password=args.get('password'))
+        return dict(task_id=task_id), 200
 
 
 class ImageSignAPI(Resource):
@@ -112,7 +118,14 @@ class AddressAPI(Resource):
 class DelAddressAPI(Resource):
     def delete(self, addr):
         token = request.headers.get('Authorization')
-        return hub_client(token=token).del_address(addr), 204
+        args = reqparse.RequestParser() \
+            .add_argument('namespace') \
+            .parse_args()
+        ok = hub_client(token=token).del_address(addr, args.get('namespace'))
+        if ok:
+            return None, 204
+        else:
+            return None, 400
 
 
 class DefaultNamespaceAPI(Resource):

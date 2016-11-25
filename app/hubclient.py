@@ -60,8 +60,8 @@ class Client(BaseClient):
         headers = kwargs.get('headers', {})
         if self.token:
             headers.setdefault('Authorization', self.token)
-        if self.default_namespace:
-            headers.setdefault('UserNameSpace', self.default_namespace)
+        headers.setdefault('User-Agent',
+                           'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.71')
         kwargs['headers'] = headers
         resp = super(Client, self)._request(method, url, **kwargs)
         if resp.status_code == 401:
@@ -144,7 +144,7 @@ class Client(BaseClient):
 
     def bind_address(self, addr, namespace=None):
         url = '/hub/v2/blockchain/addresses'
-        header = {'UserNameSpace': namespace}
+        header = {}
         if namespace:
             header = {'UserNameSpace': namespace}
         resp = self._post(url, json={"address": addr}, headers=header)
@@ -152,11 +152,17 @@ class Client(BaseClient):
             raise BindAddressFail(resp.status_code, addr, namespace)
         return resp.json()
 
-    def del_address(self, addr):
+    def del_address(self, addr, namespace=None):
         url = '/hub/v2/blockchain/addresses/{}'.format(addr)
-        resp = self._delete(url)
+        header = {}
+        if namespace:
+            header = {'UserNameSpace': namespace}
+        resp = self._delete(url, headers=header)
         resp.raise_for_status()
-        return resp.json()
+        if resp.status_code == 204:
+            _S.delete('BOUND_ORG')
+            return True
+        return False
 
     def set_default_namespace(self, namespace):
         self.default_namespace = namespace

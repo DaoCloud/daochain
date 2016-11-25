@@ -1,15 +1,18 @@
+import json
 import os
 import tarfile
 import tempfile
 from hashlib import md5, sha256
 
+import gevent
 from docker.client import Client as _C
 from eth_abi.exceptions import DecodingError
 
 from blockchain import DaoHubVerify
 from hubclient import Client as Hub
+from storage import Cache
 from storage import store
-from utils import hex_to_uint, parse_image_name
+from utils import gen_random_str, hex_to_uint, parse_image_name
 
 
 class Client(_C):
@@ -57,14 +60,69 @@ class Client(_C):
         return hex_to_uint(h)
 
     def pull_image(self, repository, tag=None, username=None, password=None):
+        _, _, _, _tag = parse_image_name(repository)
+        if not tag:
+            tag = _tag
         auth_config = None
         if username and password:
             auth_config = dict(username=username, password=password)
-        self.pull(repository, tag, insecure_registry=True, auth_config=auth_config)
+        resp = self.pull(repository, tag, stream=True, insecure_registry=True, auth_config=auth_config)
+
+        def iter_json():
+            for i in resp:
+                i = i.strip()
+                if not i:
+                    continue
+                try:
+                    j = json.loads(i)
+                    yield j
+                except ValueError:
+                    continue
+
+        layers = {}
+        for j in iter_json():
+            if j.get('status') == 'Pulling fs layer':
+                layers[j.get('id')] = {}
+            elif layers or j.get('status') == 'Downloading':
+                break
+
+        def iter_progress():
+            for _j in iter_json():
+                if _j.get('status') == 'Downloading':
+                    layers[_j.get('id')] = _j.get('progressDetail')
+                    total = None
+                    current = None
+                    if all(layers):
+                        total = sum([i.get('total', 0) for i in layers.values()])
+                        current = sum([i.get('current', 0) for i in layers.values()])
+                    yield dict(
+                        layer_count=len(layers),
+                        layers=layers,
+                        current=current,
+                        total=total,
+                        percent=current * 100 / total,
+                        finished=False
+                    )
+
+        task_id = gen_random_str(8)
+
+        def consume():
+            cache = Cache()
+            for i in iter_progress():
+                cache.set(task_id, i)
+            cache.set(task_id, {'finished': True, 'percent': 100})
+
+        gevent.spawn(consume)
+        # consume()
+        return task_id
+
+    @staticmethod
+    def poll_pull_progress(task_id):
+        return Cache().get(task_id) or {}
 
     def verify_image_hash(self, repoTag):
-        registry, namespace, repo, tag = parse_image_name(repoTag)
-        addresses = Hub().addresses(namespace)
+        _, namespace, _, _ = parse_image_name(repoTag)
+        addresses = Hub().addresses(namespace).get(namespace)
         if not addresses:
             return False, False
         image_hash = self.get_image_hash_uint(repoTag)
@@ -73,7 +131,7 @@ class Client(_C):
         verify = False
         for address in addresses:
             try:
-                hash = d.queryImage(address['address'], repoTag)
+                hash = d.queryImage(address, repoTag)
                 if hash[0]:
                     signed = True
                 if hash[0] == image_hash:

@@ -2,9 +2,10 @@ import os
 
 from flask import Flask
 from flask import send_file, send_from_directory
-from settings import SOURCE_ROOT
 
 from api import load_api
+from settings import SOURCE_ROOT
+from storage import Cache
 
 
 def setup_routes(app):
@@ -28,6 +29,7 @@ def create_app(name=None):
     app = Flask(name or 'app')
     app.config.root_path = os.path.dirname(os.path.abspath(__file__))
     app.config.from_pyfile('settings.py')
+    Cache.init()
     load_api(app)
     setup_routes(app)
     return app

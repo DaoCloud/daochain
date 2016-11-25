@@ -1,8 +1,10 @@
 # encoding=utf-8
 from __future__ import print_function
 
+import base64
 import functools
 import json
+import os
 import re
 import string
 import sys
@@ -10,6 +12,10 @@ from inspect import getargspec
 from inspect import getdoc
 
 from docopt import DocoptExit, docopt
+
+
+def gen_random_str(length):
+    return base64.b32encode(os.urandom(3 * length))[:length].lower()
 
 
 def hex_to_uint(s):
