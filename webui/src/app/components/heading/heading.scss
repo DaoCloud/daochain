@@ -1,43 +1,14 @@
 .heading {
-	background-color: #fff;
-	height: 60px;
-	line-height: 60px;
-	border-bottom: 1px solid #e4e7ee;
-
-	.sign {
-		height: 60px;
-		line-height: 60px;
-
-		span {
-			display: inline-block;
-			text-align: center;
-			height: 60px;
-			width: 136px;
-			font-size: 1.6rem;
-			float: right;
-			border-left: 1px solid #e4e7ed;
-		}
-	}
-
-	.userspace {
-		position: absolute;
-		right: 40px;
-
-	}
-
-	.org-list {
-		height: 52px;
-		line-height: 52px;
-		padding: 0;
-		border-top: 1px solid #e6e9ed;
-
-		a {
-			color: #656d78;
-			height: 52px;
-			line-height: 52px;
-			padding: 15px 18px;
-			font-size: 15px;
-			font-weight: 700;
-		}
-	}
+    background-color: #fff;
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 1px solid #e4e7ee;
+    .username {
+        position: absolute;
+        right: 0;
+        padding: 0 30px;
+        border-left: 1px solid #e4e7ee;
+        color: #3d4450;
+        font-size: 18px;
+    }
 }

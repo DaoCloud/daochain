@@ -1,41 +1,88 @@
 <navbar></navbar>
 <heading></heading>
 <section class="person">
-    <div class="form-wrapper">
-        <form class="switch-group">
-            <div class="user">
-                <div class="user-logo">
-                    <img src="{{ $ctrl.userInfo.avatar }}" alt="" />
-                </div>
-                <div class="user-name">{{ $ctrl.userInfo.username }}</div>
-                <div class="user-balance" ng-if=" $ctrl.defaultAddress ">余额 : {{ $ctrl.balance }}</div>
-                <div class="user-logout">
-                    <button type="button" class="dao-btn blue" ng-click=" $ctrl.logout() ">登出</button>
-                </div>
-            </div>
-            <div class="wallet">
-                <ul>
-                    <li ng-repeat=" x in $ctrl.walletList " class="wallet-address">
-                        <span class="wallet-name tabular-num">{{x.id}}</span><span class="add-default" ng-if="!x.is_default" ng-click="$ctrl.setDefault(x.id)">设为默认</span>
-                        <span ng-if="x.is_default" class="default-wallet">默认钱包</span>
-                    </li>
-                </ul>
-                <div class="add-new" ng-if=" !$ctrl.defaultAddress ">
-                    <span>请输入密码，创建新钱包</span>
-                    <dao-input-container icon-inside loading="false">
-                        <input type="text">
-                    </dao-input-container>
-                    <button type="button" class="dao-btn" ng-click="$ctrl.getWalletValue()">提交</button>
-                </div>
-            </div>
-            <div class="settings">
-                <div class="">
-                    <dao-switch name="start-dig" class="asd hhh" ng-model="$ctrl.isMining" ng-change="$ctrl.changeMine()"></dao-switch>
-                    <span ng-if=" !$ctrl.isMining ">开始挖矿</span>
-                    <span ng-if=" $ctrl.isMining ">正在挖矿...</span>
-                    <span ng-if=" $ctrl.isMining ">{{ $ctrl.hashrate }} kH/s</span>
-                </div>
-            </div>
-        </form>
+    <div class="info-title">
+        {{ $ctrl.titleName }}
     </div>
+    <div class="dao-list-group-container">
+        <ul class="dao-list-group">
+            <li class="dao-list-item" ng-class="{active: $ctrl.tabIndex === 0}" ng-click=" $ctrl.tabIndex = 0; $ctrl.titleName='组织信息' ">组织信息<span class="icon"><svg><use xlink:href="#icon_caret-right"></use></svg></span></li>
+            <li class="dao-list-item" ng-class="{active: $ctrl.tabIndex === 1}" ng-click=" $ctrl.tabIndex = 1; $ctrl.titleName='账户信息' ">账户信息<span class="icon"><svg><use xlink:href="#icon_caret-right"></use></svg></span></li>
+        </ul>
+    </div>
+    <div class="setting-layout-container">
+        <div class="dao-setting-layout" ng-if=" $ctrl.tabIndex === 0 ">
+            <div class="dao-setting-layout-title">
+                <div class="dao-setting-title">
+                    组织信息
+                </div>
+            </div>
+            <div class="dao-setting-section">
+                <div class="dao-setting-item">
+                    <div class="dao-setting-label">
+                        头像
+                    </div>
+                    <div class="dao-setting-content" ng-init="switch = true">
+                        <img src="{{ $ctrl.userInfo.avatar }}" class="info-avatar" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="dao-setting-section">
+                <div class="dao-setting-item">
+                    <div class="dao-setting-label">
+                        组织名称
+                    </div>
+                    <div class="dao-setting-content">
+                        {{ $ctrl.userInfo.username }}
+                    </div>
+                </div>
+            </div>
+            <div class="dao-setting-section">
+                <div class="dao-setting-title">
+                    <button class="dao-btn ghost" ng-click=" $ctrl.logout() ">注销</button>
+                </div>
+            </div>
+        </div>
+        <div class="dao-setting-layout" ng-if=" $ctrl.tabIndex === 1 ">
+            <div class="dao-setting-layout-title">
+                <div class="dao-setting-title">
+                    账户信息
+                </div>
+            </div>
+            <div class="dao-setting-section">
+                <div class="dao-setting-item">
+                    <div class="dao-setting-label">
+                        账户余额
+                    </div>
+                    <div class="dao-setting-content" ng-init="switch = true">
+                        {{ $ctrl.balance }}
+                    </div>
+                </div>
+            </div>
+            <div class="dao-setting-section">
+                <div class="dao-setting-item">
+                    <div class="dao-setting-label">
+                        钱包地址
+                    </div>
+                    <div class="dao-setting-content">
+                        {{ $ctrl.walletAddress }}
+                    </div>
+                </div>
+            </div>
+            <div class="dao-setting-section">
+                <div class="dao-setting-item">
+                    <div class="dao-setting-label">
+                        挖矿开关
+                    </div>
+                    <div class="dao-setting-content" ng-init="switch = true">
+                        <dao-switch name="start-dig" class="asd hhh" ng-model="$ctrl.isMining" ng-change="$ctrl.changeMine()"></dao-switch>
+                        <span ng-if=" !$ctrl.isMining ">开始挖矿</span>
+                        <span ng-if=" $ctrl.isMining ">正在挖矿...</span>
+                        <span ng-if=" $ctrl.isMining ">{{ $ctrl.hashrate }} kH/s</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
 </section>
