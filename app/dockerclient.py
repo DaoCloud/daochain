@@ -81,8 +81,10 @@ class Client(_C):
             x = points.keys()
             y = points.values()
             if len(x) > 2:
-                predict = PolyFit(x, y)
-                return predict[size]
+                predict = PolyFit(x, y)[size]
+                if predict < 0:
+                    return 0
+                return predict
             else:
                 efficiency = sum(x) / sum(y)
                 return size / efficiency
