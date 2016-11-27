@@ -1,5 +1,4 @@
-from datetime import datetime
-
+from app.utils import parse_image_name, timestamp_to_iso, remove_head_sha256
 from dockerclient import Client
 
 
@@ -17,18 +16,6 @@ def blockchain_stat(repoTag):
     }
 
 
-def timestamp_to_iso(t):
-    return datetime.fromtimestamp(int(t)).isoformat()
-
-
-def remove_head_sha256(hash):
-    return hash.split(':')[-1]
-
-
-def tag(repoTag):
-    return repoTag.split(':')[-1]
-
-
 def get_repos():
     _images = Client().images()
     repo_tags = {}
@@ -39,11 +26,15 @@ def get_repos():
         for _t in rt:
             if _t.count('<none>') != 0:
                 continue
+            registry, namespace, name, tag = parse_image_name(_t)
             repo_tags[_t] = {
-                'blockchain_verified': blockchain_verified(_t),
+                # 'blockchain_verified': blockchain_verified(_t),
                 'created_at': timestamp_to_iso(_i['Created']),
                 'repo_tag': _t,
-                'tag': tag(_t),
+                'tag': tag,
+                'namespace': namespace,
+                'registry': registry,
+                'name': name,
                 'image_id': remove_head_sha256(_i['Id']),
                 # 'author': author_name(_t),
                 'blockchain_stat': blockchain_stat(_t)

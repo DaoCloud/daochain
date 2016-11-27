@@ -9,6 +9,7 @@ import os
 import re
 import string
 import sys
+from  datetime import datetime
 from inspect import getargspec
 from inspect import getdoc
 
@@ -231,3 +232,11 @@ class Bucket(list):
         if len(self) > self.size:
             for i in range(len(self) - self.size):
                 del self[0]
+
+
+def timestamp_to_iso(t):
+    return datetime.fromtimestamp(int(t)).isoformat()
+
+
+def remove_head_sha256(h):
+    return h.split(':')[-1]

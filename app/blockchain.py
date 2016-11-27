@@ -3,7 +3,7 @@ import os
 from web3 import RPCProvider, Web3
 
 from settings import ETH_RPC_ENDPOINT, SOURCE_ROOT
-from utils import hex_to_uint, load_json_from, print_dict, uint_to_hex
+from utils import hex_to_uint, load_json_from, print_dict, remove_head_sha256, uint_to_hex
 from utils import memoize
 
 
@@ -45,7 +45,7 @@ class DaoHubVerify(object):
         if isinstance(imageHash, (str, unicode)):
             imageHash = hex_to_uint(imageHash)
         if isinstance(imageId, (str, unicode)):
-            imageId = hex_to_uint(imageId)
+            imageId = hex_to_uint(remove_head_sha256(imageId))
         eth = self.client.eth
         balance = eth.getBalance(eth.coinbase)
         estimate = self.contract.estimateGas().registerImage(imageHash, repoTag, imageId)

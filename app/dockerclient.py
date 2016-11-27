@@ -9,6 +9,7 @@ import gevent
 from docker.client import Client as _C
 from eth_abi.exceptions import DecodingError
 
+from app.errors import APIException, NotFound
 from app.settings import RECENT_HASH_TIME_BUCKET_SIZE
 from blockchain import DaoHubVerify
 from hubclient import Client as Hub
@@ -88,7 +89,7 @@ class Client(_C):
             else:
                 efficiency = sum(x) / sum(y)
                 return size / efficiency
-        return size / 1.5e7
+        return size / 5e6
 
     def get_image_hash_uint(self, resource_id, hasher=sha256, blocksize=4096):
         h = self.get_image_hash_with_cache(resource_id, hasher, blocksize)
@@ -121,6 +122,11 @@ class Client(_C):
                 layers[j.get('id')] = {}
             elif layers or j.get('status') == 'Downloading':
                 break
+            elif 'error' in j:
+                if 'not found' in j['error']:
+                    raise NotFound(j)
+                else:
+                    raise APIException(j)
 
         def iter_progress():
             for _j in iter_json():
@@ -179,7 +185,7 @@ class Client(_C):
 
 if __name__ == '__main__':
     c = Client()
-    repo_tag = 'daocloud.io/alphabeta_com/geth:latest'
+    repo_tag = 'daocloud.io/daocloud/dce-agent:1.4.0'
     print('repo_tag:                   %s' % repo_tag)
     print('estimate:                   %ss' % c.estimate_image_hash_time(repo_tag))
     t1 = time()
