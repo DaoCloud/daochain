@@ -19,8 +19,8 @@ def load_api(app):
     rest.add_resource(API, '/api')
     rest.add_resource(ImagesAPI, '/api/images')
     rest.add_resource(ImageVerifyAPI, '/api/verify-image')
+    rest.add_resource(EstimateHashTime, '/api/hash-estimate')
     rest.add_resource(ImagePullAPI, '/api/pull-image')
-    rest.add_resource(EstimatePull, '/api/pull-estimate')
     rest.add_resource(ImageSignAPI, '/api/sign-image')
     rest.add_resource(DefaultAccountAPI, '/api/default-account')
     rest.add_resource(AddressAPI, '/api/hub/addresses')
@@ -67,7 +67,7 @@ class ImagePullAPI(Resource):
         return dict(task_id=task_id), 200
 
 
-class EstimatePull(Resource):
+class EstimateHashTime(Resource):
     def get(self):
         args = reqparse.RequestParser() \
             .add_argument('repo_tag', required=True) \
