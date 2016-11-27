@@ -70,8 +70,8 @@ class Client(_C):
         b = _S.get('RECENT_HASH_TIME', [])
         if with_cache and _S.has(self.image_id(resource_id)):
             return 0
+        size = self.inspect_image(resource_id)['Size']
         if b:
-            size = self.inspect_image(resource_id)['Size']
             points = {}
             for i in b:
                 if i[0] in points:
@@ -83,12 +83,12 @@ class Client(_C):
             if len(x) > 2:
                 predict = PolyFit(x, y)[size]
                 if predict < 0:
-                    return 0
+                    return 0.5
                 return predict
             else:
                 efficiency = sum(x) / sum(y)
                 return size / efficiency
-        return -1
+        return size / 1.5e7
 
     def get_image_hash_uint(self, resource_id, hasher=sha256, blocksize=4096):
         h = self.get_image_hash_with_cache(resource_id, hasher, blocksize)
@@ -179,7 +179,7 @@ class Client(_C):
 
 if __name__ == '__main__':
     c = Client()
-    repo_tag = 'debian:latest'
+    repo_tag = 'daocloud.io/alphabeta_com/geth:latest'
     print('repo_tag:                   %s' % repo_tag)
     print('estimate:                   %ss' % c.estimate_image_hash_time(repo_tag))
     t1 = time()
