@@ -40,10 +40,11 @@
                     <td>
                         <span class="icon loading-circle" ng-if="x.show"><svg><use xlink:href="#icon_status-progress-circle"></use></svg></span>
                         <span class="has-verified" ng-if="!x.show" style="color: {{x.text_color}}">{{x.blockchain_verified}}</span>
+                        <span ng-if=" x.writeIntoBlockChain ">确认区块数{{ x.writtenBlocks }}</span>
                         <dao-progress-pulsing progress="x.sign_val" class="pull-progress" ng-if="x.is_sign"></dao-progress-pulsing>
                     </td>
                     <td>
-                        <button class="dao-btn blue" ng-click="$ctrl.startSignRepo(x.repo_tag, x.image_id, $index)">签名</button>
+                        <button class="dao-btn blue" ng-click="$ctrl.startSignRepo(x.repo_tag, x.image_id, $index)" ng-class="{'disabled': x.disableSetter}">签名</button>
                     </td>
                 </tr>
             </table>

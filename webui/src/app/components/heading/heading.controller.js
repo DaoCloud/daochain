@@ -5,8 +5,10 @@ class HeadingController {
         this.$http = $http;
         this.$state = $state;
         this.ApiUrl = appConfig.APIUrl;
+        this.LocalUrl = appConfig.LocalUrl;
         this.name = 'heading';
         this.username = localStorage.getItem('username');
+        this.authOrg = false;
     }
 
     $onInit() {
@@ -24,6 +26,30 @@ class HeadingController {
                     localStorage.setItem('user-avatar', res.data.user.avatar_url);
                 }
                 this.tenants = res.data.user.tenants;
+
+                this.$http({
+                    method: 'GET',
+                    url: `${this.LocalUrl}/hub/bound_addresses?local=true`,
+                    headers: {
+                        'Authorization': localStorage.getItem('token')
+                    }
+                }).then(res => {
+                    this.localTenants = res.data;
+                    if (!JSON.stringify(this.localTenants).split('{}').join('')) {
+                        this.$state.go('init');
+                    } else {
+                        this.tenants.map(tenant => {
+                            if (this.localTenants[tenant.tenant_name]) {
+                                this.authOrg = true;
+                                this.username = tenant.tenant_name;
+                                localStorage.setItem('username', tenant.tenant_name);
+                            }
+                        });
+                        if (!this.authOrg) {
+                            this.$state.go('login');
+                        }
+                    }
+                });
             });
         })();
     }

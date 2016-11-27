@@ -35,8 +35,7 @@
                     <a href="http://dashboard.daocloud.co/packages/{{x.id}}" target="_blank">
                         <div class="image-info">
                             <span class="title">{{x.repo_title}}</span>
-                            <dao-progress-pulsing progress="$ctrl.val" class="pull-progress"></dao-progress-pulsing>
-
+                            <dao-progress-pulsing progress=" x.pull_val " ng-if=" x.progress_show "></dao-progress-pulsing>
                         </div>
                     </a>
                 </td>
@@ -56,7 +55,8 @@
                     <span ng-if=" x.blockchain_verified == '不可信' " class="verify-svg not-verified"></span> {{x.blockchain_verified}}
                 </td>
                 <td>
-                    <button class="dao-btn ghost" ng-click=" $ctrl.pullImage(x.latest_tag.image_url, $index) ">拉取</button>
+                    <button class="dao-btn ghost" ng-click=" $ctrl.pullImage(x.latest_tag.image_url, $index) " ng-if=" x.pull_val !== 1 ">拉取</button>
+                    <button ng-if=" x.pull_val === 1 " class="dao-btn has-pulled disabled">已拉取</button>
                 </td>
             </tr>
         </table>

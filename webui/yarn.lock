@@ -1681,10 +1681,6 @@ d@^0.1.1, d@~0.1.1:
   dependencies:
     es5-ext "~0.10.2"
 
-dao-style:
-  version "0.1.1"
-  resolved "http://registry.npm.taobao.org/dao-style/download/dao-style-0.1.1.tgz#125d9a03f5c7cb3f7fc1d04e879097bc21cea5e6"
-
 dashdash@^1.12.0:
   version "1.14.0"
   resolved "http://registry.npm.taobao.org/dashdash/download/dashdash-1.14.0.tgz#29e486c5418bf0f356034a993d51686a33e84141"

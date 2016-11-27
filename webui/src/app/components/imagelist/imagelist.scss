@@ -100,9 +100,9 @@
             .not-verified {
                 background-image: url('./images/not_verified.svg');
             }
+            .has-pulled {
+                color: #22c36a;
+            }
         }
-        // .pull-progress {
-        //   display: none;
-        // }
     }
 }

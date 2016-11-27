@@ -11,6 +11,7 @@ class LoginController {
         this.$http = $http;
         this.name = 'Login';
         this.ApiUrl = appConfig.APIUrl;
+        this.LocalUrl = appConfig.LocalUrl;
         this.account = {
             "email_or_mobile": "",
             "password": "",

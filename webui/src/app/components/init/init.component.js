@@ -10,7 +10,7 @@ class controller {
         this.$http = $http;
         this.$state = $state;
         this.APIUrl = appConfig.APIUrl;
-        this.localUrl = appConfig.LocalUrl;
+        this.LocalUrl = appConfig.LocalUrl;
         this.Web3Url = appConfig.Web3Url;
         this.nestedStepIndex = 1;
         this.orgList = [];
@@ -25,7 +25,24 @@ class controller {
                 try {
                     const new_account = this.web3.personal.newAccount(this.pwd);
                     this.walletAccount = new_account;
-                    this.walletSet = false;
+                    const postData = {
+                        'namespace': this.selectedOrg,
+                        'address': new_account
+                    };
+                    this.$http({
+                        method: 'POST',
+                        url: `${this.LocalUrl}/hub/addresses`,
+                        headers: {
+                            'Authorization': localStorage.getItem('token'),
+                            'Content-Type': 'application/json'
+                        },
+                        data: JSON.stringify(postData)
+                    }).then(res => {
+                        console.log(res.data);
+                        this.walletSet = false;
+                    }, err => {
+                        console.error(err);
+                    });
                 } catch (error) {
                     this.errInfo = error;
                 }
