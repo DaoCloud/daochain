@@ -2,11 +2,12 @@ FROM node:alpine
 
 MAINTAINER DCS <dao@daocloud.io>
 
+ENV GETH_VER v1.5.4
 RUN apk add --no-cache --virtual .build-deps  \
 	    go git make gcc musl-dev && \
-    git clone --depth 1 https://github.com/ethereum/go-ethereum && \
-    (cd go-ethereum && make geth) && \
-    cp go-ethereum/build/bin/geth /usr/bin/geth && \
+    git clone https://github.com/ethereum/go-ethereum /go-ethereum && \
+    cd go-ethereum && git checkout $GETH_VER && make geth && \
+    cp /go-ethereum/build/bin/geth /usr/bin/geth && \
     apk del .build-deps && rm -rf ~/.cache && \
     rm -rf /go-ethereum
 
