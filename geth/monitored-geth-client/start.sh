@@ -7,7 +7,7 @@ sed -ie "s/WS_SECRET_ENV/$(echo $WS_SECRET|sed -e 's/[]\/$*.^|[]/\\&/g')/g" app.
 /usr/local/bin/pm2 start ./app.json
 sleep 3
 
-/usr/bin/geth --datadir "/root/.ethereum" init /root/files/genesis.json
+/usr/bin/geth --datadir "/root/.ethereum" init /root/genesis.json
 
 /usr/bin/geth --networkid=23333 --datadir "/root/.ethereum" \
 --rpc --rpccorsdomain="*" --rpcaddr '0.0.0.0' --rpcapi "admin,db,personal,eth,net,web3,miner,txpool" \
