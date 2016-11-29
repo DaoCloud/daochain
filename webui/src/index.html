@@ -2,26 +2,27 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>DaoCloud NG Starter</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta name="description" content="DaoCloud NG Starter">
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-    <base href="/">
-    <style>
+  <meta charset="utf-8">
+  <title>DaoCloud NG Starter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="description" content="DaoCloud NG Starter">
+  <link rel="icon"
+        href="data:image/png;base64,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">
+  <base href="/">
+  <style>
         body {
             background-color: #f1f3f6;
         }
-        
+
         .loader,
         .loader:before,
         .loader:after {
             border-radius: 50%;
         }
-        
+
         .loader {
             color: #9ba3b0;
             font-size: 20px;
@@ -37,7 +38,7 @@
             -ms-transform: translateZ(0);
             transform: translateZ(0);
         }
-        
+
         @-webkit-keyframes load4 {
             0%,
             100% {
@@ -65,7 +66,7 @@
                 box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
             }
         }
-        
+
         @keyframes load4 {
             0%,
             100% {
@@ -93,16 +94,17 @@
                 box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
             }
         }
-    </style>
+
+  </style>
 </head>
 
 <body ng-app="app" ng-strict-di ng-cloak>
 
-    <app>
-        <div class="loader">Loading...</div>
-    </app>
+<app>
+  <div class="loader">Loading...</div>
+</app>
 
-    <!-- Google Analytics: change UA-71073175-2 to be your site's ID -->
+<!-- Google Analytics: change UA-71073175-2 to be your site's ID -->
 </body>
 
 </html>
