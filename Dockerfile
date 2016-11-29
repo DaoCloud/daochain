@@ -32,7 +32,7 @@ ADD . /daocloud
 ADD root/dist/* /daocloud/app/static/
 
 ENV ETH_RPC_ENDPOINT=geth:8545
-ENV HUB_ENDPOINT=http://api.daocloud.co
+ENV HUB_ENDPOINT=http://api.daocloud.io
 
 EXPOSE 80
 
