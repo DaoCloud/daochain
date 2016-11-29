@@ -1,24 +1,37 @@
 # DaoHub Blockchain Verify
 
-> git clone https://github.com/DaoCloud/blockchain-hub.git
+## QuickStart
 
-clone this repo
+1. clone the repo and compose up 
 
+    ```
+    git clone https://github.com/DaoCloud/blockchain-hub.git
+    cd blockchain-hub
+    docker-compose up -d
+    ```
 
-> cd blockchain-hub/websitge
+2. open webui (http://127.0.0.1:8000)
 
-cd to website folder
+## LICENSE
 
+The MIT License
 
-> npm install -g gulp karma karma-cli webpack
+Copyright (c) 2014-2016 Daocloud, Inc. http://daocloud.io
 
-install global packages
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-> yarn    or   npm install
-
-add packages
-
-> gulp serve
-
-server would run at localhost:3000
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
