@@ -18,10 +18,5 @@ EXPOSE 3000
 CMD ["npm", "start"]
 
 ENV NODE_ENV production
-ENV RPC_HOST geth
-ENV RPC_PORT 8545
-ENV LISTENING_PORT 30303
-ENV INSTANCE_NAME ethstats
-ENV WS_SERVER ws://blockchain.daocloud.io:3000
-ENV WS_SECRET daocloud-eth-net-stats-secret
 ENV VERBOSITY 2
+ENV WS_SECRET daocloud-eth-net-stats-secret

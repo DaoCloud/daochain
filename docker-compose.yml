@@ -1,13 +1,14 @@
 version: '2'
 services:
   geth:
-    image: daocloud.io/alphabeta_com/geth
+    image: daocloud.io/daocloud/geth
     restart: on-failure
     environment:
-      - WS_SERVER ws://blockchain.daocloud.io:3000
+      - WS_SERVER ws://blockchain.daocloud.io:80
       - WS_SECRET daocloud-eth-net-stats-secret
-      - NODES=enode://4356fb340716c7efed5c35dedcd89c0f42af5b974ababd9c4d60a0df6a949500258a045e4286100a6276cc339aacab4de44576c68659736b2d2df449f7dc1759@47.90.1.168:30303
+      - NODES=enode://34fd75df3e84b709e7712138fc7c2be8adf46c005d26dd5579dcf3f6d75bef44fd492f4fe726460145d66b5f6dc964edad1bc290fdd6bb26fe757fff33d62386@106.75.14.2:30303
     volumes:
+      - /root/.ethereum/keystore
       - /etc/localtime:/etc/localtime:ro
     ports:
       - "30303:30303"

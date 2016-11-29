@@ -83,6 +83,7 @@ if __name__ == '__main__':
     def f(d):
         print('\n')
         print_dict(d)
+        exit(0)
 
 
     d.regImage(f)
