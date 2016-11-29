@@ -27,7 +27,7 @@
                     </div>
                 </div>
                 <div class="dao-setting-layout-footer">
-                    <button class="dao-btn blue" ng-click="$ctrl.nestedStepIndex = $ctrl.nestedStepIndex + 1">下一步</button>
+                    <button class="dao-btn blue" ng-class="{disabled: !$ctrl.selectedOrg}" ng-click="$ctrl.nestedStepIndex = $ctrl.nestedStepIndex + 1">下一步</button>
                 </div>
             </div>
         </dao-panel-step>

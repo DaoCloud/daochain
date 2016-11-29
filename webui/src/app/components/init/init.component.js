@@ -66,7 +66,7 @@ class controller {
             }).then((res, status) => {
                 res.data.user.tenants.map((tenant) => {
                     if (tenant.active && tenant.is_org) {
-                        this.orgList.push(tenant.org_name);
+                        this.orgList.push(tenant.tenant_name);
                     }
                 });
             });

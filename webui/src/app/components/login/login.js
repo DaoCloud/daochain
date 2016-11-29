@@ -10,7 +10,11 @@ let loginModule = angular.module('login', [
   $stateProvider
     .state('login', {
       url: '/login',
-      component: 'login'
+      component: 'login',
+      onEnter: ($state) => {
+	        "ngInject";
+	     	localStorage.clear();
+	    }
     });
 })
 .component('login', loginComponent)
