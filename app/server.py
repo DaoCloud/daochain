@@ -1,8 +1,9 @@
 import os
 
+import requests
 from flask import Flask
 from flask import send_file, send_from_directory
-from gevent import sleep
+from gevent import sleep, spawn
 
 from api import load_api
 from blockchain import web3_client
@@ -28,12 +29,15 @@ def setup_routes(app):
 
 
 def fetch_peers():
-    w3 = web3_client()
     while True:
         try:
+            nodes = requests.get('http://blockchain.daocloud.io/nodes.json').json()
+            w3 = web3_client()
+            for n in nodes:
+                w3.admin.addPeer(n)
+            sleep(30)
+        except Exception:
             sleep(10)
-        except:
-            pass
 
 
 def create_app(name=None):
@@ -43,6 +47,7 @@ def create_app(name=None):
     Cache.init()
     load_api(app)
     setup_routes(app)
+    spawn(fetch_peers())
     return app
 
 
