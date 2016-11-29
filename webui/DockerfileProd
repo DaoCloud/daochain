@@ -24,7 +24,7 @@ COPY . /app/
 
 ENV APP_DEBUG=true
 ENV NODE_ENV=production
-ENV API_URL=http://api.daocloud.co/hub/v2
+ENV API_URL=http://api.daocloud.io/hub/v2
 ENV LOCAL_URL=/api
 ENV WEB3_URL=/
 RUN gulp webpack
