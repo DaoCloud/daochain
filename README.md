@@ -1,4 +1,8 @@
-# DaoHub Blockchain Verify
+# Hub Blockchain Verify
+
+DaoChain 是 DaoCloud 自安全扫描，安全构建镜像等功能之后隆重推出的分布式镜像校验系统。
+DaoChain 结合了区块链的去中心化特性与镜像加密校验技术，实现了不依赖中心化 docker registry 的安全验证功能。
+用户可通过加密本地镜像并与区块链上的发布者发布的 hash 值对比，确认本地镜像与发布者发布的内容一致，保障镜像端到端的安全性。
 
 ## QuickStart
 
@@ -12,26 +16,6 @@
 
 2. open webui (http://127.0.0.1:8000)
 
-## LICENSE
+## 使用说明
 
-The MIT License
-
-Copyright (c) 2014-2016 Daocloud, Inc. http://daocloud.io
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+http://docs.daocloud.io/dao-chain
