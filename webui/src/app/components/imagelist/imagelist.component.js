@@ -70,14 +70,16 @@ class controller {
                     method: "GET",
                     url: `${this.localUrl}/pull-image?task_id=${task_id}`
                 }).then(res => {
-                    const percent = res.data.percent;
-                    const finished = res.data.finished;
-                    if (!finished) {
-                        this.data[index].pull_val = percent / 100;
-                    } else {
-                        this.data[index].pull_val = 1;
-                        this.$interval.cancel(this.getProgressInterval);
-                        this.data[index].progress_show = false;
+                    if (JSON.stringify(res.data).split('{}').join('')) {
+                        const percent = res.data.percent;
+                        const finished = res.data.finished;
+                        if (!finished) {
+                            this.data[index].pull_val = percent / 100;
+                        } else {
+                            this.data[index].pull_val = 1;
+                            this.$interval.cancel(this.getProgressInterval);
+                            this.data[index].progress_show = false;
+                        }
                     }
                 });
             }, 1000);
