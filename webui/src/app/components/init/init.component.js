@@ -38,7 +38,7 @@ class controller {
                         },
                         data: JSON.stringify(postData)
                     }).then(res => {
-                        console.log(res.data);
+//                        console.log(res.data);
                         this.walletSet = false;
                     }, err => {
                         console.error(err);
