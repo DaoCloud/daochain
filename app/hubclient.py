@@ -99,7 +99,7 @@ class Client(BaseClient):
 
     @property
     def org_names(self):
-        return [t['org_name'] for t in self.orgs]
+        return [t['tenant_name'] for t in self.orgs]
 
     def addresses(self, tenant=None):
         if not tenant:
