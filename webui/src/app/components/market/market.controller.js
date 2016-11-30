@@ -11,6 +11,7 @@ class MarketController {
         this.$interval = $interval;
         this.searchImage = '';
         this.pageNumber = 1;
+        this.searchNumber = 1;
         this.pageSize = 5;
         this.APIUrl = appConfig.APIUrl;
         this.localUrl = appConfig.LocalUrl;
@@ -107,7 +108,7 @@ class MarketController {
         this.search = () => {
             this.$http({
                 method: 'GET',
-                url: `${this.APIUrl}/hub/v2/blockchain/verified-public-repos?q=${this.searchImage}&page=${this.pageNumber}&page_size=${this.pageSize}`,
+                url: `${this.APIUrl}/hub/v2/blockchain/verified-public-repos?q=${this.searchImage}&page=${this.searchNumber}&page_size=${this.pageSize}`,
                 headers: {
                     "Authorization": localStorage.getItem('token'),
                 }
