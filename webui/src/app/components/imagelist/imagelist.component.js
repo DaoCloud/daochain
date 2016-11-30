@@ -80,7 +80,7 @@ class controller {
                     method: "GET",
                     url: `${this.localUrl}/pull-image?task_id=${task_id}`
                 }).then(res => {
-                    if (JSON.stringify(res.data) === '{}') {
+                    if (JSON.stringify(res.data) !== '{}') {
                         const percent = res.data.percent;
                         const finished = res.data.finished;
                         if (!finished) {
