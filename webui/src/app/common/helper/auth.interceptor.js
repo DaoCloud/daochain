@@ -4,7 +4,7 @@
 function AuthInterceptor($state, $q, appConfig/*, appState*/) {
   'ngInject';
 
-  console.log(appConfig);
+//  console.log(appConfig);
   return {
     request(config) {
       if (

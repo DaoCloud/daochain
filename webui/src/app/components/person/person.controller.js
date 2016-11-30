@@ -12,7 +12,7 @@ class PersonController {
 
     this.newWallet = function (str) {
       const web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545");
-      console.log(web3);
+//      console.log(web3);
     }
   }
 }

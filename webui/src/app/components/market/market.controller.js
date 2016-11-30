@@ -48,7 +48,7 @@ class MarketController {
             let startProgess = this.$interval(() => {
                 if (this.data[index].pull_val > 0.8) {
                     this.$interval.cancel(startProgess);
-                    console.log("cleare");
+//                    console.log("cleare");
                 }
                 let random_increment = Math.random(1) / 10;
                 this.data[index].pull_val += random_increment;

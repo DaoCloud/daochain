@@ -46,7 +46,7 @@ class PersonController {
         }
 
         this.changeMine = () => {
-            console.log(this.web3);
+//            console.log(this.web3);
             let requestDataStart = {
                 "jsonrpc": "2.0",
                 "method": "miner_start",
@@ -69,7 +69,7 @@ class PersonController {
                     },
                     data: JSON.stringify(requestDataStart)
                 }).then(res => {
-                    console.log(res);
+//                    console.log(res);
                 });
             } else {
                 this.$interval.cancel(this.moniter);

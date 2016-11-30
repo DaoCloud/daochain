@@ -55,7 +55,7 @@ def fetch_nodes():
                     w3.admin.addPeer(n)
                 if not len(peers) == len(nodes):
                     log.info('fetched nodes: %s' % ', '.join(nodes))
-                    sleep(60)
+                    sleep(600)
             except Exception:
                 log.error('Fail to fetch nodes.json')
                 sleep(5)
