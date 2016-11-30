@@ -5,14 +5,15 @@ import sys
 from os import path
 
 import gunicorn.app.base
+from gevent import monkey
 from gunicorn.six import iteritems
 
 sys.path.append(path.abspath(path.abspath(path.join(__file__, path.pardir, path.pardir))))
-from server import create_app
+monkey.patch_all()
 
 
 def number_of_workers():
-    return multiprocessing.cpu_count()
+    return multiprocessing.cpu_count() * 2
 
 
 class StandaloneApplication(gunicorn.app.base.BaseApplication):
@@ -32,10 +33,12 @@ class StandaloneApplication(gunicorn.app.base.BaseApplication):
 
 
 def run_app():
+    from server import create_app
     options = {
         'bind': '%s:%s' % ('0.0.0.0', '8000'),
         'workers': number_of_workers(),
         'worker_class': 'gevent',
+        'timeout': 600,
         'accesslog': '-',
         'errorlog': '-'
     }
