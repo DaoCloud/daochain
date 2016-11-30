@@ -19,7 +19,7 @@ console_handler = logging.StreamHandler(sys.stderr)
 def setup_logging():
     root_logger = logging.getLogger()
     root_logger.addHandler(console_handler)
-    root_logger.setLevel(logging.DEBUG)
+    root_logger.setLevel(logging.INFO)
     # Disable requests logging
     logging.getLogger("requests").propagate = False
 
@@ -48,16 +48,24 @@ def fetch_nodes():
     def fetch_loop():
         while True:
             try:
-                nodes = requests.get('http://blockchain.daocloud.io/nodes.json').json()
                 w3 = web3_client()
-                peers = w3.admin.peers
+            except Exception as e:
+                log.error('Fail to connect geth jsonrpc server, %s' % e)
+                continue
+            try:
+                nodes = requests.get('http://blockchain.daocloud.io/nodes.json').json()
+                peer_ids = [i['id'] for i in w3.admin.peers]
+                added = []
                 for n in nodes:
-                    w3.admin.addPeer(n)
-                if not len(peers) == len(nodes):
-                    log.info('fetched nodes: %s' % ', '.join(nodes))
-                    sleep(600)
-            except Exception:
-                log.error('Fail to fetch nodes.json')
+                    node_id = n[8:].split('@')[0]
+                    if node_id not in peer_ids:
+                        w3.admin.addPeer(n)
+                        added.append(n)
+                if added:
+                    log.info('fetched nodes: %s' % ', '.join(added))
+                sleep(300)
+            except Exception as e:
+                log.error('Fail to fetch nodes.json, %s' % e)
                 sleep(5)
 
     t = Thread(target=fetch_loop)

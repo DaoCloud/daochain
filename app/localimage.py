@@ -37,6 +37,6 @@ def get_repos():
                 'name': name,
                 'image_id': remove_head_sha256(_i['Id']),
                 # 'author': author_name(_t),
-                'blockchain_stat': blockchain_stat(_t)
+                # 'blockchain_stat': blockchain_stat(_t)
             }
     return repo_tags.values()
