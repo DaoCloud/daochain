@@ -42,10 +42,12 @@ def setup_routes(app):
 
 
 def fetch_nodes():
+    import random
     from time import sleep
     from threading import Thread
 
     def fetch_loop():
+        sleep(random.randint(0, 10))
         while True:
             try:
                 w3 = web3_client()
