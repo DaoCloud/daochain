@@ -17,6 +17,4 @@ EXPOSE 3000
 
 CMD ["npm", "start"]
 
-ENV NODE_ENV production
-ENV VERBOSITY 2
 ENV WS_SECRET daocloud-eth-net-stats-secret
