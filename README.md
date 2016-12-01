@@ -1,8 +1,8 @@
 # Hub Blockchain Verify
 
-[![blockchain-hub](https://ci.daocloud.io/api/badge/build/daocloud/blockchain-hub)](https://dashboard.daocloud.io/orgs/daocloud/build-flows/8e7671e1-a794-4e30-8d15-5e596fc87170)
-[![blockchain-hub](https://ci.daocloud.io/api/badge/test/daocloud/blockchain-hub)](https://dashboard.daocloud.io/orgs/daocloud/build-flows/8e7671e1-a794-4e30-8d15-5e596fc87170)
-[![blockchain-hub](https://ci.daocloud.io/api/badge/coverage/daocloud/blockchain-hub?branch=master&criteria=line-rate)](https://dashboard.daocloud.io/orgs/daocloud/build-flows/8e7671e1-a794-4e30-8d15-5e596fc87170)
+[![blockchain-hub](https://ci.daocloud.io/api/badge/build/daocloud/daochain)](https://dashboard.daocloud.io/orgs/daocloud/build-flows/b63b9fb5-d3d4-404b-8699-548910d87e51)
+[![blockchain-hub](https://ci.daocloud.io/api/badge/test/daocloud/daochain)](https://dashboard.daocloud.io/orgs/daocloud/build-flows/b63b9fb5-d3d4-404b-8699-548910d87e51)
+[![blockchain-hub](https://ci.daocloud.io/api/badge/coverage/daocloud/daochain?branch=master&criteria=line-rate)](https://dashboard.daocloud.io/orgs/daocloud/build-flows/b63b9fb5-d3d4-404b-8699-548910d87e51)
 
 DaoChain 是 DaoCloud 自安全扫描，安全构建镜像等功能之后隆重推出的分布式镜像校验系统。
 DaoChain 结合了区块链的去中心化特性与镜像加密校验技术，实现了不依赖中心化 docker registry 的安全验证功能。
