@@ -13,9 +13,9 @@ Blockchain is a distributed database that maintains a continuously-growing list 
 ```
 
 越来越多的研究者、专家把区块链归类为分布式数据库的范畴，也有人把区块链定义为一种类似于链表的数据结构：
-<div style="text-align: center">
-  <img src="resources/block_chain.png"/>
-</div>
+
+![](resources/block_chain.png)
+
 ```
 区块链是一个类似于链表的数据结构，该数据结构中每一个节点记录了前节点中数据的 Hash 值、当前节点的数据。
 在当前节点不变都情况下，前节点的任何改变都会使得这条链无效(invalid)。
@@ -24,9 +24,8 @@ Blockchain is a distributed database that maintains a continuously-growing list 
 笔者认为两种定义是不冲突的、可以说是相辅相成的。前者更多的强调区块链的分布式协作的集体行为，后者更多的关注这一协作群体中每一个个体——区块链本身。在大多数语境下，大家关注更多的是区块链分布式协作的集体效应，因此下文关于区块链，不特意说明的情况下，都与 wikipedia 的分布式数据库定义一致，关于区块链数据结构，推荐大家看一下一本详细讲解 bitcoin 技术书籍 [Mastering Bitcoin](http://uplib.fr/w/images/8/83/Mastering_Bitcoin-Antonopoulos.pdf)，你将看到，Bitcoin 的成功，不仅仅只有区块链的功劳，Game design 和密码学都是极其重要的部分！
 
 提到那些号称颠覆银河系的新科技、新技术，就不得不提 Gartner 技术成熟度曲线(The Gartner hyper cycle)。区块链号称颠覆整个金融行业的既有规则、既有模式，Gartner 2016 技术成熟度曲线中，我们可以在过高期望的峰值（Peak of Inflated Expectations）附近找到区块链，所以，各位同学冷静再冷静。并且 Gartner 也在分析 2016 成熟度曲线中提到 [Bitcoin is the only proven blockchain](http://www.gartner.com/smarterwithgartner/3-trends-appear-in-the-gartner-hype-cycle-for-emerging-technologies-2016/)，注意这里的区块链指的是 wikipedia 版的定义。接下来笔者信口胡来，跟大家一起分析一下为什么 Bitcoin is the only proven blockchain。
-<div style="text-align: center">
-  <img src="resources/gartner-2016.jpg"/>
-</div>
+
+![](resources/gartner-2016.jpg)
 
 Why Bitcoin is the only proven blockchain
 -----------------------------------------
@@ -126,46 +125,85 @@ Daochain
 
 Daochain 使用[以太坊](https://www.ethereum.org/) 作为 Blockchain 的实现，以太坊号称是第二代区块链(相对 Bitcoin 作为第一代区块链)，具有图灵完备的特征，是一个有智能合约功能的公共区块链平台，通过过密货币以太币的润滑作用，提供去中心化的虚拟机来处理点对点合约。注意 Daochain 只是用到了以太坊的实现，并没有使用它的公共区块链，而是自己私搭乱建了另一个专属的区块链，我们欢迎各位矿工加入我们的挖矿队伍，具体方式参见[内测及奖励](#内测及奖励)。
 
-一个典型的智能合约长这个样子：
 
-```
-contract mortal {
-    /* Define variable owner of the type address*/
-    address owner;
+### DaoChain 的实现
 
-    /* this function is executed at initialization and sets the owner of the contract */
-    function mortal() { owner = msg.sender; }
+![DaoChain 架构图](resources/structure.png)
 
-    /* Function to recover the funds on the contract */
-    function kill() { if (msg.sender == owner) selfdestruct(owner); }
-}
+Daochain 的架构中共有三个角色
 
-contract greeter is mortal {
-    /* define variable greeting of the type string */
-    string greeting;
+* DaoHub：负责存储镜像和 Dacoloud 账户与以太坊账户的对应关系
+* 区块链网络：负责存储用户和镜像文件的对应关系
+* 用户：签名自己的镜像并将签名信息写入区块链，从区块链和 DaoHub 获取信息以验证本地镜像的安全性
 
-    /* this runs when the contract is executed */
-    function greeter(string _greeting) public {
-        greeting = _greeting;
+借助神奇的以太坊，我们仅仅用了三十几行代码就实现了 DaoChain 的核心功能
+
+```solidity
+pragma solidity ^0.4.2;
+
+contract DaoHubVerify {
+    address daocloud;
+    function DaoHubVerify(){
+        daocloud = msg.sender;
     }
 
-    /* main function */
-    function greet() constant returns (string) {
-        return greeting;
+    struct Image {
+        uint imageHash;
+        address owner;
+        bytes repoTag;
+        uint imageId;
+    }
+
+    mapping(address => mapping(bytes => Image)) ownerIdImageMap;
+
+    event regImage(uint imageHash,
+                   address owner,
+                   bytes repoTag,
+                   uint imageId);
+
+    function registerImage(uint imageHash,
+                           bytes repoTag,
+                           uint imageId){
+        ownerIdImageMap[msg.sender][repoTag] = Image(imageHash, msg.sender, repoTag, imageId);
+        regImage(imageHash, msg.sender, repoTag, imageId);
+    }
+
+    function queryImage(address owner, bytes repoTag)
+        constant returns(uint, address, bytes, uint){
+        Image memory i = ownerIdImageMap[owner][repoTag];
+        return (i.imageHash, i.owner, i.repoTag, i.imageId);
     }
 }
 ```
+这段很像 JavaScript 的代码就是最流行的以太坊智能合约语言 Solidity
 
 更多更详细关于智能合约的知识，可以参阅以太坊的 [Hello world sample](https://www.ethereum.org/greeter)。
 
-讲到这里，聪明的你应该猜出来我们怎么做的了。我们是不是 the second proven blockchain 呢？欢迎大家来讨论！
+
+内测及奖励
+--------
+
+DaoChain 第一版测试版现在向 Daocloud 用户开放测试，对区块链技术和镜像安全感兴趣的亲们可以加入我们近距离感受“神秘”的区块链。
+
+DaoChain 的源码开放在 [DaoChain on Github](https://github.com/DaoCloud/dao-chain) 后续我们会完善客户端功能、添加更多测试和文档。同时也欢迎大家来提 issue 和 pull request。
+
+### 开始探索 DaoChain
+
+克隆下 DaoChain 的源码后我们可以使用其中的 docker-compose.yml 来启动本地的区块链节点，访问本地 web 客户端。
+
+内测阶段我们只为拥有 DaoHub 组织的用户提供绑定功能，在 web 客户端绑定了以太坊账号后可以自行挖矿来获取以太币，也可以通过发邮件到 [support@daocloud.io](mailto:support@daocloud.io) 或者在 DaoVoice 上联系我们申请一些以太币来开始 DaoChain 之旅。
+
+### DaoHub 积分
+
+在 DaoChain 中得到的以太币即为未来计划中的 DaoHub 积分，内测结束后大家可以用积分在 Daocloud 兑换一定的奖励。
+
+> 注：内测的区块链网络在内测结束后可能不会保留（以太坊会在近期切换到 PoS 算法）
+
+> 请大家注意备份自已以太坊账户的私钥（即 geth 容器中的 /root/.ethereum/keystore 文件夹，此目录已挂载为 volume）
 
 镜像共享经济
 ----------
 
-最近火热了一把的共享经济，IT 行业又供奉着不重复造轮子的原则，区块链的 hash 值完全标示了 Author 对该镜像对著作权，对智能合约加点盐，再加些密码，神奇的效果是不是就出来了？镜像的共享经济值得我们共同期待。
+借助图灵完备的以太坊，我们实现了 DaoHub 的镜像验证功能，然而我们能做到的远远不止于此。DaoChain 简洁的实现给我们留下了丰富的可扩展性。实现完全离线验证，接入其他镜像托管商，甚至是在未来实现基于区块链的镜像交易功能！
 
-**区块链真是一个神奇的存在，特别是具备图灵完备的以太坊!**
-
-内测及奖励
---------
+区块链技术神秘而迷人，为了让它落地，我们需要发挥我们无穷的想象力！
