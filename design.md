@@ -125,7 +125,7 @@ Daochain
 
 Daochain 使用[以太坊](https://www.ethereum.org/) 作为 Blockchain 的实现，以太坊号称是第二代区块链(相对 Bitcoin 作为第一代区块链)，具有图灵完备的特征，是一个有智能合约功能的公共区块链平台，通过过密货币以太币的润滑作用，提供去中心化的虚拟机来处理点对点合约。注意 Daochain 只是用到了以太坊的实现，并没有使用它的公共区块链，而是自己私搭乱建了另一个专属的区块链，我们欢迎各位矿工加入我们的挖矿队伍，具体方式参见[内测及奖励](#内测及奖励)。
 
--一个典型的智能合约长这个样子：
+一个典型的智能合约长这个样子：
 
 ```
 contract mortal {
@@ -171,13 +171,13 @@ DaoChain 第一版测试版现在向 Daocloud 用户开放测试，对区块链�
 
 克隆下 DaoChain 的源码后我们可以使用其中的 docker-compose.yml 来启动本地的区块链节点，访问本地 web 客户端。
 
-```
+```shell
 git clone https://github.com/DaoCloud/dao-chain
 cd dao-chain && docker-compose up -d
 ```
-打开你的浏览器，访问 [http://localhost:8000](http://localhost:8000) 就可以看到 Web 客户端了。
+等待镜像下载 Ready，等待服务启动后，打开浏览器，访问 http://localhost:8000 就可以看到 Web 客户端了。
 
-第一次使用需要登录 daocloud 账号并切换到账户详情界面创建你的区块链钱包，选择你要绑定的 daohub 组织，填入你的账户加密密码就可以创建并绑定钱包地址到 DaoHub 组织了。
+第一次使用需要登录 DaoCloud 账号并切换到账户详情界面创建你的区块链钱包，选择你要绑定的 DaoHub 组织，填入你的账户和密码就可以创建并绑定钱包地址到 DaoHub 组织了。
 > 注：这里填入的密码是用来加密区块链账户的私钥的，不是你的 DaoCloud 密码哟。
 
 客户端有四个页面：
@@ -192,15 +192,15 @@ cd dao-chain && docker-compose up -d
 
 **账户详情**：在这里可以看到当前账户的绑定情况、钱包余额。也可以进行挖矿，挖矿的时候还可以看到自己的算力。（第一次挖矿会有一段时间的算力为0的情况，这是以太坊客户端在生成 DAG 文件，耐心等待即可）
 
-内测阶段我们只为拥有 DaoHub 组织的用户提供绑定功能，在 web 客户端绑定了以太坊账号后可以自行挖矿来获取以太币，也可以通过发邮件到 [support@daocloud.io](mailto:support@daocloud.io) 或者在 DaoVoice 上联系我们申请一些以太币来开始 DaoChain 之旅。
+内测阶段我们只为拥有 DaoHub 组织的用户提供绑定功能，在 Web 客户端绑定了以太坊账号后可以自行挖矿来获取以太币，也可以通过发邮件到 [support@daocloud.io](mailto:support@daocloud.io) 或者在 DaoVoice 上联系我们申请一些以太币来开始 DaoChain 之旅。
 
 ### DaoHub 积分
 
 在 DaoChain 中得到的以太币即为未来计划中的 DaoHub 积分，内测结束后大家可以用积分在 Daocloud 兑换一定的奖励。
 
-> 注：内测的区块链网络在内测结束后可能不会保留（以太坊会在近期切换到 PoS 算法）
+> 注：内测的区块链网络在内测结束后可能不会保留（以太坊会在近期切换到权益证明算法）
 
-> 请大家注意备份自已以太坊账户的私钥（即 geth 容器中的 /root/.ethereum/keystore 文件夹，此目录已挂载为 volume）
+> 请大家注意备份并保密自已以太坊账户的私钥（即 geth 容器中的 /root/.ethereum/keystore 文件夹，此目录已挂载为 volume）
 
 镜像共享经济
 ----------
