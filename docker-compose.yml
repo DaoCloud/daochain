@@ -2,6 +2,7 @@ version: '2'
 services:
   geth:
     image: daocloud.io/daocloud/geth
+    cpu_quota: 50000
     restart: on-failure
     environment:
       - WS_SERVER ws://blockchain.daocloud.io:80
@@ -16,6 +17,7 @@ services:
       - "8545:8545"
   server:
     image: daocloud.io/daocloud/daochain
+    cpu_quota: 50000
     restart: on-failure
     environment:
       - ETH_RPC_ENDPOINT = geth:8545
