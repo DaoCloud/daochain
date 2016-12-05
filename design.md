@@ -125,71 +125,56 @@ Daochain
 
 Daochain 使用[以太坊](https://www.ethereum.org/) 作为 Blockchain 的实现，以太坊号称是第二代区块链(相对 Bitcoin 作为第一代区块链)，具有图灵完备的特征，是一个有智能合约功能的公共区块链平台，通过过密货币以太币的润滑作用，提供去中心化的虚拟机来处理点对点合约。注意 Daochain 只是用到了以太坊的实现，并没有使用它的公共区块链，而是自己私搭乱建了另一个专属的区块链，我们欢迎各位矿工加入我们的挖矿队伍，具体方式参见[内测及奖励](#内测及奖励)。
 
+-一个典型的智能合约长这个样子：
 
-### DaoChain 的实现
-
-![DaoChain 架构图](resources/structure.png)
-
-Daochain 的架构中共有三个角色
-
-* DaoHub：负责存储镜像和 Dacoloud 账户与以太坊账户的对应关系
-* 区块链网络：负责存储用户和镜像文件的对应关系
-* 用户：签名自己的镜像并将签名信息写入区块链，从区块链和 DaoHub 获取信息以验证本地镜像的安全性
-
-借助神奇的以太坊，我们仅仅用了三十几行代码就实现了 DaoChain 的核心功能
-
-```solidity
-pragma solidity ^0.4.2;
-
-contract DaoHubVerify {
-    address daocloud;
-    function DaoHubVerify(){
-        daocloud = msg.sender;
-    }
-
-    struct Image {
-        uint imageHash;
-        address owner;
-        bytes repoTag;
-        uint imageId;
-    }
-
-    mapping(address => mapping(bytes => Image)) ownerIdImageMap;
-
-    event regImage(uint imageHash,
-                   address owner,
-                   bytes repoTag,
-                   uint imageId);
-
-    function registerImage(uint imageHash,
-                           bytes repoTag,
-                           uint imageId){
-        ownerIdImageMap[msg.sender][repoTag] = Image(imageHash, msg.sender, repoTag, imageId);
-        regImage(imageHash, msg.sender, repoTag, imageId);
-    }
-
-    function queryImage(address owner, bytes repoTag)
-        constant returns(uint, address, bytes, uint){
-        Image memory i = ownerIdImageMap[owner][repoTag];
-        return (i.imageHash, i.owner, i.repoTag, i.imageId);
-    }
-}
 ```
-这段很像 JavaScript 的代码就是最流行的以太坊智能合约语言 Solidity
+contract mortal {
+    /* Define variable owner of the type address*/
+    address owner;
+
+    /* this function is executed at initialization and sets the owner of the contract */
+    function mortal() { owner = msg.sender; }
+
+    /* Function to recover the funds on the contract */
+    function kill() { if (msg.sender == owner) selfdestruct(owner); }
+}
+
+contract greeter is mortal {
+    /* define variable greeting of the type string */
+    string greeting;
+
+    /* this runs when the contract is executed */
+    function greeter(string _greeting) public {
+        greeting = _greeting;
+
+     }
+
+    /* main function */
+    function greet() constant returns (string) {
+        return greeting;
+     }
+ }
+ ```
 
 更多更详细关于智能合约的知识，可以参阅以太坊的 [Hello world sample](https://www.ethereum.org/greeter)。
 
+讲到这里，聪明的你应该猜出来我们怎么做的了。我们是不是 the second proven blockchain 呢？欢迎大家来讨论！
+
+我们 DaoChain 的源码开放在 [DaoChain on Github](https://github.com/DaoCloud/dao-chain)，透露一下，DaoChain 的核心合约也在这里哦。后续我们会完善客户端功能、添加更多测试和文档。同时也欢迎大家来提 Issue 和 Pull request。
 
 内测及奖励
 --------
 
 DaoChain 第一版测试版现在向 Daocloud 用户开放测试，对区块链技术和镜像安全感兴趣的小伙伴们可以加入我们近距离感受“神秘”的区块链。
 
-DaoChain 的源码开放在 [DaoChain on Github](https://github.com/DaoCloud/dao-chain) 后续我们会完善客户端功能、添加更多测试和文档。同时也欢迎大家来提 issue 和 pull request。
-
 ### 开始探索 DaoChain
 
 克隆下 DaoChain 的源码后我们可以使用其中的 docker-compose.yml 来启动本地的区块链节点，访问本地 web 客户端。
+
+```
+git clone https://github.com/DaoCloud/dao-chain
+cd dao-chain && docker-compose up -d
+```
 
 内测阶段我们只为拥有 DaoHub 组织的用户提供绑定功能，在 web 客户端绑定了以太坊账号后可以自行挖矿来获取以太币，也可以通过发邮件到 [support@daocloud.io](mailto:support@daocloud.io) 或者在 DaoVoice 上联系我们申请一些以太币来开始 DaoChain 之旅。
 
