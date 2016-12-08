@@ -29,3 +29,4 @@ http://docs.daocloud.io/dao-chain
 * Command Line Tool
 * Better image Hashing
 * Offline verifying
+* Better peer discovery
