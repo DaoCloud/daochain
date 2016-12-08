@@ -31,7 +31,7 @@
                 </div>
             </div>
         </dao-panel-step>
-        <dao-panel-step title="{{ '创建钱包' }}" is-successful="">
+        <dao-panel-step title="{{ '创建钱包' }}" is-successful="" is-locked="!$ctrl.selectedOrg">
             <div class="dao-setting-layout" ng-if=" $ctrl.walletSet ">
                 <div class="dao-setting-layout-title">
                     <div class="dao-setting-title">
