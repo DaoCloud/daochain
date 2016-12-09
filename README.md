@@ -13,8 +13,8 @@ DaoChain 结合了区块链的去中心化特性与镜像加密校验技术，�
 1. clone the repo and compose up 
 
     ```
-    git clone https://github.com/DaoCloud/daochain.git
-    cd daochain
+    git clone https://github.com/DaoCloud/dao-chain.git
+    cd dao-chain
     docker-compose up -d
     ```
 
@@ -30,3 +30,11 @@ http://docs.daocloud.io/dao-chain
 * Better image Hashing
 * Offline verifying
 * Better peer discovery
+
+## 贡献指南
+
+请参考[CONTRIBUTION.md](./CONTRIBUTION.md)
+
+## 开源许可证
+
+[Apache 2 license](./LICENSE)
