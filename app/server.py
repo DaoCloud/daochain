@@ -65,10 +65,10 @@ def fetch_nodes():
                         added.append(n)
                 if added:
                     log.info('fetched nodes: %s' % ', '.join(added))
-                sleep(300)
+                sleep(random.randint(300, 600))
             except Exception as e:
                 log.error('Fail to fetch nodes.json, %s' % e)
-                sleep(5)
+                sleep(random.randint(5, 20))
 
     t = Thread(target=fetch_loop)
     t.setDaemon(True)
