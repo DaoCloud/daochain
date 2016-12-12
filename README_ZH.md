@@ -6,7 +6,7 @@
 
 DaoChain 是一个基于以太坊的去中心化应用（DApp），立志于解决互联网环境下数字资产（Docker image）分享、交易时的信任问题。
 
-![logo](resources/DaoChain-yellow.svg)
+![logo](resources/DaoChain.png)
 
 ## Why
 
