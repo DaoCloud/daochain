@@ -18,9 +18,15 @@ Docker 镜像的分发就是典型的经过中转的数据分享方式。发布�
 
 ## How
 
-目前的 DaoChain 实现了去中心化的镜像验证功能。
+[以太坊（Ethereum）](https://www.ethereum.org/)是一个有智能合约功能的公共区块链平台。通过加密货币以太币的润滑作用，其提供去中心化的虚拟机来处理点对点合约。由合约构成的运行在以太坊上的去中心化应用就叫做 DApp。
 
-项目包含四个部分：[智能合约](https://github.com/DaoCloud/dao-chain/tree/master/contract)，[以太坊客户端](https://github.com/DaoCloud/dao-chain/tree/master/geth)，[本地服务器和验证客户端](https://github.com/DaoCloud/dao-chain/tree/master/app)，[WebUI](https://github.com/Revolution1/dao-chain/tree/master/webui)
+以太坊的智能合约是图灵完备的，社区活跃文档丰富。所以在众多的区块链实现中我们选择了以太坊来作为 DaoChain 的基础。
+
+DaoChain 项目包含四个部分：[智能合约](https://github.com/DaoCloud/dao-chain/tree/master/contract)，[以太坊客户端](https://github.com/DaoCloud/dao-chain/tree/master/geth)，[本地服务器和验证客户端](https://github.com/DaoCloud/dao-chain/tree/master/app)，[WebUI](https://github.com/Revolution1/dao-chain/tree/master/webui)
+
+**项目结构:**
+
+![structure](resources/structure.png)
 
 ### 智能合约
 
@@ -71,10 +77,9 @@ DaoChain 的 WebUI 采用的是 AngularJS 框架，并配合 DaoCloud 的前端�
 - [ ] 实现 registry 去中心化
 
 
-
 ## QuickStart
 
-1. clone the repo and compose up 
+1. 克隆项目代码并使用 docker-compose 启动服务
 
     ```
     git clone https://github.com/DaoCloud/dao-chain.git
@@ -82,19 +87,37 @@ DaoChain 的 WebUI 采用的是 AngularJS 框架，并配合 DaoCloud 的前端�
     docker-compose up -d
     ```
 
-2. open webui (http://127.0.0.1:8000)
+2. 打开 WebUI (http://127.0.0.1:8000)
 
-## Tutorial (Chinese)
+## Tutorial
 
-http://docs.daocloud.io/dao-chain
+### 获取安全签名的镜像
+
+* 请您登陆 DaoCloud 账号
+* 点击账户详情选择您的组织，并填写密码生成钱包地址（请务必保证密码的安全！）
+* 选择“账户信息”，打开挖矿开关，系统会在后台启动以太坊客户端，开始同步所有验证数据，同步完成后会进行挖矿，过一段时间会获取账户余额
+* 点击“镜像市场”，可以看到拥有区块链验证的公开镜像，点击拉取并在“本地镜像”查看，若通过验证则证明本地镜像与发布者提交的一致
+
+### 发布镜像并签名
+
+* 选择“云端镜像”，这里是您保存在 DaoCloud 上的镜像。
+* 拉取您需要签名的镜像。
+* 点击签名，后台会计算校验码并以您当前使用的区块链钱包地址发布签名，系统会等待区块被确认所以会等待一段时间
+* 完成后签名后登录 DaoCloud 选择公开镜像，可以在 DaoChain “镜像市场” 看到
+ 
+**验证流程:**
+![flow](resources/flow.png)
+
+申请测试币或咨询请联系 support@daocloud.io
 
 ## TODO
 
-* Tests and Document
-* Command Line Tool
-* Better Image Hashing
-* Offline Verifying
-* Better Peer Discovery
+* 完善测试和文档
+* 完成命令行工具
+* 优化镜像哈希算法
+* 支持节点自动发现功能
+* 实现完全去中心化离线验证
+
 
 ## Contribution
 
@@ -102,4 +125,4 @@ http://docs.daocloud.io/dao-chain
 
 ## Licensing
 
-[Apache 2 license](./LICENSE)
+[Apache 2](./LICENSE)
