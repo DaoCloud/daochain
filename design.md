@@ -21,7 +21,7 @@ Blockchain is a distributed database that maintains a continuously-growing list 
 在当前节点不变的情况下，前节点的任何改变都会使得这条链无效(invalid)。
 ```
 
-笔者认为两种定义是不冲突的、可以说是相辅相成的。前者更多的强调区块链的分布式协作的集体行为，后者更多的关注这一协作群体中每一个个体——区块链本身。在大多数语境下，大家关注更多的是区块链分布式协作的集体效应，因此下文关于区块链，不特意说明的情况下，都与 wikipedia 的分布式数据库定义一致，关于区块链数据结构，推荐大家看一下一本详细讲解 bitcoin 技术书籍 [Mastering Bitcoin](http://uplib.fr/w/images/8/83/Mastering_Bitcoin-Antonopoulos.pdf)，你将看到，Bitcoin 的成功，不仅仅只有区块链的功劳，Game design 和密码学都是极其重要的部分！
+笔者认为两种定义是不冲突的、可以说是相辅相成的。前者更多的强调区块链的分布式协作的集体行为，后者更多的关注这一协作群体中每一个个体——区块链本身。在大多数语境下，大家关注更多的是区块链分布式协作的集体效应，因此下文关于区块链，不特意说明的情况下，都与 wikipedia 的分布式数据库定义一致，关于区块链数据结构，推荐大家看一下一本详细讲解 Bitcoin 技术书籍 [Mastering Bitcoin](http://uplib.fr/w/images/8/83/Mastering_Bitcoin-Antonopoulos.pdf)，你将看到，Bitcoin 的成功，不仅仅只有区块链的功劳，Game design 和密码学都是极其重要的部分！
 
 提到那些号称颠覆银河系的新科技、新技术，就不得不提 Gartner 技术成熟度曲线(The Gartner hyper cycle)。区块链号称颠覆整个金融行业的既有规则、既有模式，Gartner 2016 技术成熟度曲线中，我们可以在过高期望的峰值（Peak of Inflated Expectations）附近找到区块链，所以，各位同学冷静再冷静。并且 Gartner 也在分析 2016 成熟度曲线中提到 [Bitcoin is the only proven blockchain](http://www.gartner.com/smarterwithgartner/3-trends-appear-in-the-gartner-hype-cycle-for-emerging-technologies-2016/)，注意这里的区块链指的是 wikipedia 版的定义。接下来笔者信口胡来，跟大家一起分析一下为什么 Bitcoin is the only proven blockchain。
 
@@ -42,7 +42,12 @@ CAP 理论：一个分布式系统最多只能同时满足一致性（Consistenc
 * 可用性 `Reads and writes always succeed`
 * 分区容忍性 `The system continues to operate despite arbitrary message loss or failure of part of the system`
 
-我们根据 Blockchain 的工作方式(Bitcoin 中矿工网络所维护的 blockchain 的工作方式)，每个矿工节点独立的工作(不考虑矿池，会加入无谓的复杂度)，接收 Bitcoin 用户的转账请求，竞争寻找新的满足要求的 Hash 值，将这些交易打包到新的 block 并广播出去(Gossip 算法)，或者接收并验证收到的广播数据，在同一刻，各个矿工的数据并不是严格一致的（有些接收到了一个广播，有些还没有，有些接收到了另一个广播），但是每个用户的读写请求都是会成功的，只是有可能读到的数据并不是最新的，也可能不是最终的，因此这是一个满足最终一致性的 `AP` 的系统。
+我们根据 Blockchain 的工作方式(Bitcoin 中矿工网络所维护的 blockchain 的工作方式)，每个矿工节点独立的工作(不考虑矿池，会加入无谓的复杂度)，重复以下逻辑：
+
+* 接收 Bitcoin 用户的转账请求，竞争寻找新的满足要求的 Hash 值，将这些交易打包到新的 block 并广播出去(Gossip 算法)，或者
+* 接收并验证收到的广播数据
+
+在同一刻，各个矿工的数据并不是严格一致的（有些接收到了一个广播，有些还没有，有些接收到了另一个广播），但是每个用户的读写请求都是会成功的，只是有可能读到的数据并不是最新的，也可能不是最终的，因此这是一个满足最终一致性的 `AP` 的系统。
 
 区块链(最起码 Bitcoin 用到的区块链)是一个完全副本的(每个矿工节点都维护一份完全的数据)、W=1, R=1 的单读单写的(客户端写成功一个矿工就算成功了，读一个矿工的数据就返回)、满足最终一致性的分布式数据库。完全副本带来的去中心化的好处，但这是一剂很猛的药，理论上讲区块链所维护的数据量不能超过矿工参与者中磁盘容量最小值，否则这个矿工将要面临被退出的处境。另外受限于单个矿工的计算能力、全网的广播扩散速度，Bitcoin 限制了每 10min 一个 Block，每个 Block 1MB 的上限，使的 Bitcoin 网络的交易频率相对于 Visa、银联等低得多的多。
 
@@ -63,6 +68,15 @@ CAP 理论：一个分布式系统最多只能同时满足一致性（Consistenc
 ```
 Bitcoin is the only proven blockchain
 ```
+
+区块链的共识算法
+--------------
+
+区块链的本质是一个分布式的账本，它需要对记录在账本中的每一条记录达成共识，你一定知道我想说什么，[分布式的共识算法](https://en.wikipedia.org/wiki/Consensus_\(computer_science\))。关于分布式共识算法，你一定听过[拜占庭将军](https://en.wikipedia.org/wiki/Byzantine_fault_tolerance)，听过 Lamport 老先生的 [Paxos](https://en.wikipedia.org/wiki/Paxos_\(computer_science\))，还有后来简化版的 [Raft](https://raft.github.io/)，前两个看明白证明并不是很容易，Raft 有一个[很好的动画](http://thesecretlivesofdata.com/raft/)，特别好理解，如果你没看过，推荐你去看看。在区块链里，你应该听过比特币网络里使用的工作量证明算法，还有为了避免公地悲剧的权益证明算法，它们都是什么与什么？如果你研究过比特币，应该多少有点概念，或者你也可以 Google 一下比特币原理，很多博客讲的也很清楚。然而，工作量证明算法，这不是在浪费能源？如果要把这一块展开，已经足够写一篇很长很长的文章了，简单一点，你只需要知道，拥有平等投票权的拜占庭将军、Paxos、Raft 等算法在开放式网络无法抵御[女巫攻击](https://en.wikipedia.org/wiki/Sybil_attack)，比如黑客控制一个机房里所有的物理机，通过 Docker 运行了好多个容器，它们的投票对分布式共识系统是极其具有威胁性。有理论证明，如果没有一个逻辑上的中央授权机制，女巫攻击总是可以实现，可惜的是，去中心化的区块链，基本是容不得一个中央授权机制的。其实工作量证明并不是一个新鲜时髦的算法，它在上世纪 90 年代就被用作防垃圾邮件，邮件服务器要求邮件发送者寻找出满足要求的 Hash 值，之后邮件服务器才会发送邮件，这样增加了邮件发送者的时间代价，比如每封邮件计算 5s，这对正常的用户来说是基本没有影响的，但是对垃圾邮件发送者却是很大的打击，工作量证明与我们一贯追求的高效正好截然相反，人为设置屏障、降低效率也是很有意思的，比如在分布式共识里，它把原来投票代价只是需要获取一个 token，升级成了需要一定时间的 CPU 算力。
+
+区块链网络的共识算法核心其实也就一点，网络中诚实的参与者相信它所见到最长的链，比如工作量证明机制，在链上每增加一个 block，都是一定算力的凝聚。权益证明有类似的道理。
+
+区块链应用的架构师需要想清楚，您的区块链应用是否能够抵御女巫攻击？
 
 Docker 镜像及分享
 ---------------
