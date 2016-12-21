@@ -93,8 +93,8 @@ DaoChain’s WebUI uses AngularJS and DaoStyle – a Angular component library b
 1.	Clone the repo and run with docker-compose
 
     ```
-    git clone https://github.com/DaoCloud/dao-chain.git
-    cd dao-chain
+    git clone https://github.com/DaoCloud/daochain.git
+    cd daochain
     docker-compose up -d
     ```
 

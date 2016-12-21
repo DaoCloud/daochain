@@ -90,8 +90,8 @@ DaoChain 的 WebUI 采用的是 AngularJS 框架，并配合 DaoCloud 的前端�
 1. 克隆项目代码并使用 docker-compose 启动服务
 
     ```
-    git clone https://github.com/DaoCloud/dao-chain.git
-    cd dao-chain
+    git clone https://github.com/DaoCloud/daochain.git
+    cd daochain
     docker-compose up -d
     ```
 
