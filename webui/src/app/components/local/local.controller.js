@@ -161,7 +161,7 @@ class LocalController {
 
                     const has_signed = (tx) => {
                         let getBlockNumber = this.$interval(() => {
-                            const web3 = new Web3(new Web3.providers.HttpProvider("http://10.1.4.173:8545"));
+                            const web3 = new Web3(new Web3.providers.HttpProvider(this.Web3Url));
                             let res = web3.eth.getTransaction(tx);
                             if (res.blockNumber) {
                                 this.$interval.cancel(getBlockNumber);
